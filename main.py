@@ -12,35 +12,32 @@ play = 0
 # with open("save.yaml") as f:
 #     player = yaml.safe_load(f)
 
-# asks you if you want to continue or start over
-create_save = input(
-    "Do you want to [c]ontinue saved game or create [n]ew game?")
+create_save = input("Do you want to [o]pen saved game or create [n]ew game? ")
 
 if create_save.lower().startswith('n'):
-    delsave = input("This will delete all data. Continue? Y/N ")
-    if delsave.lower().startswith('y'):
-        save_name = input("Please name your save (make sure you add .yaml to the end): ")
-        player = {
-            "health":10,
-            "max health":10,
-            "x":0,
-            "y":0,
-            "inventory":["Sword", "Healing Potion"],
-            "held item":"Sword",
-            "cheat":0
-        }
-        dumped = yaml.dump(player)
-        with open(save_name, "w") as f:
-            f.write(dumped)
-        play = 1
-    else:
-        play = 1
-# elif create_save.lower().startswith('c'):
-else:
+    save_name = input("Please name your save (make sure you add .yaml to the end): ")
+    player = {
+        "health":10,
+        "max health":10,
+        "x":0,
+        "y":0,
+        "inventory":["Sword", "Healing Potion"],
+        "held item":"Sword",
+        "cheat":0
+    }
+    dumped = yaml.dump(player)
+    with open(save_name, "w") as f:
+        f.write(dumped)
+    save_file = save_name
     play = 1
+elif create_save.lower().startswith('o'):
+    open_save = input("Please choose a save to open (inclue .yaml ending): ")
+    save_file = open_save
+    with open(open_save) as f:    
+        player = yaml.safe_load(f)
 
 # checks to see if you are dead.
-if player["health"] <= 0:
+if player["health"] <= 0 and play == 1:
     if player["cheat"] < 3:
         cheatcode = input("What is the not-die code?")
         if not cheatcode == 43590:
@@ -68,6 +65,7 @@ if player["health"] <= 0:
 
 # gameplay here:
 while play == 1:
+    print("Type 'q' to save and quit.")
     if player["x"] == 0 and player["y"] == 0:
         which_direction = input("You can go north, south, east or west.")
         if which_direction.lower().startswith('n'):
@@ -78,6 +76,8 @@ while play == 1:
             player["x"] += 1
         elif which_direction.lower().startswith('w'):
             player["x"] -= 1
+        elif which_direction.lower().startswith('q'):
+            play = 0
 
     elif player["x"] == 0 and player["y"] == 1:
         which_direction = input("You can go north, or south.")
@@ -89,6 +89,8 @@ while play == 1:
         #     player["x"] += 1
         # elif which_direction.lower().startswith('w'):
         #     player["x"] -= 1
+        elif which_direction.lower().startswith('q'):
+            play = 0
 
     elif player["x"] == 0 and player["y"] == -1:
         which_direction = input("You can go north, east, or west.")
@@ -100,6 +102,8 @@ while play == 1:
             player["x"] += 1
         elif which_direction.lower().startswith('w'):
             player["x"] -= 1
+        elif which_direction.lower().startswith('q'):
+            play = 0
 
     elif player["x"] == 1 and player["y"] == 0:
         which_direction = input(
@@ -120,6 +124,8 @@ while play == 1:
                 print("**|**")
                 print("*[+]*")
                 print("**⊥**")
+        elif which_direction.lower().startswith('q'):
+            play = 0
 
     elif player["x"] == -1 and player["y"] == 0:
         which_direction = input(
@@ -140,9 +146,17 @@ while play == 1:
                 print("**|**")
                 print("*[+]*")
                 print("**⊥**")
+        elif which_direction.lower().startswith('q'):
+            play = 0
+
+    else:
+        print("ERROR: You have traveled out of bounds.")
+        print("Teleporting to start...")
+        player["x"] = 0
+        player["y"] = 0
 
 # put all the new data in the file
 dumped = yaml.dump(player)
 
-with open("save.yaml", "w") as f:
+with open(save_file, "w") as f:
     f.write(dumped)

@@ -32,6 +32,9 @@ def fight(player):
                     turn = False
             elif action.lower().startswith('d'):
                 defend += random.randint(0, 6)
+                player["health"] += random.randint(0, 3)
+                if player["health"] > player["max health"]:
+                    player["health"] = player["max health"]
                 turn = False
             elif action.lower().startswith('u'):
                 item = input(player["inventory"])

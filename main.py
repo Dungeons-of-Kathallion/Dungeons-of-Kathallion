@@ -35,6 +35,9 @@ elif create_save.lower().startswith('o'):
     save_file = open_save
     with open(open_save) as f:    
         player = yaml.safe_load(f)
+    play = 1
+else:
+    print("ERROR: That option is not allowed.")
 
 # checks to see if you are dead.
 if player["health"] <= 0 and play == 1:
@@ -51,7 +54,7 @@ if player["health"] <= 0 and play == 1:
             play = 0
         else:
             player["cheat"] += 1
-            player["health"] = 10
+            player["health"] = player["max helth"]
     else:
         print("YOU DIED")
         player["health"] = 10
@@ -78,6 +81,8 @@ while play == 1:
             player["x"] -= 1
         elif which_direction.lower().startswith('q'):
             play = 0
+        else:
+            print("ERROR: That option is not allowed.")
 
     elif player["x"] == 0 and player["y"] == 1:
         which_direction = input("You can go north, or south.")
@@ -91,6 +96,8 @@ while play == 1:
         #     player["x"] -= 1
         elif which_direction.lower().startswith('q'):
             play = 0
+        else:
+            print("ERROR: That option is not allowed.")
 
     elif player["x"] == 0 and player["y"] == -1:
         which_direction = input("You can go north, east, or west.")
@@ -104,10 +111,12 @@ while play == 1:
             player["x"] -= 1
         elif which_direction.lower().startswith('q'):
             play = 0
+        else:
+            print("ERROR: That option is not allowed.")
 
     elif player["x"] == 1 and player["y"] == 0:
         which_direction = input(
-            "You can go west. There is a map on the ground. (type T to take the map, press M to view it when you have it.")
+            "You can go west. There is a map on the ground. (type T to take the map, press M to view it when you have it.)")
         # if which_direction.lower().startswith('n'):
         #     player["y"] += 1
         # elif which_direction.lower().startswith('s'):
@@ -126,10 +135,12 @@ while play == 1:
                 print("**⊥**")
         elif which_direction.lower().startswith('q'):
             play = 0
+        else:
+            print("ERROR: That option is not allowed.")
 
     elif player["x"] == -1 and player["y"] == 0:
         which_direction = input(
-            "You can go east. There is an axe on the ground. (type T to take the axe.")
+            "You can go east. There is an axe on the ground. (type T to take the axe.)")
         # if which_direction.lower().startswith('n'):
         #     player["y"] += 1
         # elif which_direction.lower().startswith('s'):
@@ -139,7 +150,7 @@ while play == 1:
         # if which_direction.lower().startswith('w'):
         #     player["x"] -= 1
         elif which_direction.lower().startswith('t'):
-            if 'Map' not in player["inventory"]:
+            if 'Axe' not in player["inventory"]:
                 player["inventory"].append('Axe')
         elif which_direction.lower().startswith('m'):
             if 'Map' in player["inventory"]:
@@ -148,6 +159,8 @@ while play == 1:
                 print("**⊥**")
         elif which_direction.lower().startswith('q'):
             play = 0
+        else:
+            print("ERROR: That option is not allowed.")
 
     else:
         print("ERROR: You have traveled out of bounds.")

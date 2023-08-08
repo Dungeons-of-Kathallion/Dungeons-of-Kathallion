@@ -1,0 +1,20 @@
+Sword:
+  type: "Weapon"
+  damage: 5
+  defend: 6
+  description: "Your generic sword."
+Healing Potion:
+  type: "Consumable"
+  max bonus: 5
+  healing level: "max health"
+  description: "A generic healing potion that restores your health to it's max and gives it a bonus 5 to that maximum."
+Map:
+  type: "Utility"
+  trigger: "m"
+  on trigger: "map_function"
+  description: "It's a map of the dungeons! [Press 'M' to activate.]"
+Axe:
+  type: "Weapon"
+  damage: 7
+  defend: 5
+  description: "An ancient axe found in the dungeons. You wonder what happened to it's previous owner..."

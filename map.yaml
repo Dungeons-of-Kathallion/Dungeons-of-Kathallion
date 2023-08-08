@@ -1,0 +1,66 @@
+coordinate count: 6
+point0:
+  x: 0
+  y: 0
+  item:
+  - None
+  enemy: 0
+  blocked:
+  - None
+point1:
+  x: 0
+  y: 1
+  item:
+  - None
+  enemy: 0
+  blocked:
+  - East
+  - West
+point2:
+  x: 0
+  y: -1
+  item:
+  - None
+  enemy: 0
+  blocked:
+  - South
+point3:
+  x: 1
+  y: 0
+  item:
+  - Map
+  enemy: 0
+  blocked:
+  - North
+  - South
+  - East
+point4:
+  x: -1
+  y: 0
+  item:
+  - Axe
+  enemy: 0
+  blocked:
+  - North
+  - South
+  - West
+point5:
+  x: -1
+  y: -1
+  item:
+  - None
+  enemy: 0
+  blocked:
+  - North
+  - South
+  - West
+point6:
+  x: 1
+  y: -1
+  item:
+  - None
+  enemy: 1
+  blocked:
+  - North
+  - South
+  - East

@@ -14,6 +14,9 @@ fought_enemy = False
 # with open("save.yaml") as f:
 #     player = yaml.safe_load(f)
 
+with open("items.yaml") as f:
+    item = yaml.safe_load(f)
+
 create_save = input("Do you want to [o]pen saved game or create [n]ew game? ")
 
 if create_save.lower().startswith('n'):
@@ -191,7 +194,7 @@ while play == 1:
         if fought_enemy == False:
             which_direction = input(
                 "You can go west. There is an enemy here...preparing to fight!")
-            battle.fight(player)
+            battle.fight(player, item)
             fought_enemy = True
             # checks to see if you are dead.
             if player["health"] <= 0 and play == 1:

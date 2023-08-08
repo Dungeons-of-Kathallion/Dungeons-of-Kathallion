@@ -15,37 +15,33 @@ turn = True
 # if player["xp"] < 0:
 #     player["xp"] = 0
 
-def fight(player):
+def fight(player, item):
     global turn, enemy_health, defend, enemy_max, enemy_max_damage
     while player["health"] > 0:
         while turn:
             print("Enemy: ", enemy_health, "/", enemy_max, "; You: ", player["health"], "/", player["max health"])
             action = input("Attack, Defend, Use Item? ")
             if action.lower().startswith('a'):
-                if player["held item"] == "Sword":
-                    enemy_health -= random.randint(0, 5)
-                    print("Enemy: ", enemy_health, "/", enemy_max)
-                    turn = False
-                if player["held item"] == "Axe":
-                    enemy_health -= random.randint(2, 7)
-                    print("Enemy: ", enemy_health, "/", enemy_max)
-                    turn = False
+                print(item[player["held item"]]["damage"])
+                enemy_health -= random.randint(0, int(item[player["held item"]]["damage"]))
+                print("Enemy: ", enemy_health, "/", enemy_max)
+                turn = False
             elif action.lower().startswith('d'):
-                defend += random.randint(0, 6)
+                defend += random.randint(0, int(item[player["held item"]]["defend"]))
                 player["health"] += random.randint(0, 3)
                 if player["health"] > player["max health"]:
                     player["health"] = player["max health"]
                 turn = False
             elif action.lower().startswith('u'):
-                item = input(player["inventory"])
+                item_input = input(player["inventory"])
                 if item in player["inventory"]:
-                    if item == "Healing Potion":
+                    if item_input == "Healing Potion":
                         player["health"] = player["max health"]
                         player["inventory"].remove('Healing Potion')
                         player["max health"] += 5
                         player["health"] = player["max health"]
                         turn = False
-                    if item == "Axe":
+                    if item_input == "Axe":
                         player["held item"] = "Axe"
                         print("You are now holding an Axe")
         while not turn:

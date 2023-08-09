@@ -199,7 +199,7 @@ while play == 1:
     elif player["x"] == 1 and player["y"] == -1:
         if fought_enemy == False:
             which_direction = input(
-                "You can go east. There is an enemy here...preparing to fight!")
+                "You can go west. There is an enemy here...preparing to fight!")
             battle.fight(player, item)
             fought_enemy = True
             # checks to see if you are dead.

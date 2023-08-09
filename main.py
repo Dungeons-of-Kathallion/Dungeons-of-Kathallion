@@ -257,5 +257,6 @@ while play == 1:
 # put all the new data in the file
 dumped = yaml.dump(player)
 
+save_file = "save_" + "save_file"
 with open(save_file, "w") as f:
     f.write(dumped)

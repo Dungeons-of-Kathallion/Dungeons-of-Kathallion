@@ -20,7 +20,7 @@ with open("items.yaml") as f:
 create_save = input("Do you want to [o]pen saved game or create [n]ew game? ")
 
 if create_save.lower().startswith('n'):
-    save_name = input("Please name your save: ")
+    enter_save_name = input("Please name your save: ")
     player = {
         "health":10,
         "max health":10,
@@ -32,6 +32,7 @@ if create_save.lower().startswith('n'):
         "cheat":0
     }
     dumped = yaml.dump(player)
+    save_name = "save_" + enter_save_name + ".yaml"
     with open(save_name, "w") as f:
         f.write(dumped)
     save_file = "save_" + save_name + ".yaml"
@@ -257,6 +258,6 @@ while play == 1:
 # put all the new data in the file
 dumped = yaml.dump(player)
 
-save_file = "save_" + "save_file"
+save_file = "save_" + open_save + ".yaml"
 with open(save_file, "w") as f:
     f.write(dumped)

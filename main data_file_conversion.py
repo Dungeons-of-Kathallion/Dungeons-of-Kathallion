@@ -21,16 +21,17 @@ with open("start.yaml") as f:
 create_save = input("Do you want to [o]pen saved game or create [n]ew game? ")
 
 if create_save.lower().startswith('n'):
-    save_name = input("Please name your save (make sure you add .yaml to the end): ")
+    enter_save_name = input("Please name your save (make sure you add .yaml to the end): ")
     player = start_player
     dumped = yaml.dump(player)
+    save_name = "save_" + enter_save_name + ".yaml"
     with open(save_name, "w") as f:
         f.write(dumped)
-    save_file = "save_" save_name + ".yaml"
+    save_file = "save_" + save_name + ".yaml"
     play = 1
 elif create_save.lower().startswith('o'):
-    open_save = input("Please choose a save to open (inclue .yaml ending): ")
-    save_file = "save_" open_save + ".yaml"
+   open_save = input("Please choose a save to open: ")
+    save_file = "save_" + open_save + ".yaml"
     with open(open_save) as f:    
         player = yaml.safe_load(f)
     play = 1
@@ -144,6 +145,6 @@ if play == 1:
 # finish up and save
 dumped = yaml.dump(player)
 
-save_file = "save_" + save_file
+save_file = "save_" + open_save + ".yaml"
 with open(save_file, "w") as f:
     f.write(dumped)

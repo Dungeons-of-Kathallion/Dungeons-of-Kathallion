@@ -168,7 +168,7 @@ while play == 1:
 
     elif player["x"] == -1 and player["y"] == -1:
         which_direction = input(
-            "You can go east.")
+            "You can go west.")
         # if which_direction.lower().startswith('n'):
         #     player["y"] += 1
         # elif which_direction.lower().startswith('s'):

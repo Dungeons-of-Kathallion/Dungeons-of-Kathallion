@@ -26,11 +26,11 @@ if create_save.lower().startswith('n'):
     dumped = yaml.dump(player)
     with open(save_name, "w") as f:
         f.write(dumped)
-    save_file = save_name
+    save_file = "save_" save_name + ".yaml"
     play = 1
 elif create_save.lower().startswith('o'):
     open_save = input("Please choose a save to open (inclue .yaml ending): ")
-    save_file = open_save
+    save_file = "save_" open_save + ".yaml"
     with open(open_save) as f:    
         player = yaml.safe_load(f)
     play = 1

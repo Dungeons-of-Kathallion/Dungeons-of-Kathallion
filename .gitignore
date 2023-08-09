@@ -3,3 +3,4 @@
 EXAMPLE*
 __pycache__
 __pycache__/**
+**/save_*

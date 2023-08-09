@@ -30,7 +30,7 @@ if create_save.lower().startswith('n'):
     save_file = "save_" + save_name + ".yaml"
     play = 1
 elif create_save.lower().startswith('o'):
-   open_save = input("Please choose a save to open: ")
+    open_save = input("Please choose a save to open: ")
     save_file = "save_" + open_save + ".yaml"
     with open(open_save) as f:    
         player = yaml.safe_load(f)

@@ -58,17 +58,17 @@ def die():
 
 # funcion to search through the map file
 def search(x, y):
-    global map_loaction
+    global map_location
     for i in range(0, map["coordinate count"]):
         if map["point" + str(i)]["x"] == player["x"] and map["point" + str(i)]["y"] == player["y"]:
-            map_loaction = i
+            map_location = i
             break
         else:
             quit_tp = input("ERROR: You are in an undefined position. This could be because you are using a different map file, or you edited your save file. Do you want to quit or teleport to point0?")
             if quit_tp.lower().startswith('t'):
                 player["x"] = map["point0"]["x"]
                 player["y"] = map["point0"]["y"]
-                map_loaction = 0
+                map_location = 0
             else:
                 print("Quitting...")
 
@@ -86,48 +86,48 @@ def run(play):
 
     while play == 1:
         search(player["x"], player["y"])
-        global map_loaction
-        print(map_loaction)
-        if "North" not in map["point" + str(map_loaction)]["blocked"]:
+        global map_location
+        print(map_location)
+        if "North" not in map["point" + str(map_location)]["blocked"]:
             print("You can go North")
-        if "South" not in map["point" + str(map_loaction)]["blocked"]:
+        if "South" not in map["point" + str(map_location)]["blocked"]:
             print("You can go South")
-        if "East" not in map["point" + str(map_loaction)]["blocked"]:
+        if "East" not in map["point" + str(map_location)]["blocked"]:
             print("You can go East")
-        if "West" not in map["point" + str(map_loaction)]["blocked"]:
+        if "West" not in map["point" + str(map_location)]["blocked"]:
             print("You can go West")
-        if "None" not in map["point" + str(map_loaction)]["item"]:
-            print("There are these items on the ground: ", map["point" + str(map_loaction)]["item"])
-        if map["point" + str(map_loaction)]["enemy"] > 0 and map_loaction not in player["defeated enemies"]:
-            enemies_remaining = map["point" + str(map_loaction)]["enemy"]
+        if "None" not in map["point" + str(map_location)]["item"]:
+            print("There are these items on the ground: ", map["point" + str(map_location)]["item"])
+        if map["point" + str(map_location)]["enemy"] > 0 and map_location not in player["defeated enemies"]:
+            enemies_remaining = map["point" + str(map_location)]["enemy"]
             while enemies_remaining > 0:
                 battle.fight()
                 enemies_remaining -= 1
             if player["health"] > 0:
-                player["defeated enemies"].append(map_loaction)
+                player["defeated enemies"].append(map_location)
             else:
                 die()
         command = input("What will you do?")
         if command.lower().startswith('go'):
             print("Rather than saying Go <direction>, simply say <direction>.")
         elif command.lower().startswith('n'):
-            if "North" in map["point" + str(map_loaction)]["blocked"]:
+            if "North" in map["point" + str(map_location)]["blocked"]:
                 print("You cannot go that way.")
             else:
                 player["y"] += 1
                 # search(player["x"], player["y"])
         elif command.lower().startswith('s'):
-            if "South" in map["point" + str(map_loaction)]["blocked"]:
+            if "South" in map["point" + str(map_location)]["blocked"]:
                 print("You cannot go that way.")
             else:
                 player["y"] -= 1
         elif command.lower().startswith('e'):
-            if "East" in map["point" + str(map_loaction)]["blocked"]:
+            if "East" in map["point" + str(map_location)]["blocked"]:
                 print("You cannot go that way.")
             else:
                 player["x"] += 1
         elif command.lower().startswith('w'):
-            if "West" in map["point" + str(map_loaction)]["blocked"]:
+            if "West" in map["point" + str(map_location)]["blocked"]:
                 print("You cannot go that way.")
             else:
                 player["x"] -= 1
@@ -135,7 +135,7 @@ def run(play):
             which_item = input("You have these items in your inventory: " + str(player["inventory"]))
             if which_item in player["inventory"]:
                 print(item[which_item]["description"])
-        elif command in map["point" + str(map_loaction)]["item"]:
+        elif command in map["point" + str(map_location)]["item"]:
             if command not in player["inventory"]:
                 player["inventory"].append(command)
             else:

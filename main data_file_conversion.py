@@ -145,6 +145,6 @@ if play == 1:
 # finish up and save
 dumped = yaml.dump(player)
 
-save_file_quit = "save_" + save_file + ".yaml"
+save_file_quit = save_file
 with open(save_file_quit, "w") as f:
     f.write(dumped)

@@ -32,6 +32,10 @@ if create_save.lower().startswith('n'):
 elif create_save.lower().startswith('o'):
     open_save = input("Please choose a save to open: ")
     save_file = "save_" + open_save + ".yaml"
+    check_file = os.path.isfile(save_file)
+    if check_file == False:
+        print("ERROR: Couldn't find save file '" + save_file + "'")
+        exit(1)
     with open(save_file) as f:    
         player = yaml.safe_load(f)
     play = 1

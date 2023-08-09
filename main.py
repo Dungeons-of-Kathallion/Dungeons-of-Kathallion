@@ -125,7 +125,7 @@ while play == 1:
 
     elif player["x"] == -1 and player["y"] == 0:
         which_direction = input(
-            "You can go west. There is an axe on the ground. (type T to take the axe.)")
+            "You can go east. There is an axe on the ground. (type T to take the axe.)")
         # if which_direction.lower().startswith('n'):
         #     player["y"] += 1
         # elif which_direction.lower().startswith('s'):

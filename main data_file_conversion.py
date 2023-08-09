@@ -21,7 +21,7 @@ with open("start.yaml") as f:
 create_save = input("Do you want to [o]pen saved game or create [n]ew game? ")
 
 if create_save.lower().startswith('n'):
-    enter_save_name = input("Please name your save (make sure you add .yaml to the end): ")
+    enter_save_name = input("Please name your save: ")
     player = start_player
     dumped = yaml.dump(player)
     save_name = "save_" + enter_save_name + ".yaml"

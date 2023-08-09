@@ -2,6 +2,7 @@ import random
 import yaml
 import pickle
 import battle
+import os
 
 # says you are not playing.
 play = 0
@@ -21,17 +22,22 @@ with open("start.yaml") as f:
 create_save = input("Do you want to [o]pen saved game or create [n]ew game? ")
 
 if create_save.lower().startswith('n'):
-    save_name = input("Please name your save (make sure you add .yaml to the end): ")
+    enter_save_name = input("Please name your save: ")
     player = start_player
     dumped = yaml.dump(player)
+    save_name = "save_" + enter_save_name + ".yaml"
     with open(save_name, "w") as f:
         f.write(dumped)
     save_file = save_name
     play = 1
 elif create_save.lower().startswith('o'):
-    open_save = input("Please choose a save to open (inclue .yaml ending): ")
-    save_file = open_save
-    with open(open_save) as f:    
+    open_save = input("Please choose a save to open: ")
+    save_file = "save_" + open_save + ".yaml"
+    check_file = os.path.isfile(save_file)
+    if check_file == False:
+        print("ERROR: Couldn't find save file '" + save_file + "'")
+        exit(1)
+    with open(save_file) as f:    
         player = yaml.safe_load(f)
     play = 1
 else:
@@ -144,5 +150,6 @@ if play == 1:
 # finish up and save
 dumped = yaml.dump(player)
 
-with open(save_file, "w") as f:
+save_file_quit = save_file
+with open(save_file_quit, "w") as f:
     f.write(dumped)

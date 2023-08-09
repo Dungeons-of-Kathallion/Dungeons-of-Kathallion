@@ -35,7 +35,7 @@ if create_save.lower().startswith('n'):
     save_name = "save_" + enter_save_name + ".yaml"
     with open(save_name, "w") as f:
         f.write(dumped)
-    save_file = "save_" + save_name + ".yaml"
+    save_file = save_name
     play = 1
 elif create_save.lower().startswith('o'):
     open_save = input("Please choose a save to open: ")

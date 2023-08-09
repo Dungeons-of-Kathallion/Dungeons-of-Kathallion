@@ -258,6 +258,6 @@ while play == 1:
 # put all the new data in the file
 dumped = yaml.dump(player)
 
-save_file = "save_" + open_save + ".yaml"
-with open(save_file, "w") as f:
+save_file_quit = "save_" + save_file + ".yaml"
+with open(save_file_quit, "w") as f:
     f.write(dumped)

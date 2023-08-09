@@ -2,6 +2,7 @@ import random
 import yaml
 import pickle
 import battle
+import os
 
 # says you are not playing.
 play = 0

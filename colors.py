@@ -1,3 +1,8 @@
+from colorama import Fore, Back, Style, init, deinit
+
+# initialize colorame
+init()
+
 # import 'color palette'
 # Basic colors
 COLOR_RESET = Fore.RESET
@@ -25,3 +30,6 @@ COLOR_STYLE_DIM = Style.DIM
 COLOR_STYLE_BRIGHT = Style.BRIGHT
 
 COLOR_RESET_ALL = Style.RESET_ALL
+
+# deinitialize colorama
+deinit()

@@ -126,7 +126,7 @@ still_playing = True
 # dumped = yaml.dump(player)
 
 # deinitialize colorama
-edinit()
+deinit()
 
 # with open("save.yaml", "w") as f:
 #     f.write(dumped)

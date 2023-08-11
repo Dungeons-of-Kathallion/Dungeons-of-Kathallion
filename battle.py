@@ -30,14 +30,14 @@ def fight(player, item):
     while player["health"] > 0:
         while turn:
             # Print HP stats and possible actions for the player
-            print(COLOR_RED + "Enemy: " + enemy_health, COLOR_RESET_ALL +  "/", COLOR_GREEN + enemy_max, COLOR_BLUE + "; You: ", player["health"], COLOR_RESET_ALL + "/", COLOR_GREEN +  player["max health"] + COLOR_RESET_ALL)
+            print(COLOR_RED + "Enemy: " + enemy_health + COLOR_RESET_ALL + "/" + COLOR_GREEN + enemy_max + COLOR_BLUE + "; You: " + player["health"] + COLOR_RESET_ALL + "/" + COLOR_GREEN +  player["max health"] + COLOR_RESET_ALL)
             action = input("Attack, Defend, Use Item? ")
     
             if action.lower().startswith('a'):
                 print(item[player["held item"]]["damage"])
                 # attack formula
                 enemy_health -= random.randint(0, int(item[player["held item"]]["damage"]))
-                print("Enemy: ", enemy_health, "/", enemy_max)
+                print(COLOR_RED + "Enemy: " + enemy_health + COLORE_RESET_ALL + "/" + COLORE_GREEN + enemy_max)
                 turn = False
             elif action.lower().startswith('d'):
                 defend += random.randint(0, int(item[player["held item"]]["defend"]))

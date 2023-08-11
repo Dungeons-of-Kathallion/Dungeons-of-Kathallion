@@ -165,7 +165,7 @@ def run(play):
                     play = 0
                     return play
         print(" ")
-        command = input("What will you do?")
+        command = input("What will you do?\n")
         print(" ")
         if command.lower().startswith('go'):
             print("Rather than saying Go <direction>, simply say <direction>.")

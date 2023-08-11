@@ -4,34 +4,26 @@ import pickle
 import battle
 import os
 
-# varibles
-# room1x = random.randint
-
 # says you are not playing.
 play = 0
 
 fought_enemy = False
-# opens "save.yaml"
-# with open("save.yaml") as f:
-#     player = yaml.safe_load(f)
+
+# opens data files
+with open("map.yaml") as f:
+    map = yaml.safe_load(f)
 
 with open("items.yaml") as f:
     item = yaml.safe_load(f)
+
+with open("start.yaml") as f:
+    start_player = yaml.safe_load(f)
 
 create_save = input("Do you want to [o]pen saved game or create [n]ew game? ")
 
 if create_save.lower().startswith('n'):
     enter_save_name = input("Please name your save: ")
-    player = {
-        "health":10,
-        "max health":10,
-        "xp":0,
-        "x":0,
-        "y":0,
-        "inventory":["Sword", "Healing Potion"],
-        "held item":"Sword",
-        "cheat":0
-    }
+    player = start_player
     dumped = yaml.dump(player)
     save_name = "save_" + enter_save_name + ".yaml"
     with open(save_name, "w") as f:
@@ -51,216 +43,130 @@ elif create_save.lower().startswith('o'):
 else:
     print("ERROR: That option is not allowed.")
 
+# funcion to search through the map file
+def search(x, y):
+    global map_location
+    for i in range(0, map["coordinate count"]):
+        point_i = map["point" + str(i)]
+        point_x, point_y = point_i["x"], point_i["y"]
+        # print(i, point_x, point_y, player)
+        if point_x == player["x"] and point_y == player["y"]:
+            print(i)
+            map_location = i
+            return map_location
+
 # gameplay here:
-while play == 1:
-    print("Type 'q' to save and quit.")
-    if player["x"] == 0 and player["y"] == 0:
-        which_direction = input("You can go north, south, east or west.")
-        if which_direction.lower().startswith('n'):
-            player["y"] += 1
-        elif which_direction.lower().startswith('s'):
-            player["y"] -= 1
-        elif which_direction.lower().startswith('e'):
-            player["x"] += 1
-        elif which_direction.lower().startswith('w'):
-            player["x"] -= 1
-        elif which_direction.lower().startswith('q'):
-            play = 0
-        else:
-            print("ERROR: That option is not allowed.")
+def run(play):
+    print("Reserved keys:")
+    print("N: Go north")
+    print("S: Go south")
+    print("E: Go east")
+    print("W: Go west")
+    print("If you find an item on the ground, type the name of the item to take it.")
+    print("I: view items. When in this view, type the name of an item to examine it.")
+    print("Some items have special triggers, wich will often be stated in the description. Others can only be activated in certain situations, like in combat.")
+    # Mapping stuff
 
-    elif player["x"] == 0 and player["y"] == 1:
-        which_direction = input("You can go north, or south.")
-        if which_direction.lower().startswith('n'):
-            player["y"] += 1
-        elif which_direction.lower().startswith('s'):
-            player["y"] -= 1
-        # elif which_direction.lower().startswith('e'):
-        #     player["x"] += 1
-        # elif which_direction.lower().startswith('w'):
-        #     player["x"] -= 1
-        elif which_direction.lower().startswith('q'):
-            play = 0
-        else:
-            print("ERROR: That option is not allowed.")
-
-    elif player["x"] == 0 and player["y"] == -1:
-        which_direction = input("You can go north, east, or west.")
-        if which_direction.lower().startswith('n'):
-            player["y"] += 1
-        # elif which_direction.lower().startswith('s'):
-        #     player["y"] -= 1
-        elif which_direction.lower().startswith('e'):
-            player["x"] += 1
-        elif which_direction.lower().startswith('w'):
-            player["x"] -= 1
-        elif which_direction.lower().startswith('q'):
-            play = 0
-        else:
-            print("ERROR: That option is not allowed.")
-
-    elif player["x"] == 1 and player["y"] == 0:
-        which_direction = input(
-            "You can go west. There is a map on the ground. (type T to take the map, press M to view it when you have it.)")
-        # if which_direction.lower().startswith('n'):
-        #     player["y"] += 1
-        # elif which_direction.lower().startswith('s'):
-        #     player["y"] -= 1
-        # elif which_direction.lower().startswith('e'):
-        #     player["x"] += 1
-        if which_direction.lower().startswith('w'):
-            player["x"] -= 1
-        elif which_direction.lower().startswith('t'):
-            if 'Map' not in player["inventory"]:
-                player["inventory"].append('Map')
-        elif which_direction.lower().startswith('m'):
-            if 'Map' in player["inventory"]:
-                print("**|**")
-                print("*[+]*")
-                print("**⊥**")
-        elif which_direction.lower().startswith('q'):
-            play = 0
-        else:
-            print("ERROR: That option is not allowed.")
-
-    elif player["x"] == -1 and player["y"] == 0:
-        which_direction = input(
-            "You can go east. There is an axe on the ground. (type T to take the axe.)")
-        # if which_direction.lower().startswith('n'):
-        #     player["y"] += 1
-        # elif which_direction.lower().startswith('s'):
-        #     player["y"] -= 1
-        if which_direction.lower().startswith('e'):
-            player["x"] += 1
-        # if which_direction.lower().startswith('w'):
-        #     player["x"] -= 1
-        elif which_direction.lower().startswith('t'):
-            if 'Axe' not in player["inventory"]:
-                player["inventory"].append('Axe')
-        elif which_direction.lower().startswith('m'):
-            if 'Map' in player["inventory"]:
-                print("**|**")
-                print("*[+]*")
-                print("**⊥**")
-        elif which_direction.lower().startswith('q'):
-            play = 0
-
-        else:
-            print("ERROR: That option is not allowed.")
-
-    # elif player["x"] == 0 and player["y"] == -1:
-    #     which_direction = input(
-    #         "You can go north, east, and west.")
-    #     if which_direction.lower().startswith('n'):
-    #         player["y"] += 1
-    #     # elif which_direction.lower().startswith('s'):
-    #     #     player["y"] -= 1
-    #     if which_direction.lower().startswith('e'):
-    #         player["x"] += 1
-    #     if which_direction.lower().startswith('w'):
-    #         player["x"] -= 1
-    #     # elif which_direction.lower().startswith('t'):
-    #     #     if 'Axe' not in player["inventory"]:
-    #     #         player["inventory"].append('Axe')
-    #     elif which_direction.lower().startswith('m'):
-    #         if 'Map' in player["inventory"]:
-    #             print("**|**")
-    #             print("*[+]*")
-    #             print("**⊥**")
-    #     elif which_direction.lower().startswith('q'):
-    #         play = 0
-    #     else:
-    #         print("ERROR: That option is not allowed.")
-
-    elif player["x"] == -1 and player["y"] == -1:
-        which_direction = input(
-            "You can go east.")
-        # if which_direction.lower().startswith('n'):
-        #     player["y"] += 1
-        # elif which_direction.lower().startswith('s'):
-        #     player["y"] -= 1
-        if which_direction.lower().startswith('e'):
-            player["x"] += 1
-        # if which_direction.lower().startswith('w'):
-        #     player["x"] -= 1
-        # elif which_direction.lower().startswith('t'):
-        #     if 'Axe' not in player["inventory"]:
-        #         player["inventory"].append('Axe')
-        elif which_direction.lower().startswith('m'):
-            if 'Map' in player["inventory"]:
-                print("**|**")
-                print("*[+]*")
-                print("**⊥**")
-        elif which_direction.lower().startswith('q'):
-            play = 0
-        else:
-            print("ERROR: That option is not allowed.")
-
-    elif player["x"] == 1 and player["y"] == -1:
-        if fought_enemy == False:
-            which_direction = input(
-                "You can go west. There is an enemy here...preparing to fight!")
-            battle.fight(player, item)
-            fought_enemy = True
-            # checks to see if you are dead.
-            if player["health"] <= 0 and play == 1:
-                if player["cheat"] < 3:
-                    cheatcode = input("What is the not-die code?")
-                    if not cheatcode == 43590:
-                        player["health"] = 10
-                        player["max health"] = 10
-                        player["xp"] = 0
-                        player["x"] = 0
-                        player["y"] = 0
-                        player["inventory"] = ["Sword", "Healing Potion"]
-                        player["held item"] = "Sword"
-                        player["cheat"] = 0
-                        play = 0
-                    else:
-                        player["cheat"] += 1
-                        player["health"] = player["max helth"]
+    while play == 1:
+        global player
+        map_location = search(player["x"], player["y"])
+        print(map_location)
+        if "North" not in map["point" + str(map_location)]["blocked"]:
+            print("You can go North")
+        if "South" not in map["point" + str(map_location)]["blocked"]:
+            print("You can go South")
+        if "East" not in map["point" + str(map_location)]["blocked"]:
+            print("You can go East")
+        if "West" not in map["point" + str(map_location)]["blocked"]:
+            print("You can go West")
+        if "None" not in map["point" + str(map_location)]["item"]:
+            take_item = input("There are these items on the ground: " + str(map["point" + str(map_location)]["item"]))
+            if take_item in map["point" + str(map_location)]["item"]:
+                if take_item in player["inventory"]:
+                    print("You already have that.")
                 else:
-                    print("YOU DIED")
-                    player["health"] = 10
-                    player["max health"] = 10
-                    player["xp"] = 0
-                    player["x"] = 0
-                    player["y"] = 0
-                    player["inventory"] = ["Sword", "Healing Potion"]
-                    player["held item"] = "Sword"
-                    player["cheat"] = 0
-                    play = 0
-
-        else:
-            which_direction = input(
-                "You can go west.")
-            # if which_direction.lower().startswith('n'):
-            #     player["y"] += 1
-            # elif which_direction.lower().startswith('s'):
-            #     player["y"] -= 1
-            # if which_direction.lower().startswith('e'):
-            #     player["x"] += 1
-            if which_direction.lower().startswith('w'):
-                player["x"] -= 1
-            # elif which_direction.lower().startswith('t'):
-            #     if 'Axe' not in player["inventory"]:
-            #         player["inventory"].append('Axe')
-            elif which_direction.lower().startswith('m'):
-                if 'Map' in player["inventory"]:
-                    print("**|**")
-                    print("*[+]*")
-                    print("**⊥**")
-            elif which_direction.lower().startswith('q'):
-                play = 0
+                    player["inventory"].append(take_item)
+        if map["point" + str(map_location)]["enemy"] > 0 and map_location not in player["defeated enemies"]:
+            enemies_remaining = map["point" + str(map_location)]["enemy"]
+            while enemies_remaining > 0:
+                battle.fight(player, item)
+                enemies_remaining -= 1
+            if player["health"] > 0:
+                player["defeated enemies"].append(map_location)
+                if "North" not in map["point" + str(map_location)]["blocked"]:
+                    print("You can go North")
+                if "South" not in map["point" + str(map_location)]["blocked"]:
+                    print("You can go South")
+                if "East" not in map["point" + str(map_location)]["blocked"]:
+                    print("You can go East")
+                if "West" not in map["point" + str(map_location)]["blocked"]:
+                    print("You can go West")
+                if "None" not in map["point" + str(map_location)]["item"]:
+                    print("There are these items on the ground: ", map["point" + str(map_location)]["item"])
             else:
-                print("ERROR: That option is not allowed.")
-    else:
-        print("ERROR: You have traveled out of bounds.")
-        print("Teleporting to start...")
-        player["x"] = 0
-        player["y"] = 0
+                if player["cheat"] < 3:
+                    cheatcode = input("What is the not-die code? ")
+                    if cheatcode == "43590":
+                        player["cheat"] += 1
+                        player["health"] = player["max health"]
+                    else:
+                        player = start_player
+                        play = 0
+                        return play
+                else:
+                    print("You've cheated too much! No more lives!")
+                    player = start_player
+                    play = 0
+                    return play
+        command = input("What will you do?")
+        if command.lower().startswith('go'):
+            print("Rather than saying Go <direction>, simply say <direction>.")
+        elif command.lower().startswith('n'):
+            if "North" in map["point" + str(map_location)]["blocked"]:
+                print("You cannot go that way.")
+            else:
+                player["y"] += 1
+        elif command.lower().startswith('s'):
+            if "South" in map["point" + str(map_location)]["blocked"]:
+                print("You cannot go that way.")
+            else:
+                player["y"] -= 1
+        elif command.lower().startswith('e'):
+            if "East" in map["point" + str(map_location)]["blocked"]:
+                print("You cannot go that way.")
+            else:
+                player["x"] += 1
+        elif command.lower().startswith('w'):
+            if "West" in map["point" + str(map_location)]["blocked"]:
+                print("You cannot go that way.")
+            else:
+                player["x"] -= 1
+        elif command.lower().startswith('i'):
+            which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
+            if which_item in player["inventory"]:
+                print(item[which_item]["description"])
+            else:
+                print("You do not have that item.")
+        elif command.lower().startswith('m'):
+            if "Map" in player["inventory"]:
+                print("**|**")
+                print("*[+]*")
+                print("**⊥**")
+            else:
+                print("You do not have a map.")
+        elif command in map["point" + str(map_location)]["item"]:
+            if command not in player["inventory"]:
+                player["inventory"].append(command)
+            else:
+                print("You already have that item.")
+        elif command.lower().startswith('q'):
+            play = 0
+            return play
 
-# put all the new data in the file
+if play == 1:
+    play = run(1)
+
+# finish up and save
 dumped = yaml.dump(player)
 
 save_file_quit = save_file

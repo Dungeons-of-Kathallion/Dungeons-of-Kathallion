@@ -146,9 +146,9 @@ def run(play):
         map_location = search(player["x"], player["y"])
         map_location_x = search_specific_x()
         map_location_y = search_specific_y()
-        print("Coordinates:")
-        print(color_green + color_style_bright + "X: " + color_reset_all + str(map_location_x))
-        print(color_green + color_style_bright + "Y: " + color_reset_all + str(map_location_y))
+        print(color_green + color_style_bright + "Coordinates:" + color_reset_all)
+        print(color_blue + color_style_bright + "X: " + color_reset_all + str(map_location_x))
+        print(color_blue + color_style_bright + "Y: " + color_reset_all + str(map_location_y))
         print(" ")
         print(color_green + color_style_bright + "Possilbe actions:" + color_reset_all)
         if "North" not in map["point" + str(map_location)]["blocked"]:

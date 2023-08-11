@@ -30,7 +30,7 @@ def fight(player, item):
     while player["health"] > 0:
         while turn:
             # Print HP stats and possible actions for the player
-            print(str(COLOR_RED) + "Enemy: " + enemy_health + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + enemy_max + str(COLOR_BLUE) + "; You: " + player["health"] + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) +  player["max health"] + str(COLOR_RESET_ALL))
+            print(str(COLOR_RED) + "Enemy: " + enemy_health + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + enemy_max + str(COLOR_BLUE) + "; You: " + player["health"] + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + player["max health"] + str(COLOR_RESET_ALL))
             action = input("Attack, Defend, Use Item? ")
     
             if action.lower().startswith('a'):

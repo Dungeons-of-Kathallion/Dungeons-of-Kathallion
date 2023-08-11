@@ -8,6 +8,7 @@ from colors import Colors
 class Game:
 
     def __init__(self):
+        
         # says you are not playing.
         play = 0
         

@@ -22,7 +22,7 @@ class Colors:
     self.back_red = Back.RED
     self.back_green = Back.GREEN
     self.back_yellow = Back.YELLOW
-    self.back_blue = Back.BLUEz
+    self.back_blue = Back.BLUE
     self.back_magenta = Back.MAGENTA
     self.back_cyan = Back.CYAN
     # Text styles

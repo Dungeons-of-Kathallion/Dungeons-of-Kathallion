@@ -49,9 +49,15 @@ elif save_selection.lower().startswith('d'):
         play = 0
         exit(1)
     with open(save_file) as f:
-        player = "placeholder, do not delete"
-        os.remove(save_file)
-        play = 0
+        verify = input("Are you sure you want to delete the following save (y/n)?")
+        if verify == "y":
+            player = "placeholder, do not delete"
+            os.remove(save_file)
+            play = 0
+        if verify == "n":
+            player = "placeholder, do not delete"
+            print("Aborting current process...")
+            play = 0
 else:
     print("ERROR: That option is not allowed.")
 

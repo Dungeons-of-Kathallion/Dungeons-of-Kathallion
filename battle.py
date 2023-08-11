@@ -1,6 +1,10 @@
 import yaml
 import random
 from colors import *
+from colorama import Fore, Back, Style, init, deinit
+
+# initialize colorama
+init()
 
 # battle stats
 enemy_max = random.randint(5, 21)
@@ -120,6 +124,9 @@ still_playing = True
 
 # put all the new data in the file
 # dumped = yaml.dump(player)
+
+# deinitialize colorama
+edinit()
 
 # with open("save.yaml", "w") as f:
 #     f.write(dumped)

@@ -1,6 +1,6 @@
 import yaml
 import random
-from main import *
+import main
 
 # battle stats
 enemy_max = random.randint(5, 21)

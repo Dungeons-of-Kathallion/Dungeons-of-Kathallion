@@ -3,11 +3,14 @@ import yaml
 import pickle
 import battle
 import os
+from colors import Colors
 
 # says you are not playing.
 play = 0
 
 fought_enemy = False
+
+colors = Colors() 
 
 # opens data files
 with open("map.yaml") as f:
@@ -19,7 +22,7 @@ with open("items.yaml") as f:
 with open("start.yaml") as f:
     start_player = yaml.safe_load(f)
 
-save_selection = input("Do you want to [o]pen saved game, create [n]ew game or [d]elete an existing save? ")
+save_selection = input(color.cyan + "Do you want to [o]pen saved game, create [n]ew game or [d]elete an existing save? ")
 
 if save_selection.lower().startswith('n'):
     enter_save_name = input("Please name your save: ")

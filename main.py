@@ -51,7 +51,7 @@ def search(x, y):
         point_x, point_y = point_i["x"], point_i["y"]
         # print(i, point_x, point_y, player)
         if point_x == player["x"] and point_y == player["y"]:
-            print(i)
+            # print(i)
             map_location = i
             return map_location
 
@@ -70,7 +70,6 @@ def run(play):
     while play == 1:
         global player
         map_location = search(player["x"], player["y"])
-        print(map_location)
         if "North" not in map["point" + str(map_location)]["blocked"]:
             print("You can go North")
         if "South" not in map["point" + str(map_location)]["blocked"]:

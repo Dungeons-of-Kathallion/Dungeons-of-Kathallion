@@ -1,5 +1,6 @@
 import yaml
 import random
+from colors import *
 
 # battle stats
 enemy_max = random.randint(5, 21)
@@ -18,7 +19,6 @@ turn = True
 
 def fight(player, item):
     # avoid circular imports
-    from main import *
     # import stats
     global turn, enemy_health, defend, enemy_max, enemy_max_damage
 

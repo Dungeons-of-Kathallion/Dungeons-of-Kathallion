@@ -44,33 +44,44 @@ else:
     print("ERROR: That option is not allowed.")
 
 # you died
-def die():
+def die(player):
     if player["cheat"] < 3:
-        cheatcode = input("What is the not-die code?")
+        cheatcode = input("What is the not-die code? ")
         if not cheatcode == 43590:
             player = start_player
+            return player
         else:
             player["cheat"] += 1
             player["health"] = player["max helth"]
+            return player
     else:
         print("You've cheated too much! No more lives!")
         player = start_player
+        return player
 
 # funcion to search through the map file
 def search(x, y):
     global map_location
     for i in range(0, map["coordinate count"]):
-        if map["point" + str(i)]["x"] == player["x"] and map["point" + str(i)]["y"] == player["y"]:
+        print(i, )
+
+        point_i = map["point" + str(i)]
+        point_x, point_y = point_i["x"], point_i["y"]
+        print(i, point_x, point_y, player)
+        if point_x == player["x"] and point_y == player["y"]:
+            print(i)
             map_location = i
-            break
-        else:
-            quit_tp = input("ERROR: You are in an undefined position. This could be because you are using a different map file, or you edited your save file. Do you want to quit or teleport to point0?")
-            if quit_tp.lower().startswith('t'):
-                player["x"] = map["point0"]["x"]
-                player["y"] = map["point0"]["y"]
-                map_location = 0
-            else:
-                print("Quitting...")
+            # if map_location == "None":
+            #     map_locations
+            return map_location
+        # else:
+        #     quit_tp = input("ERROR: You are in an undefined position. This could be because you are using a different map file, or you edited your save file. Do you want to quit or teleport to point0?")
+        #     if quit_tp.lower().startswith('t'):
+        #         player["x"] = map["point0"]["x"]
+        #         player["y"] = map["point0"]["y"]
+        #         map_location = 0
+        #     else:
+        #         print("Quitting...")
 
 # gameplay here:
 def run(play):
@@ -85,8 +96,7 @@ def run(play):
     # Mapping stuff
 
     while play == 1:
-        search(player["x"], player["y"])
-        global map_location
+        map_location = search(player["x"], player["y"])
         print(map_location)
         if "North" not in map["point" + str(map_location)]["blocked"]:
             print("You can go North")
@@ -101,12 +111,22 @@ def run(play):
         if map["point" + str(map_location)]["enemy"] > 0 and map_location not in player["defeated enemies"]:
             enemies_remaining = map["point" + str(map_location)]["enemy"]
             while enemies_remaining > 0:
-                battle.fight()
+                battle.fight(player, item)
                 enemies_remaining -= 1
             if player["health"] > 0:
                 player["defeated enemies"].append(map_location)
+                if "North" not in map["point" + str(map_location)]["blocked"]:
+                    print("You can go North")
+                if "South" not in map["point" + str(map_location)]["blocked"]:
+                    print("You can go South")
+                if "East" not in map["point" + str(map_location)]["blocked"]:
+                    print("You can go East")
+                if "West" not in map["point" + str(map_location)]["blocked"]:
+                    print("You can go West")
+                if "None" not in map["point" + str(map_location)]["item"]:
+                    print("There are these items on the ground: ", map["point" + str(map_location)]["item"])
             else:
-                die()
+                die(player)
         command = input("What will you do?")
         if command.lower().startswith('go'):
             print("Rather than saying Go <direction>, simply say <direction>.")

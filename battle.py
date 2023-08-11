@@ -61,6 +61,7 @@ def fight(player, item):
                     if item_input in player["inventory"] and item[item_input]["type"] == "Weapon":
                         player["held item"] = "Axe"
                         print("You are now holding an Axe")
+                print(" ")
         while not turn:
             # if enemy is still alive
             if enemy_health > 0:

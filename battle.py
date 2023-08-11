@@ -51,7 +51,7 @@ def fight(player, item):
                         player["max health"] += 5
                         player["health"] = player["max health"]
                         turn = False
-                    # hold weapon if it is one
+                    # hold weapon if it is one (currently not working)
                     if item_input in player["inventory"] and item[item_input]["type"] == "Weapon":
                         player["held item"] = "Axe"
                         print("You are now holding an Axe")

@@ -10,7 +10,7 @@ play = 0
 
 fought_enemy = False
 
-colors = Colors() 
+colors = Colors
 
 # opens data files
 with open("map.yaml") as f:

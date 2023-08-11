@@ -1,6 +1,7 @@
 import yaml
 import random
 
+# battle stats
 enemy_max = random.randint(5, 21)
 enemy_health = enemy_max
 enemy_max_damage = random.randint(4, 8)
@@ -16,35 +17,46 @@ turn = True
 #     player["xp"] = 0
 
 def fight(player, item):
+    # import stats
     global turn, enemy_health, defend, enemy_max, enemy_max_damage
+
+    # while player still alive
     while player["health"] > 0:
         while turn:
+            # Print HP stats and possible actions for the player
             print("Enemy: ", enemy_health, "/", enemy_max, "; You: ", player["health"], "/", player["max health"])
             action = input("Attack, Defend, Use Item? ")
+    
             if action.lower().startswith('a'):
                 print(item[player["held item"]]["damage"])
+                # attack formula
                 enemy_health -= random.randint(0, int(item[player["held item"]]["damage"]))
                 print("Enemy: ", enemy_health, "/", enemy_max)
                 turn = False
             elif action.lower().startswith('d'):
                 defend += random.randint(0, int(item[player["held item"]]["defend"]))
+                # defend formula
                 player["health"] += random.randint(0, 3)
                 if player["health"] > player["max health"]:
                     player["health"] = player["max health"]
                 turn = False
             elif action.lower().startswith('u'):
                 item_input = input(player["inventory"])
+                # use item
                 if item in player["inventory"]:
                     if item_input == "Healing Potion":
+                        # apply stats
                         player["health"] = player["max health"]
                         player["inventory"].remove('Healing Potion')
                         player["max health"] += 5
                         player["health"] = player["max health"]
                         turn = False
+                    # hold weapon if it is one (currently not working)
                     if item_input in player["inventory"] and item[item_input]["type"] == "Weapon":
                         player["held item"] = "Axe"
                         print("You are now holding an Axe")
         while not turn:
+            # if enemy is still alive
             if enemy_health > 0:
                 damage = random.randint(0, enemy_max_damage) - defend
                 defend = 0

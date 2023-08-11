@@ -48,6 +48,7 @@ elif save_selection.lower().startswith('d'):
         print("ERROR: Couldn't find save file '" + save_file + "'")
         play = 0
     with open(save_file) as f:
+        plaer = "placeholder, do not delete"
         os.remove(save_file)
         play = 0
 else:

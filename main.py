@@ -193,7 +193,16 @@ def run(play):
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
             if which_item in player["inventory"]:
                 print(" ")
-                print(item[which_item]["description"])
+                print("Name: " + which_item)
+                print("Type: " + item[which_item]["type"])
+                print("Description: " + item[which_item]["description"])
+                if item[which_item]["type"] == "Weapon":
+                    print("Damage: " + str(item[which_item]["damage"]))
+                    print("Defense: " + str(item[which_item]["defend"]))
+                if item[which_item]["type"] == "Consumable":
+                    print("Max Bonus: " + str(item[which_item]["max bonus"]))
+                    print("Healing Level: " + str(item[which_item]["healing level"]))
+                print(" ")
             else:
                 print("You do not have that item.")
         elif command.lower().startswith('m'):
@@ -222,3 +231,4 @@ dumped = yaml.dump(player)
 save_file_quit = save_file
 with open(save_file_quit, "w") as f:
     f.write(dumped)
+

@@ -108,7 +108,12 @@ def run(play):
         if "West" not in map["point" + str(map_location)]["blocked"]:
             print("You can go West")
         if "None" not in map["point" + str(map_location)]["item"]:
-            print("There are these items on the ground: ", map["point" + str(map_location)]["item"])
+            take_item = input("There are these items on the ground: " + str(map["point" + str(map_location)]["item"]))
+            if take_item in map["point" + str(map_location)]["item"]:
+                if take_item in player["inventory"]:
+                    print("You already have that.")
+                else:
+                    player["inventory"].append(take_item)
         if map["point" + str(map_location)]["enemy"] > 0 and map_location not in player["defeated enemies"]:
             enemies_remaining = map["point" + str(map_location)]["enemy"]
             while enemies_remaining > 0:
@@ -169,6 +174,15 @@ def run(play):
             which_item = input("You have these items in your inventory: " + str(player["inventory"]))
             if which_item in player["inventory"]:
                 print(item[which_item]["description"])
+            else:
+                print("You do not have that item.")
+        elif command.lower().startswith('m'):
+            if "Map" in player["inventory"]:
+                print("**|**")
+                print("*[+]*")
+                print("**⊥**")
+            else:
+                print("You do not have a map.")
         elif command in map["point" + str(map_location)]["item"]:
             if command not in player["inventory"]:
                 player["inventory"].append(command)

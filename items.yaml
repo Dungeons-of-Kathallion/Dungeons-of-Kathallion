@@ -10,8 +10,6 @@ Healing Potion:
   description: "A generic healing potion that restores your health to it's max and gives it a bonus 5 to that maximum."
 Map:
   type: "Utility"
-  trigger: "m"
-  on trigger: "map_function"
   description: "It's a map of the dungeons! [Press 'M' to activate.]"
 Axe:
   type: "Weapon"

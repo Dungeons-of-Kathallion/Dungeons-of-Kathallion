@@ -37,7 +37,7 @@ def fight(player, item):
                 print(item[player["held item"]]["damage"])
                 # attack formula
                 enemy_health -= random.randint(0, int(item[player["held item"]]["damage"]))
-                print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max))
+                print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL))
                 turn = False
             elif action.lower().startswith('d'):
                 defend += random.randint(0, int(item[player["held item"]]["defend"]))

@@ -44,20 +44,20 @@ else:
     print("ERROR: That option is not allowed.")
 
 # you died
-def die(player):
-    if player["cheat"] < 3:
-        cheatcode = input("What is the not-die code? ")
-        if not cheatcode == 43590:
-            player = start_player
-            return player
-        else:
-            player["cheat"] += 1
-            player["health"] = player["max helth"]
-            return player
-    else:
-        print("You've cheated too much! No more lives!")
-        player = start_player
-        return player
+# def die(player):
+#     if player["cheat"] < 3:
+#         cheatcode = input("What is the not-die code? ")
+#         if not cheatcode == 43590:
+#             player = start_player
+#             return player
+#         else:
+#             player["cheat"] += 1
+#             player["health"] = player["max helth"]
+#             return player
+#     else:
+#         print("You've cheated too much! No more lives!")
+#         player = start_player
+#         return player
 
 # funcion to search through the map file
 def search(x, y):
@@ -96,6 +96,7 @@ def run(play):
     # Mapping stuff
 
     while play == 1:
+        global player
         map_location = search(player["x"], player["y"])
         print(map_location)
         if "North" not in map["point" + str(map_location)]["blocked"]:
@@ -126,7 +127,20 @@ def run(play):
                 if "None" not in map["point" + str(map_location)]["item"]:
                     print("There are these items on the ground: ", map["point" + str(map_location)]["item"])
             else:
-                die(player)
+                if player["cheat"] < 3:
+                    cheatcode = input("What is the not-die code? ")
+                    if cheatcode == "43590":
+                        player["cheat"] += 1
+                        player["health"] = player["max health"]
+                    else:
+                        player = start_player
+                        play = 0
+                        return play
+                else:
+                    print("You've cheated too much! No more lives!")
+                    player = start_player
+                    play = 0
+                    return play
         command = input("What will you do?")
         if command.lower().startswith('go'):
             print("Rather than saying Go <direction>, simply say <direction>.")

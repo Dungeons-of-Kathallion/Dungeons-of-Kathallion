@@ -51,7 +51,7 @@ with open("items.yaml") as f:
 with open("start.yaml") as f:
     start_player = yaml.safe_load(f)
 
-save_selection = input(color_cyan + "Do you want to [o]pen saved game, create [n]ew game or [d]elete an existing save? ")
+save_selection = input(color_style_bright + "Do you want to [o]pen saved game, create [n]ew game or [d]elete an existing save? " + color_reset_all)
 
 if save_selection.lower().startswith('n'):
     enter_save_name = input("Please name your save: ")
@@ -69,6 +69,7 @@ elif save_selection.lower().startswith('o'):
     if check_file == False:
         print("ERROR: Couldn't find save file '" + save_file + "'")
         play = 0
+        exit(1)
     with open(save_file) as f:    
         player = yaml.safe_load(f)
     play = 1

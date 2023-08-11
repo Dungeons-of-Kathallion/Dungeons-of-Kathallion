@@ -192,6 +192,7 @@ def run(play):
         elif command.lower().startswith('i'):
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
             if which_item in player["inventory"]:
+                print(" ")
                 print(item[which_item]["description"])
             else:
                 print("You do not have that item.")

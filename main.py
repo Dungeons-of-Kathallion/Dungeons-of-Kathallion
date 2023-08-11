@@ -49,7 +49,7 @@ elif save_selection.lower().startswith('d'):
         play = 0
         exit(1)
     with open(save_file) as f:
-        plaer = "placeholder, do not delete"
+        player = "placeholder, do not delete"
         os.remove(save_file)
         play = 0
 else:

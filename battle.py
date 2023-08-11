@@ -18,7 +18,7 @@ turn = True
 
 def fight(player, item):
     # avoid circular imports
-    import main
+    from main import *
     # import stats
     global turn, enemy_health, defend, enemy_max, enemy_max_damage
 

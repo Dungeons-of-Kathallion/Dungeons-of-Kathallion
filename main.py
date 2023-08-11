@@ -78,7 +78,7 @@ elif save_selection.lower().startswith('d'):
     save_file = "save_" + delete_save + ".yaml"
     check_file = os.path.isfile(save_file)
     if check_file == False:
-        print(colore_red + color_style_bright + "ERROR: Couldn't find save file '" + save_file + "'" + color_reset_all)
+        print(color_red + color_style_bright + "ERROR: Couldn't find save file '" + save_file + "'" + color_reset_all)
         play = 0
         exit(1)
     with open(save_file) as f:
@@ -127,7 +127,7 @@ def search_specific_y():
 def run(play):
     separator = color_style_bright + "###############################" + color_reset_all
     print(separator)
-    print(color_green + colore_style_bright + "Reserved keys:" + color_reset_all)
+    print(color_green + color_style_bright + "Reserved keys:" + color_reset_all)
     print("N: Go north")
     print("S: Go south")
     print("E: Go east")
@@ -135,7 +135,7 @@ def run(play):
     print("I: View items. When in this view, type the name of an item to examine it.")
     print("Q: Quit game")
     print(" ")
-    print(color_green + colore_style_bright +"Hints:" + colore_reset_all)
+    print(color_green + color_style_bright +"Hints:" + color_reset_all)
     print("If you find an item on the ground, type the name of the item to take it.")
     print("Some items have special triggers, wich will often be stated in the description. Others can only be activated in certain situations, like in combat.")
     print(" ")
@@ -147,10 +147,10 @@ def run(play):
         map_location_x = search_specific_x()
         map_location_y = search_specific_y()
         print("Coordinates:")
-        print(color_green + colore_style_bright + "X: " + color_reset_all + str(map_location_x))
-        print(color_green + colore_style_bright + "Y: " + colore_reset_all + str(map_location_y))
+        print(color_green + color_style_bright + "X: " + color_reset_all + str(map_location_x))
+        print(color_green + color_style_bright + "Y: " + color_reset_all + str(map_location_y))
         print(" ")
-        print(color_green + colore_style_bright + "Possilbe actions:" + color_reset_all)
+        print(color_green + color_style_bright + "Possilbe actions:" + color_reset_all)
         if "North" not in map["point" + str(map_location)]["blocked"]:
             print("You can go North")
         if "South" not in map["point" + str(map_location)]["blocked"]:

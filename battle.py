@@ -1,6 +1,5 @@
 import yaml
 import random
-import main
 
 # battle stats
 enemy_max = random.randint(5, 21)
@@ -18,6 +17,8 @@ turn = True
 #     player["xp"] = 0
 
 def fight(player, item):
+    # avoid circular imports
+    import main
     # import stats
     global turn, enemy_health, defend, enemy_max, enemy_max_damage
 

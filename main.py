@@ -132,7 +132,7 @@ def run(play):
     print(color_blue + color_style_bright + "S: "+ color_reset_all + "Go south" + color_reset_all)
     print(color_blue + color_style_bright + "E: " + color_reset_all + "Go east" + color_reset_all)
     print(color_blue + color_style_bright + "W: " + color_reset_all + "Go west" + color_reset_all)
-    print(color_blue + color_style_bright + "I: " + color_reset_all + "View items. When in this view, type the name of an item to examine it." + color_reset_all)
+    print(color_blue + color_style_bright + "I: " + color_reset_all + "Show player info text. When viewing this, type the name of an item to examine it." + color_reset_all)
     print(color_blue + color_style_bright + "Q: " + color_reset_all + "Quit game")
     print(" ")
     print(color_green + color_style_bright +"Hints:" + color_reset_all)
@@ -224,6 +224,9 @@ def run(play):
             else:
                 player["x"] -= 1
         elif command.lower().startswith('i'):
+            print("Current Health: " + color_red + str(player["health"]) + color_reset_all)
+            print("Maximum Health: " + color_red + str(player["max health"]) + color_reset_all)
+            print("You are holding a/an " + color_red + player["held item"] + color_reset_all)
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
             if which_item in player["inventory"]:
                 print(" ")

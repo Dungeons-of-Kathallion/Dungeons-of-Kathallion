@@ -68,8 +68,9 @@ def fight(player, item):
                 defend = 0
                 if damage > 0:
                     player["health"] -= damage
-                print("The enemy dealt ", damage, " points of damage.")
-                print("You have", player["health"], "health points.")
+                print("The enemy dealt ", str(damage), " points of damage.")
+                print("You have", str(player["health"]), "health points.")
+                print(" ")
                 turn = True
             else:
                 player["xp"] += enemy_max * enemy_max_damage / 3

@@ -125,7 +125,7 @@ def search_specific_y():
 
 # gameplay here:
 def run(play):
-    separator = "###############################"
+    separator = color_style_bright + "###############################" + color_reset_all
     print(separator)
     print("Reserved keys:")
     print("N: Go north")

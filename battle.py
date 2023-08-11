@@ -23,8 +23,7 @@ def fight(player, item):
             action = input("Attack, Defend, Use Item? ")
             if action.lower().startswith('a'):
                 print(item[player["held item"]]["damage"])
-                minimum_damage = int(item[player["held item"]]["damage"]) - 5
-                enemy_health -= random.randint(minimum_damage, int(item[player["held item"]]["damage"]))
+                enemy_health -= random.randint(0, int(item[player["held item"]]["damage"]))
                 print("Enemy: ", enemy_health, "/", enemy_max)
                 turn = False
             elif action.lower().startswith('d'):
@@ -42,7 +41,7 @@ def fight(player, item):
                         player["max health"] += 5
                         player["health"] = player["max health"]
                         turn = False
-                    if item_input == "Axe":
+                    if item_input in player["inventory"] and item[item_input]["type"] == "Weapon":
                         player["held item"] = "Axe"
                         print("You are now holding an Axe")
         while not turn:

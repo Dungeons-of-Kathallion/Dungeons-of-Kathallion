@@ -42,8 +42,8 @@ def fight(player, item):
                         player["health"] = player["max health"]
                         turn = False
                     if item_input in player["inventory"] and item[item_input]["type"] == "Weapon":
-                        player["held item"] = "Axe"
-                        print("You are now holding an Axe")
+                        player["held item"] = item_input
+                        print("You are now holding a/an ", item_input)
         while not turn:
             if enemy_health > 0:
                 damage = random.randint(0, enemy_max_damage) - defend

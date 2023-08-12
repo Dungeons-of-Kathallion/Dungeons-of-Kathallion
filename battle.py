@@ -22,7 +22,6 @@ turn = True
 #     player["xp"] = 0
 
 def fight(player, item):
-    # avoid circular imports
     # import stats
     global turn, enemy_health, defend, enemy_max, enemy_max_damage
 
@@ -30,6 +29,7 @@ def fight(player, item):
     while player["health"] > 0:
         while turn:
             # Print HP stats and possible actions for the player
+
             print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL) + "; " + str(COLOR_BLUE) + "You: " + str(player["health"]) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(player["max health"]) + str(COLOR_RESET_ALL))
             action = input("Attack, Defend, Use Item? ")
     

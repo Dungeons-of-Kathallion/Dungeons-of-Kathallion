@@ -24,6 +24,7 @@ turn = True
 def fight(player, item):
     # import stats
     global turn, enemy_health, defend, enemy_max, enemy_max_damage
+    print(" ") # do not merge with possible actions text
 
     # while player still alive
     while player["health"] > 0:
@@ -32,20 +33,28 @@ def fight(player, item):
 
             print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL) + "; " + str(COLOR_BLUE) + "You: " + str(player["health"]) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(player["max health"]) + str(COLOR_RESET_ALL))
             action = input("Attack, Defend, Use Item? ")
-    
+
+            # if player attack
             if action.lower().startswith('a'):
+                print(" ")
                 # attack formula
                 enemy_health -= random.randint(0, int(item[player["held item"]]["damage"]))
                 print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL))
                 turn = False
+
+            # if player defend
             elif action.lower().startswith('d'):
+                print(" ")
                 defend += random.randint(0, int(item[player["held item"]]["defend"]))
                 # defend formula
                 player["health"] += random.randint(0, 3)
                 if player["health"] > player["max health"]:
                     player["health"] = player["max health"]
                 turn = False
+
+            # if player use an item
             elif action.lower().startswith('u'):
+                print(" ")
                 item_input = input(player["inventory"])
                 # use item
                 if item in player["inventory"]:
@@ -61,6 +70,7 @@ def fight(player, item):
                         player["held item"] = "Axe"
                         print("You are now holding an Axe")
                 print(" ")
+        # when it's not player turn
         while not turn:
             # if enemy is still alive
             if enemy_health > 0:

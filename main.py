@@ -207,6 +207,7 @@ def run(play):
         elif command.lower().startswith('i'):
             print("Current Health: " + COLOR_RED + str(player["health"]) + COLOR_RESET_ALL)
             print("Maximum Health: " + COLOR_RED + str(player["max health"]) + COLOR_RESET_ALL)
+            print("Armor Protection: " + COLOR_RED + str(player["armor protection"]) + COLOR_RESET_ALL)
             print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
             if which_item in player["inventory"]:

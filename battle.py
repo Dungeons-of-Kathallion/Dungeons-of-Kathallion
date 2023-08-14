@@ -12,7 +12,7 @@ enemy_health = enemy_max
 enemy_max_damage = random.randint(4, 8)
 enemy_damage = 0
 defend = 0
-armor_protection = 0 # placeholder
+armor_protection = item[player["armor protection"]]
 turn = True
 
 #opens "save.yaml"

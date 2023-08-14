@@ -124,6 +124,15 @@ def run(play):
 
     while play == 1:
         global player
+
+        # calculate player armor protection
+        # and write it to the save file
+        with open(r, save_file) as file:
+            documents = yaml.full_load(file)
+
+        for item, doc in documents.items():
+            print(item, ":", doc)
+        
         map_location = search(player["x"], player["y"])
         map_location_x = search_specific_x()
         map_location_y = search_specific_y()

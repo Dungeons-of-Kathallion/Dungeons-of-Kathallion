@@ -29,6 +29,13 @@ with open("start.yaml") as f:
 # first text you see
 print(separator)
 
+game_ascii =  '____  __.       __  .__           .__  .__  .__\n \               
+              |    |/ _|____ _/  |_|  |__ _____  |  | |  | |__| ____   ____\n \
+              |      < \__  \\   __\  |  \\__  \ |  | |  | |  |/  _ \ /    \\n \
+              |    |  \ / __ \|  | |   Y  \/ __ \|  |_|  |_|  (  <_> )   |  \\n \
+              |____|__ (____  /__| |___|  (____  /____/____/__|\____/|___|  /\n \
+                      \/    \/          \/     \/                         \/\n';
+
 print(separator)
 
 save_selection = input(COLOR_STYLE_BRIGHT + "Do you want to [o]pen saved game, create [n]ew game or [d]elete an existing save? " + COLOR_RESET_ALL)

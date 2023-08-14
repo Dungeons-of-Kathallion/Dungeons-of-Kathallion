@@ -67,8 +67,8 @@ def fight(player, item):
                         turn = False
                     # hold weapon if it is one
                     if item_input in player["inventory"] and item[item_input]["type"] == "Weapon":
-                        player["held item"] = "Axe"
-                        print("You are now holding an Axe")
+                        player["held item"] = item_input
+                        print("You are now holding a/an ", player["held item"])
                 print(" ")
         # when it's not player turn
         while not turn:

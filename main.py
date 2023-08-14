@@ -213,6 +213,9 @@ def run(play):
                 print("Name: " + which_item)
                 print("Type: " + item[which_item]["type"])
                 print("Description: " + item[which_item]["description"])
+                if item[which_item]["type"] == "Armor Piece":
+                    print("Armor pieces can protect you in fights, more the armor protection is higher, the more it protects you.")
+                    print("Armor Protection: " + COLOR_RED + str(item[which_item]["armor protection"]) + COLOR_RESET_ALL)
                 if item[which_item]["type"] == "Weapon":
                     print("Damage: " + COLOR_RED + str(item[which_item]["damage"]) + COLOR_RESET_ALL)
                     print("Defense: " + COLOR_RED + str(item[which_item]["defend"]) + COLOR_RESET_ALL)

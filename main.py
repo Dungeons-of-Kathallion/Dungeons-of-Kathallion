@@ -17,9 +17,6 @@ fought_enemy = False
 
 separator = COLOR_STYLE_BRIGHT + "###############################" + COLOR_RESET_ALL
 
-# make command prompt fullscreen
-keyboard.press('f11')
-
 # opens data files
 with open("map.yaml") as f:
     map = yaml.safe_load(f)

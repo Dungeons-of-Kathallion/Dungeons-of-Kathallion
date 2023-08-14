@@ -14,6 +14,8 @@ play = 0
 
 fought_enemy = False
 
+separator = COLOR_STYLE_BRIGHT + "###############################" + COLOR_RESET_ALL
+
 # opens data files
 with open("map.yaml") as f:
     map = yaml.safe_load(f)
@@ -23,6 +25,18 @@ with open("items.yaml") as f:
 
 with open("start.yaml") as f:
     start_player = yaml.safe_load(f)
+
+# first text you see
+print(separator)
+
+print("________                                             ________   _____   ____  __.       __  .__           .__  .__  .__")               
+print("\______ \  __ __  ____    ____   ____  ____   ____   \_____  \_/ ____\ |    |/ _|____ _/  |_|  |__ _____  |  | |  | |__| ____   ____")  
+print(" |    |  \|  |  \/    \  / ___\_/ __ \/  _ \ /    \   /   |   \   __\  |      < \__  \\   __\  |  \\__  \ |  | |  | |  |/  _ \ /    \") 
+print(" |    `   \  |  /   |  \/ /_/  >  ___(  <_> )   |  \ /    |    \  |    |    |  \ / __ \|  | |   Y  \/ __ \|  |_|  |_|  (  <_> )   |  \")
+print("/_______  /____/|___|  /\___  / \___  >____/|___|  / \_______  /__|    |____|__ (____  /__| |___|  (____  /____/____/__|\____/|___|  /")
+print("        \/           \//_____/      \/           \/          \/                \/    \/          \/     \/                         \/") 
+
+print(separator)
 
 save_selection = input(COLOR_STYLE_BRIGHT + "Do you want to [o]pen saved game, create [n]ew game or [d]elete an existing save? " + COLOR_RESET_ALL)
 
@@ -98,7 +112,6 @@ def search_specific_y():
 
 # gameplay here:
 def run(play):
-    separator = COLOR_STYLE_BRIGHT + "###############################" + COLOR_RESET_ALL
     print(separator)
     print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Reserved keys:" + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "N: "+ COLOR_RESET_ALL + "Go north" + COLOR_RESET_ALL)

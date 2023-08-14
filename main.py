@@ -4,6 +4,7 @@ import pickle
 import battle
 import os
 from colorama import Fore, Back, Style, deinit, init
+from colors import *
 
 # initialize colorama
 init()
@@ -13,33 +14,7 @@ play = 0
 
 fought_enemy = False
 
-# import 'color palette'
-# Basic colors
-color_reset = Fore.RESET
-color_black = Fore.BLACK
-color_white = Fore.WHITE
-color_red = Fore.RED
-color_green = Fore.GREEN
-color_yellow = Fore.YELLOW
-color_blue = Fore.BLUE
-color_magenta = Fore.MAGENTA
-color_cyan = Fore.CYAN
-# Background colors
-color_back_reset = Back.RESET
-color_back_black = Back.BLACK
-color_back_white = Back.WHITE
-color_back_red = Back.RED
-color_back_green = Back.GREEN
-color_back_yellow = Back.YELLOW
-color_back_blue = Back.BLUE
-color_back_magenta = Back.MAGENTA
-color_back_cyan = Back.CYAN
-# Text styles
-color_style_normal = Style.NORMAL
-color_style_dim = Style.DIM
-color_style_bright = Style.BRIGHT
-
-color_reset_all = Style.RESET_ALL
+separator = COLOR_STYLE_BRIGHT + "###############################" + COLOR_RESET_ALL
 
 # opens data files
 with open("map.yaml") as f:
@@ -51,7 +26,9 @@ with open("items.yaml") as f:
 with open("start.yaml") as f:
     start_player = yaml.safe_load(f)
 
-save_selection = input(color_style_bright + "Do you want to [o]pen saved game, create [n]ew game or [d]elete an existing save? " + color_reset_all)
+# first text you see
+
+save_selection = input(COLOR_STYLE_BRIGHT + "Do you want to [o]pen saved game, create [n]ew game or [d]elete an existing save? " + COLOR_RESET_ALL)
 
 if save_selection.lower().startswith('n'):
     enter_save_name = input("Please name your save: ")
@@ -67,23 +44,26 @@ elif save_selection.lower().startswith('o'):
     save_file = "save_" + open_save + ".yaml"
     check_file = os.path.isfile(save_file)
     if check_file == False:
-        print(color_red + color_style_bright + "ERROR: Couldn't find save file '" + save_file + "'" + color_reset_all)
+        print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
         play = 0
         exit(1)
     with open(save_file) as f:    
         player = yaml.safe_load(f)
     play = 1
+elif save_selection.lower().startswith('q'):
+    play = 0
+    exit(1)
 elif save_selection.lower().startswith('d'):
     delete_save = input("Please choose a save to delete: ")
     save_file = "save_" + delete_save + ".yaml"
     check_file = os.path.isfile(save_file)
     if check_file == False:
-        print(color_red + color_style_bright + "ERROR: Couldn't find save file '" + save_file + "'" + color_reset_all)
+        print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
         play = 0
-        exit(1)
     with open(save_file) as f:
         verify = input("Are you sure you want to delete the following save (y/n)? ")
         if verify == "y":
+            save_file = "save_" + delete_save + ".yaml"
             player = "placeholder, do not delete"
             os.remove(save_file)
             play = 0
@@ -91,8 +71,9 @@ elif save_selection.lower().startswith('d'):
             player = "placeholder, do not delete"
             print("Aborting current process...")
             play = 0
+    exit(1)
 else:
-    print(color_red + color_style_bright + "ERROR: That option is not allowed." + color_reset_all)
+    print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: That option is not allowed." + COLOR_RESET_ALL)
 
 # funcion to search through the map file
 def search(x, y):
@@ -125,17 +106,16 @@ def search_specific_y():
 
 # gameplay here:
 def run(play):
-    separator = color_style_bright + "###############################" + color_reset_all
     print(separator)
-    print(color_green + color_style_bright + "Reserved keys:" + color_reset_all)
-    print(color_blue + color_style_bright + "N: "+ color_reset_all + "Go north" + color_reset_all)
-    print(color_blue + color_style_bright + "S: "+ color_reset_all + "Go south" + color_reset_all)
-    print(color_blue + color_style_bright + "E: " + color_reset_all + "Go east" + color_reset_all)
-    print(color_blue + color_style_bright + "W: " + color_reset_all + "Go west" + color_reset_all)
-    print(color_blue + color_style_bright + "I: " + color_reset_all + "Show player info text. When viewing this, type the name of an item to examine it." + color_reset_all)
-    print(color_blue + color_style_bright + "Q: " + color_reset_all + "Quit game")
+    print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Reserved keys:" + COLOR_RESET_ALL)
+    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "N: "+ COLOR_RESET_ALL + "Go north" + COLOR_RESET_ALL)
+    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "S: "+ COLOR_RESET_ALL + "Go south" + COLOR_RESET_ALL)
+    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "E: " + COLOR_RESET_ALL + "Go east" + COLOR_RESET_ALL)
+    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "W: " + COLOR_RESET_ALL + "Go west" + COLOR_RESET_ALL)
+    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "I: " + COLOR_RESET_ALL + "View items. When in this view, type the name of an item to examine it." + COLOR_RESET_ALL)
+    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Q: " + COLOR_RESET_ALL + "Quit game")
     print(" ")
-    print(color_green + color_style_bright +"Hints:" + color_reset_all)
+    print(COLOR_GREEN + COLOR_STYLE_BRIGHT +"Hints:" + COLOR_RESET_ALL)
     print("If you find an item on the ground, type the name of the item to take it.")
     print("Some items have special triggers, wich will often be stated in the description. Others can only be activated in certain situations, like in combat.")
     print(" ")
@@ -146,11 +126,11 @@ def run(play):
         map_location = search(player["x"], player["y"])
         map_location_x = search_specific_x()
         map_location_y = search_specific_y()
-        print(color_green + color_style_bright + "Coordinates:" + color_reset_all)
-        print(color_blue + color_style_bright + "X: " + color_reset_all + str(map_location_x))
-        print(color_blue + color_style_bright + "Y: " + color_reset_all + str(map_location_y))
+        print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Coordinates:" + COLOR_RESET_ALL)
+        print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "X: " + COLOR_RESET_ALL + str(map_location_x))
+        print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Y: " + COLOR_RESET_ALL + str(map_location_y))
         print(" ")
-        print(color_green + color_style_bright + "Possilbe actions:" + color_reset_all)
+        print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Possilbe actions:" + COLOR_RESET_ALL)
         if "North" not in map["point" + str(map_location)]["blocked"]:
             print("You can go North")
         if "South" not in map["point" + str(map_location)]["blocked"]:
@@ -160,7 +140,7 @@ def run(play):
         if "West" not in map["point" + str(map_location)]["blocked"]:
             print("You can go West")
         if "None" not in map["point" + str(map_location)]["item"]:
-            take_item = input(color_green + "There are these items on the ground: " + color_reset_all + str(map["point" + str(map_location)]["item"]))
+            take_item = input(COLOR_GREEN + "There are these items on the ground: " + COLOR_RESET_ALL + str(map["point" + str(map_location)]["item"]))
             if take_item in map["point" + str(map_location)]["item"]:
                 if take_item in player["inventory"]:
                     print("You already have that.")
@@ -182,7 +162,7 @@ def run(play):
                 if "West" not in map["point" + str(map_location)]["blocked"]:
                     print("You can go West")
                 if "None" not in map["point" + str(map_location)]["item"]:
-                    print(color_green + color_style_bright + "There are these items on the ground: ", map["point" + str(map_location)]["item"] + color_reset_all)
+                    print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "There are these items on the ground: ", map["point" + str(map_location)]["item"] + COLOR_RESET_ALL)
             else:
                 if player["cheat"] < 3:
                     cheatcode = input("What is the not-die code? ")
@@ -224,9 +204,9 @@ def run(play):
             else:
                 player["x"] -= 1
         elif command.lower().startswith('i'):
-            print("Current Health: " + color_red + str(player["health"]) + color_reset_all)
-            print("Maximum Health: " + color_red + str(player["max health"]) + color_reset_all)
-            print("You are holding a/an " + color_red + player["held item"] + color_reset_all)
+            print("Current Health: " + COLOR_RED + str(player["health"]) + COLOR_RESET_ALL)
+            print("Maximum Health: " + COLOR_RED + str(player["max health"]) + COLOR_RESET_ALL)
+            print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
             if which_item in player["inventory"]:
                 print(" ")
@@ -234,11 +214,11 @@ def run(play):
                 print("Type: " + item[which_item]["type"])
                 print("Description: " + item[which_item]["description"])
                 if item[which_item]["type"] == "Weapon":
-                    print("Damage: " + color_red + str(item[which_item]["damage"]) + color_reset_all)
-                    print("Defense: " + color_red + str(item[which_item]["defend"]) + color_reset_all)
+                    print("Damage: " + COLOR_RED + str(item[which_item]["damage"]) + COLOR_RESET_ALL)
+                    print("Defense: " + COLOR_RED + str(item[which_item]["defend"]) + COLOR_RESET_ALL)
                 if item[which_item]["type"] == "Consumable":
-                    print("Max Bonus: " + color_red + str(item[which_item]["max bonus"]) + color_reset_all)
-                    print("Healing Level: " + color_red + str(item[which_item]["healing level"]) + color_reset_all)
+                    print("Max Bonus: " + COLOR_RED + str(item[which_item]["max bonus"]) + COLOR_RESET_ALL)
+                    print("Healing Level: " + COLOR_RED + str(item[which_item]["healing level"]) + COLOR_RESET_ALL)
                 print(" ")
             else:
                 print("You do not have that item.")

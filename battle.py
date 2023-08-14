@@ -1,5 +1,10 @@
 import yaml
 import random
+from colors import *
+from colorama import Fore, Back, Style, init, deinit
+
+# initialize colorama
+init()
 
 # battle stats
 enemy_max = random.randint(5, 21)
@@ -19,28 +24,37 @@ turn = True
 def fight(player, item):
     # import stats
     global turn, enemy_health, defend, enemy_max, enemy_max_damage
+    print(" ") # do not merge with possible actions text
 
     # while player still alive
     while player["health"] > 0:
         while turn:
-            # Print HP stats and possible actions for the player
-            print("Enemy: ", enemy_health, "/", enemy_max, "; You: ", player["health"], "/", player["max health"])
+            # print HP stats and possible actions for the player
+
+            print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL) + "; " + str(COLOR_BLUE) + "You: " + str(player["health"]) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(player["max health"]) + str(COLOR_RESET_ALL))
             action = input("Attack, Defend, Use Item? ")
-    
+
+            # if player attack
             if action.lower().startswith('a'):
-                print(item[player["held item"]]["damage"])
+                print(" ")
                 # attack formula
                 enemy_health -= random.randint(0, int(item[player["held item"]]["damage"]))
-                print("Enemy: ", enemy_health, "/", enemy_max)
+                print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL))
                 turn = False
+
+            # if player defend
             elif action.lower().startswith('d'):
+                print(" ")
                 defend += random.randint(0, int(item[player["held item"]]["defend"]))
                 # defend formula
                 player["health"] += random.randint(0, 3)
                 if player["health"] > player["max health"]:
                     player["health"] = player["max health"]
                 turn = False
+
+            # if player use an item
             elif action.lower().startswith('u'):
+                print(" ")
                 item_input = input(player["inventory"])
                 # use item
                 if item in player["inventory"]:
@@ -51,10 +65,12 @@ def fight(player, item):
                         player["max health"] += 5
                         player["health"] = player["max health"]
                         turn = False
-                    # hold weapon if it is one (currently not working)
+                    # hold weapon if it is one
                     if item_input in player["inventory"] and item[item_input]["type"] == "Weapon":
                         player["held item"] = item_input
-                        print("You are now holding a/an ", item_input)
+                        print("You are now holding a/an ", player["held item"])
+                print(" ")
+        # when it's not player turn
         while not turn:
             # if enemy is still alive
             if enemy_health > 0:
@@ -62,8 +78,9 @@ def fight(player, item):
                 defend = 0
                 if damage > 0:
                     player["health"] -= damage
-                print("The enemy dealt ", damage, " points of damage.")
-                print("You have", player["health"], "health points.")
+                print("The enemy dealt ", str(damage), " points of damage.")
+                print("You have", str(player["health"]), "health points.")
+                print(" ")
                 turn = True
             else:
                 player["xp"] += enemy_max * enemy_max_damage / 3
@@ -118,6 +135,9 @@ still_playing = True
 
 # put all the new data in the file
 # dumped = yaml.dump(player)
+
+# deinitialize colorama
+deinit()
 
 # with open("save.yaml", "w") as f:
 #     f.write(dumped)

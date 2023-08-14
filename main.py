@@ -60,10 +60,10 @@ elif save_selection.lower().startswith('d'):
     if check_file == False:
         print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
         play = 0
-        exit(1)
     with open(save_file) as f:
         verify = input("Are you sure you want to delete the following save (y/n)? ")
         if verify == "y":
+            save_file = "save_" + delete_save + ".yaml"
             player = "placeholder, do not delete"
             os.remove(save_file)
             play = 0
@@ -71,6 +71,7 @@ elif save_selection.lower().startswith('d'):
             player = "placeholder, do not delete"
             print("Aborting current process...")
             play = 0
+    exit(1)
 else:
     print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: That option is not allowed." + COLOR_RESET_ALL)
 

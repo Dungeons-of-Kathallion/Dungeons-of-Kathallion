@@ -3,6 +3,7 @@ import yaml
 import pickle
 import battle
 import os
+import keyboard
 from colorama import Fore, Back, Style, deinit, init
 from colors import *
 
@@ -15,6 +16,9 @@ play = 0
 fought_enemy = False
 
 separator = COLOR_STYLE_BRIGHT + "###############################" + COLOR_RESET_ALL
+
+# make command prompt fullscreen
+keyboard.press('f11')
 
 # opens data files
 with open("map.yaml") as f:
@@ -247,10 +251,6 @@ if play == 1:
 
 # finish up and save
 dumped = yaml.dump(player)
-
-terminal = Terminal()
-with terminal.fullscreen():
-    Teletext(terminal).exec_()
 
 save_file_quit = save_file
 with open(save_file_quit, "w") as f:

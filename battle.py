@@ -12,6 +12,7 @@ enemy_health = enemy_max
 enemy_max_damage = random.randint(4, 8)
 enemy_damage = 0
 defend = 0
+armor_protection = 0 # placeholder
 turn = True
 
 #opens "save.yaml"
@@ -74,7 +75,7 @@ def fight(player, item):
         while not turn:
             # if enemy is still alive
             if enemy_health > 0:
-                damage = random.randint(0, enemy_max_damage) - defend
+                damage = random.randint(0, enemy_max_damage) - defend * ( armor_protection * random.randint(.2, .5) )
                 defend = 0
                 if damage > 0:
                     player["health"] -= damage

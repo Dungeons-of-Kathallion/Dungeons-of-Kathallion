@@ -28,13 +28,6 @@ with open("start.yaml") as f:
 
 # first text you see
 print(separator)
-game_name_ascii = '________                                             ________   _____   ____  __.       __  .__           .__  .__  .__ \
-                  \______ \  __ __  ____    ____   ____  ____   ____   \_____  \_/ ____\ |    |/ _|____ _/  |_|  |__ _____  |  | |  | |__| ____   ____ \
-                   |    |  \|  |  \/    \  / ___\_/ __ \/  _ \ /    \   /   |   \   __\  |      < \__  \\   __\  |  \\__  \ |  | |  | |  |/  _ \ /    \ \
-                   |    `   \  |  /   |  \/ /_/  >  ___(  <_> )   |  \ /    |    \  |    |    |  \ / __ \|  | |   Y  \/ __ \|  |_|  |_|  (  <_> )   |  \ \
-                  /_______  /____/|___|  /\___  / \___  >____/|___|  / \_______  /__|    |____|__ (____  /__| |___|  (____  /____/____/__|\____/|___|  / \
-                          \/           \//_____/      \/           \/          \/                \/    \/          \/     \/                         \/';
-print(game_name_ascii)
 
 print(separator)
 
@@ -60,6 +53,9 @@ elif save_selection.lower().startswith('o'):
     with open(save_file) as f:    
         player = yaml.safe_load(f)
     play = 1
+elif save_selection.lower().startswith('q'):
+    play = 0
+    exit(1)
 elif save_selection.lower().startswith('d'):
     delete_save = input("Please choose a save to delete: ")
     save_file = "save_" + delete_save + ".yaml"

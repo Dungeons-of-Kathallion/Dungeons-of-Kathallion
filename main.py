@@ -248,6 +248,10 @@ if play == 1:
 # finish up and save
 dumped = yaml.dump(player)
 
+terminal = Terminal()
+with terminal.fullscreen():
+    Teletext(terminal).exec_()
+
 save_file_quit = save_file
 with open(save_file_quit, "w") as f:
     f.write(dumped)

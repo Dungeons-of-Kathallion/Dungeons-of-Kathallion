@@ -75,7 +75,7 @@ def fight(player, item):
         while not turn:
             # if enemy is still alive
             if enemy_health > 0:
-                damage = random.randint(0, enemy_max_damage) - defend / ( armor_protection * round(random.uniform(0.50, 0.90), 1) )
+                damage = random.randint(0, enemy_max_damage) - defend * ( armor_protection * round(random.uniform(0.50, 0.90), 1) )
                 damage = round(damage)
                 defend = 0
                 if damage > 0:

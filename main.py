@@ -308,7 +308,6 @@ if play == 1:
     play = run(1)
 
 # finish up and save
-
 dumped = yaml.dump(player)
 
 save_file_quit = save_file

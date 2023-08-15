@@ -36,6 +36,11 @@ if save_selection.lower().startswith('n'):
     player = start_player
     dumped = yaml.dump(player)
     save_name = "save_" + enter_save_name + ".yaml"
+    check_file = os.path.isfile(save_name)
+    if check_file == True:
+        print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Save file '" + save_name + "'" + " already exists" + COLOR_RESET_ALL)
+        play = 0
+        exit(1)
     with open(save_name, "w") as f:
         f.write(dumped)
     save_file = save_name
@@ -175,7 +180,7 @@ def run(play):
         if "West" not in map["point" + str(map_location)]["blocked"]:
             print("You can go West")
         if "None" not in map["point" + str(map_location)]["item"]:
-            take_item = input(COLOR_GREEN + "There are these items on the ground: " + COLOR_RESET_ALL + str(map["point" + str(map_location)]["item"]))
+            take_item = input(COLOR_GREEN + "There are these items on the ground: " + COLOR_RESET_ALL + str(map["point" + str(map_location)]["item"]) + " ")
             if take_item in map["point" + str(map_location)]["item"]:
                 if take_item in player["inventory"]:
                     print("You already have that.")
@@ -269,6 +274,7 @@ def run(play):
                 print(" ")
             else:
                 print("You do not have a map.")
+                print(" ")
         elif command in map["point" + str(map_location)]["item"]:
             if command not in player["inventory"]:
                 player["inventory"].append(command)

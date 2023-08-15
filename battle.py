@@ -56,16 +56,16 @@ def fight(player, item):
             # if player use an item
             elif action.lower().startswith('u'):
                 print(" ")
-                item_input = input(player["inventory"])
+                item_input = input(str(player["inventory"]) + " ")
                 # use item
-                if item in player["inventory"]:
-                    if item_input == "Healing Potion":
-                        # apply stats
-                        player["health"] = player["max health"]
-                        player["inventory"].remove('Healing Potion')
-                        player["max health"] += 5
-                        player["health"] = player["max health"]
-                        turn = False
+                if item_input in player["inventory"]:
+                    if item[item_input]["type"] == "Consumable":
+                        if item[item_input]["healing level"] == "max health":
+                            player["health"] = player["max health"]
+                        else:
+                            player["health"] += item[item_input]["healing level"]
+                        player["max health"] += item[item_input]["max bonus"]
+                        player["inventory"].remove(item_input)
                     # hold weapon if it is one
                     if item_input in player["inventory"] and item[item_input]["type"] == "Weapon":
                         player["held item"] = item_input

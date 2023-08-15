@@ -284,42 +284,6 @@ if play == 1:
 
 # finish up and save
 
-# calculate player armor protection
-# and write it to the save file
-player_items = player["inventory"]
-player_items_number = len(player_items)
-count = 0
-global_armor_protection = 0
-p = True
-        
-# loop to get player total armor protection
-while p:
-    if count > ( player_items_number - 1 ):
-        p = False
-    if p == True:
-            
-        player_items_select = player_items[int(count)]
-                
-        if item[player_items_select]["type"] == "Armor Piece":
-            item_armor_protection = item[player_items_select]["armor protection"]
-        else:
-            item_armor_protection = 0
-                
-        global_armor_protection += item_armor_protection
-                
-        count += 1
-             
-# update armor protection stats
-with open(save_file, 'r') as f:
-    contents = yaml.safe_load(f)
-    contents['armor protection'] = global_armor_protection
-    
-with open(save_file, 'w') as f:
-    yaml.dump(contents, f)
-
-with open(save_file) as f:    
-        player = yaml.safe_load(f)
-
 dumped = yaml.dump(player)
 
 save_file_quit = save_file

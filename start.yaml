@@ -1,6 +1,6 @@
 cheat: 0
 health: 10
-armor protection: 0
+armor protection: .95
 held item: Sword
 inventory:
 - Sword

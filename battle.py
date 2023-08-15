@@ -24,7 +24,7 @@ turn = True
 def fight(player, item):
     # import stats
     global turn, enemy_health, defend, enemy_max, enemy_max_damage
-    armor_protection = item[player["armor protection"]]
+    armor_protection = player["armor protection"]
     print(" ") # do not merge with possible actions text
 
     # while player still alive
@@ -75,7 +75,7 @@ def fight(player, item):
         while not turn:
             # if enemy is still alive
             if enemy_health > 0:
-                damage = random.randint(0, enemy_max_damage) - defend / ( armor_protection * random.randint(.5, .9) )
+                damage = random.randint(0, enemy_max_damage) - defend / ( armor_protection * round(random.uniform(0.50, 0.90), 1) )
                 damage = round(damage)
                 defend = 0
                 if damage > 0:

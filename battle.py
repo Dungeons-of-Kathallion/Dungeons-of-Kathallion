@@ -24,8 +24,11 @@ turn = True
 def fight(player, item):
     # import stats
     global turn, enemy_health, defend, enemy_max, enemy_max_damage
+<<<<<<< HEAD
     armor_protection = item[player["armor protection"]]
     
+=======
+>>>>>>> 7df7b2ff11e51566ec6bf2895e27880843fccc71
     print(" ") # do not merge with possible actions text
 
     # while player still alive
@@ -69,8 +72,13 @@ def fight(player, item):
                         turn = False
                     # hold weapon if it is one
                     if item_input in player["inventory"] and item[item_input]["type"] == "Weapon":
+<<<<<<< HEAD
                         player["held item"] = "Axe"
                         print("You are now holding an Axe")
+=======
+                        player["held item"] = item_input
+                        print("You are now holding a/an ", player["held item"])
+>>>>>>> 7df7b2ff11e51566ec6bf2895e27880843fccc71
                 print(" ")
         # when it's not player turn
         while not turn:

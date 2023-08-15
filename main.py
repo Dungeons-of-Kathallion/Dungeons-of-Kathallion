@@ -29,6 +29,23 @@ with open("start.yaml") as f:
 
 # first text you see
 
+res = []
+
+for search_for_saves in os.listdir():
+    if search_for_saves.startswith("save_"):
+        res.append(search_for_saves)
+        
+char1 = 'save_'
+char2 = '.yaml'
+
+for idx, ele in enumerate(res):
+    res[idx] = ele.replace(char1, '')
+
+for idx, ele in enumerate(res):
+    res[idx] = ele.replace(char2, '')
+        
+print(COLOR_STYLE_BRIGHT + "Current saves: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL)
+
 save_selection = input(COLOR_STYLE_BRIGHT + "Do you want to [o]pen saved game, create [n]ew game or [d]elete an existing save? " + COLOR_RESET_ALL)
 
 if save_selection.lower().startswith('n'):
@@ -80,6 +97,8 @@ elif save_selection.lower().startswith('d'):
     exit(1)
 else:
     print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: That option is not allowed." + COLOR_RESET_ALL)
+    play = 0
+    exit(1)
 
 # funcion to search through the map file
 def search(x, y):

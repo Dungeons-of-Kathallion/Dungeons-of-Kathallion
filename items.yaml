@@ -19,7 +19,7 @@ Axe:
 Leather Jacket:
   type: "Armor Piece"
   armor protection: .6
-  description: "A small jacket that may not protect much but keeps you warm when it's cold."
+  description: "A small jacket that may not protect you much but keeps you warm when it's cold."
 Leather Boots:
   type: "Armor Piece"
   armor protection: .1

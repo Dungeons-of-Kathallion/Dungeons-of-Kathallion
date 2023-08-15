@@ -26,5 +26,5 @@ Leather Boots:
   description: "These boots may be dirt or wet but they let you have great mobility."
 Old Pants:
   type: "Armor Piece"
-  armor proction: .25
+  armor protection: .25
   description: "An old pants. It is all dirt and it is very large."

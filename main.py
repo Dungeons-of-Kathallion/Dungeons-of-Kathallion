@@ -127,11 +127,36 @@ def run(play):
 
         # calculate player armor protection
         # and write it to the save file
-        with open(r, save_file) as file:
-            documents = yaml.full_load(file)
-
-        for item, doc in documents.items():
-            print(item, ":", doc)
+        player_items = player["inventory"]
+        player_items_number = len(player_items)
+        count = 0
+        global_armor_protection = 0
+        p = True
+        
+        # loop to get player total armor protection
+        while p:
+            if count > ( player_items_number - 1 ):
+                p = False
+            if p == True:
+            
+                player_items_select = player_items[int(count)]
+                
+                if item[player_items_select]["type"] == "Armor Piece":
+                    item_armor_protection = item[player_items_select]["armor protection"]
+                else:
+                    item_armor_protection = 0
+                
+                global_armor_protection += item_armor_protection
+                
+                count += 1
+             
+        # update armor protection stats
+        with open(save_file, 'r') as f:
+            contents = yaml.safe_load(f)
+            contents['armor protection'] = global_armor_protection
+            
+        with open(save_file, 'w') as f:
+            yaml.dump(contents, f)
         
         map_location = search(player["x"], player["y"])
         map_location_x = search_specific_x()
@@ -140,7 +165,7 @@ def run(play):
         print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "X: " + COLOR_RESET_ALL + str(map_location_x))
         print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Y: " + COLOR_RESET_ALL + str(map_location_y))
         print(" ")
-        print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Possilbe actions:" + COLOR_RESET_ALL)
+        print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Possible actions:" + COLOR_RESET_ALL)
         if "North" not in map["point" + str(map_location)]["blocked"]:
             print("You can go North")
         if "South" not in map["point" + str(map_location)]["blocked"]:
@@ -241,6 +266,7 @@ def run(play):
                 print("**|**")
                 print("*[+]*")
                 print("**⊥**")
+                print(" ")
             else:
                 print("You do not have a map.")
         elif command in map["point" + str(map_location)]["item"]:
@@ -257,6 +283,43 @@ if play == 1:
     play = run(1)
 
 # finish up and save
+
+# calculate player armor protection
+# and write it to the save file
+player_items = player["inventory"]
+player_items_number = len(player_items)
+count = 0
+global_armor_protection = 0
+p = True
+        
+# loop to get player total armor protection
+while p:
+    if count > ( player_items_number - 1 ):
+        p = False
+    if p == True:
+            
+        player_items_select = player_items[int(count)]
+                
+        if item[player_items_select]["type"] == "Armor Piece":
+            item_armor_protection = item[player_items_select]["armor protection"]
+        else:
+            item_armor_protection = 0
+                
+        global_armor_protection += item_armor_protection
+                
+        count += 1
+             
+# update armor protection stats
+with open(save_file, 'r') as f:
+    contents = yaml.safe_load(f)
+    contents['armor protection'] = global_armor_protection
+    
+with open(save_file, 'w') as f:
+    yaml.dump(contents, f)
+
+with open(save_file) as f:    
+        player = yaml.safe_load(f)
+
 dumped = yaml.dump(player)
 
 save_file_quit = save_file

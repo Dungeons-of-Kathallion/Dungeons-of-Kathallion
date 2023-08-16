@@ -18,7 +18,7 @@ max health: 15
 x: 0
 xp: 0
 y: 0
-map_zone: "Kathallion Plains"
+map zone: "Dungeon Entrance"
 taken items:
 - None
 defeated enemies:

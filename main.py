@@ -281,7 +281,7 @@ def run(play):
             else:
                 print("You are holding a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
             if player["held leggings"] == " ":
-                print("You are currently holding no leggins")
+                print("You are currently holding no leggings")
             else:
                 print("You are holding a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
@@ -318,7 +318,7 @@ def run(play):
             else:
                 print("You are holding a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
             if player["held leggings"] == " ":
-                print("You are currently holding no leggins")
+                print("You are currently holding no leggings")
             else:
                 print("You are holding a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
@@ -353,7 +353,7 @@ def run(play):
             else:
                 print("You are holding a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
             if player["held leggings"] == " ":
-                print("You are currently holding no leggins")
+                print("You are currently holding no leggings")
             else:
                 print("You are holding a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")

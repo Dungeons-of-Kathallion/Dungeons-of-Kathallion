@@ -183,6 +183,37 @@ def run(play):
              
         player["armor protection"] = global_armor_protection
         
+        # calculate remaining inventory slots
+        # and write it to the save files
+        p2 = True
+        count2 = 0
+        global_inventory_slots = 0
+        player_items = player["inventory"]
+        player_items_number = len(player_items)
+        
+        # loop to get player total inventory slots
+        while p2:
+            if count2 > ( player_items_number - 1 ):
+                p2 = False
+            if p2 == True:
+                
+                player_items_select = player_items[int(count2)]
+                
+                if item[player_items_select]["type"] == "Bag":
+                    item_invetory_slot = item[player_items_select]["inventory slots"]
+                else:
+                    item_invetory_slot = 0
+                
+                global_inventory_slots += item_invetory_slot
+                
+                count2 += 1
+                
+            player["inventory slots"] = global_inventory_slots
+        
+        # calculate remaining item slots
+        
+        player["inventory slots remaining"] = int(player["inventory slots"]) - int(player_items_number)
+        
         map_location = search(player["x"], player["y"])
         map_location_x = search_specific_x()
         map_location_y = search_specific_y()
@@ -199,13 +230,16 @@ def run(play):
             print("You can go East")
         if "West" not in map["point" + str(map_location)]["blocked"]:
             print("You can go West")
-        if "None" not in map["point" + str(map_location)]["item"]:
+        if "None" not in map["point" + str(map_location)]["item"] and map_location not in player["taken items"]:
             take_item = input(COLOR_GREEN + "There are these items on the ground: " + COLOR_RESET_ALL + str(map["point" + str(map_location)]["item"]) + " ")
             if take_item in map["point" + str(map_location)]["item"]:
-                if take_item in player["inventory"]:
-                    print("You already have that.")
+                if take_item in player["inventory"] and item[take_item]["type"] == "Utility":
+                    print("You cannot take that item")
+                elif player["inventory slots remaining"] == 0:
+                    print("You cannot take that item, you don't have enough slots in your inventory")
                 else:
                     player["inventory"].append(take_item)
+                    player["taken items"].append(map_location)
         if map["point" + str(map_location)]["enemy"] > 0 and map_location not in player["defeated enemies"]:
             enemies_remaining = map["point" + str(map_location)]["enemy"]
             while enemies_remaining > 0:
@@ -267,7 +301,12 @@ def run(play):
             print("Current Health: " + COLOR_RED + str(player["health"]) + COLOR_RESET_ALL)
             print("Maximum Health: " + COLOR_RED + str(player["max health"]) + COLOR_RESET_ALL)
             print("Armor Protection: " + COLOR_RED + str(player["armor protection"]) + COLOR_RESET_ALL)
-           # equipment
+            print(" ")
+            # inventory slots
+            print("Inventory Slots: " + COLOR_RED + str(player["inventory slots"]) + COLOR_RESET_ALL)
+            print("Inventory Slots Remaining: " + COLOR_RED + str(player["inventory slots remaining"]) + COLOR_RESET_ALL)
+            print(" ")
+            # equipment
             if player["held item"] == " ":
                 print("You are currently holding no weapon")
             else:
@@ -284,6 +323,7 @@ def run(play):
                 print("You are currently holding no leggings")
             else:
                 print("You are holding a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
+            print(" ")
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
             if which_item in player["inventory"]:
                 print(" ")
@@ -304,7 +344,7 @@ def run(play):
                 print("You do not have that item.")
                 print(" ")
         elif command.lower().startswith('t'):
-           # equipment
+            # equipment
             if player["held item"] == " ":
                 print("You are currently holding no weapon")
             else:

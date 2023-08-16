@@ -71,6 +71,9 @@ def fight(player, item):
                         player["held item"] = item_input
                         print("You are now holding a/an ", player["held item"])
                 print(" ")
+            else:
+                print("'" + action + "' is not a valid option")
+                print(" ")
         # when it's not player turn
         while not turn:
             # if enemy is still alive

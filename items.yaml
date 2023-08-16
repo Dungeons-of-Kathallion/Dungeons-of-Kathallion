@@ -32,3 +32,7 @@ Knight Boots:
   type: "Armor Piece: Boots"
   armor protection: .24
   description: "The generic boots of any good knight."
+Stretched Bag:
+  type: "Bag"
+  inventory slots: 9
+  description: "An old stretched bag that lets you transport 9 items."

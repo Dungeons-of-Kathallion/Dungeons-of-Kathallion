@@ -3,7 +3,6 @@ import yaml
 import pickle
 import battle
 import os
-import keyboard
 from colorama import Fore, Back, Style, deinit, init
 from colors import *
 

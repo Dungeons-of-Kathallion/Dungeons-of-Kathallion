@@ -216,7 +216,7 @@ def run(play):
         map_location = search(player["x"], player["y"])
         map_location_x = search_specific_x()
         map_location_y = search_specific_y()
-        map_zone = map_zone = map["point" + str(map_location)]["map_zone"]
+        map_zone = map_zone = map["point" + str(map_location)]["map zone"]
         print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Coordinates:" + COLOR_RESET_ALL)
         print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "X: " + COLOR_RESET_ALL + str(map_location_x))
         print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Y: " + COLOR_RESET_ALL + str(map_location_y))

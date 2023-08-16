@@ -2,6 +2,7 @@ coordinate count: 7
 point0:
   x: 0
   y: 0
+  map_zone: "Kathallion Plains"
   item:
   - None
   enemy: 0
@@ -10,6 +11,7 @@ point0:
 point1:
   x: 0
   y: 1
+  map_zone: "Kathallion Plains"
   item:
   - None
   enemy: 0
@@ -19,6 +21,7 @@ point1:
 point2:
   x: 0
   y: -1
+  map_zone: "Kathallion Plains"
   item:
   - None
   enemy: 0
@@ -27,6 +30,7 @@ point2:
 point3:
   x: 1
   y: 0
+  map_zone: "Kathallion Plains"
   item:
   - Map
   enemy: 0
@@ -37,6 +41,7 @@ point3:
 point4:
   x: -1
   y: 0
+  map_zone: "Kathallion Plains"
   item:
   - Axe
   enemy: 0
@@ -47,6 +52,7 @@ point4:
 point5:
   x: -1
   y: -1
+  map_zone: "Kathallion Plains"
   item:
   - None
   enemy: 0
@@ -57,6 +63,7 @@ point5:
 point6:
   x: 1
   y: -1
+  map_zone: "Kathallion Plains"
   item:
   - None
   enemy: 1

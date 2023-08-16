@@ -311,7 +311,7 @@ def run(play):
             else:
                 print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
             if player["held chestplate"] == " ":
-                print("You are currently holding no chestplate")
+                print("You are currently wearing no chestplate")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
             if player["held boots"] == " ":

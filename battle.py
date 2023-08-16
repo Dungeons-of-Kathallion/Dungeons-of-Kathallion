@@ -24,6 +24,7 @@ turn = True
 def fight(player, item):
     # import stats
     global turn, enemy_health, defend, enemy_max, enemy_max_damage
+    armor_protection = player["armor protection"]
     print(" ") # do not merge with possible actions text
 
     # while player still alive
@@ -55,26 +56,30 @@ def fight(player, item):
             # if player use an item
             elif action.lower().startswith('u'):
                 print(" ")
-                item_input = input(player["inventory"])
+                item_input = input(str(player["inventory"]) + " ")
                 # use item
-                if item in player["inventory"]:
-                    if item_input == "Healing Potion":
-                        # apply stats
-                        player["health"] = player["max health"]
-                        player["inventory"].remove('Healing Potion')
-                        player["max health"] += 5
-                        player["health"] = player["max health"]
-                        turn = False
+                if item_input in player["inventory"]:
+                    if item[item_input]["type"] == "Consumable":
+                        if item[item_input]["healing level"] == "max health":
+                            player["health"] = player["max health"]
+                        else:
+                            player["health"] += item[item_input]["healing level"]
+                        player["max health"] += item[item_input]["max bonus"]
+                        player["inventory"].remove(item_input)
                     # hold weapon if it is one
                     if item_input in player["inventory"] and item[item_input]["type"] == "Weapon":
                         player["held item"] = item_input
                         print("You are now holding a/an ", player["held item"])
                 print(" ")
+            else:
+                print("'" + action + "' is not a valid option")
+                print(" ")
         # when it's not player turn
         while not turn:
             # if enemy is still alive
             if enemy_health > 0:
-                damage = random.randint(0, enemy_max_damage) - defend
+                damage = random.randint(0, enemy_max_damage) - defend * ( armor_protection * round(random.uniform(0.50, 0.90), 1) )
+                damage = round(damage)
                 defend = 0
                 if damage > 0:
                     player["health"] -= damage

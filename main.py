@@ -28,6 +28,23 @@ with open("start.yaml") as f:
 
 # first text you see
 
+res = []
+
+for search_for_saves in os.listdir():
+    if search_for_saves.startswith("save_"):
+        res.append(search_for_saves)
+        
+char1 = 'save_'
+char2 = '.yaml'
+
+for idx, ele in enumerate(res):
+    res[idx] = ele.replace(char1, '')
+
+for idx, ele in enumerate(res):
+    res[idx] = ele.replace(char2, '')
+        
+print(COLOR_STYLE_BRIGHT + "Current saves: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL)
+
 save_selection = input(COLOR_STYLE_BRIGHT + "Do you want to [o]pen saved game, create [n]ew game or [d]elete an existing save? " + COLOR_RESET_ALL)
 
 if save_selection.lower().startswith('n'):
@@ -35,6 +52,11 @@ if save_selection.lower().startswith('n'):
     player = start_player
     dumped = yaml.dump(player)
     save_name = "save_" + enter_save_name + ".yaml"
+    check_file = os.path.isfile(save_name)
+    if check_file == True:
+        print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Save file '" + save_name + "'" + " already exists" + COLOR_RESET_ALL)
+        play = 0
+        exit(1)
     with open(save_name, "w") as f:
         f.write(dumped)
     save_file = save_name
@@ -60,6 +82,7 @@ elif save_selection.lower().startswith('d'):
     if check_file == False:
         print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
         play = 0
+        exit(1)
     with open(save_file) as f:
         verify = input("Are you sure you want to delete the following save (y/n)? ")
         if verify == "y":
@@ -74,6 +97,8 @@ elif save_selection.lower().startswith('d'):
     exit(1)
 else:
     print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: That option is not allowed." + COLOR_RESET_ALL)
+    play = 0
+    exit(1)
 
 # funcion to search through the map file
 def search(x, y):
@@ -99,7 +124,7 @@ def search_specific_y():
     global map_location_y
     for i in range(0, map["coordinate count"]):
         point_i = map["point" + str(i)]
-        point_y = point_i["x"]
+        point_y = point_i["y"]
         if point_y == player["y"]:
             map_location_y = i
             return map_location_y
@@ -113,6 +138,8 @@ def run(play):
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "E: " + COLOR_RESET_ALL + "Go east" + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "W: " + COLOR_RESET_ALL + "Go west" + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "I: " + COLOR_RESET_ALL + "View items. When in this view, type the name of an item to examine it." + COLOR_RESET_ALL)
+    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "P: " + COLOR_RESET_ALL + "Choose which item to equip on you. When in this view, type the name of an item to equip it." + COLOR_RESET_ALL)
+    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "Throw an item. When in this view, type the name of an item to throw it away." + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Q: " + COLOR_RESET_ALL + "Quit game")
     print(" ")
     print(COLOR_GREEN + COLOR_STYLE_BRIGHT +"Hints:" + COLOR_RESET_ALL)
@@ -123,14 +150,79 @@ def run(play):
 
     while play == 1:
         global player
+
+        # calculate player armor protection
+        # and write it to the save file
+        player_items = player["inventory"]
+        player_items_number = len(player_items)
+        count = 0
+        global_armor_protection = 0
+        p = True
+        
+        # loop to get player total armor protection
+        while p:
+            if count > ( player_items_number - 1 ):
+                p = False
+            if p == True:
+            
+                player_items_select = player_items[int(count)]
+                
+                if item[player_items_select]["type"] == "Armor Piece: Chestplate" and player["held chestplate"] == player_items_select:
+                    item_armor_protection = item[player_items_select]["armor protection"]
+                elif item[player_items_select]["type"] == "Armor Piece: Boots" and player["held boots"] == player_items_select:
+                    item_armor_protection = item[player_items_select]["armor protection"]
+                elif item[player_items_select]["type"] == "Armor Piece: Leggings" and player["held leggings"] == player_items_select:
+                    item_armor_protection = item[player_items_select]["armor protection"]
+                else:
+                    item_armor_protection = 0
+                
+                global_armor_protection += item_armor_protection
+                
+                count += 1
+             
+        player["armor protection"] = global_armor_protection
+        
+        # calculate remaining inventory slots
+        # and write it to the save files
+        p2 = True
+        count2 = 0
+        global_inventory_slots = 0
+        player_items = player["inventory"]
+        player_items_number = len(player_items)
+        
+        # loop to get player total inventory slots
+        while p2:
+            if count2 > ( player_items_number - 1 ):
+                p2 = False
+            if p2 == True:
+                
+                player_items_select = player_items[int(count2)]
+                
+                if item[player_items_select]["type"] == "Bag":
+                    item_invetory_slot = item[player_items_select]["inventory slots"]
+                else:
+                    item_invetory_slot = 0
+                
+                global_inventory_slots += item_invetory_slot
+                
+                count2 += 1
+                
+            player["inventory slots"] = global_inventory_slots
+        
+        # calculate remaining item slots
+        
+        player["inventory slots remaining"] = int(player["inventory slots"]) - int(player_items_number)
+        
         map_location = search(player["x"], player["y"])
         map_location_x = search_specific_x()
         map_location_y = search_specific_y()
+        map_zone = map_zone = map["point" + str(map_location)]["map zone"]
         print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Coordinates:" + COLOR_RESET_ALL)
         print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "X: " + COLOR_RESET_ALL + str(map_location_x))
         print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Y: " + COLOR_RESET_ALL + str(map_location_y))
+        print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Region: " + COLOR_RESET_ALL + str(map_zone))
         print(" ")
-        print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Possilbe actions:" + COLOR_RESET_ALL)
+        print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Possible actions:" + COLOR_RESET_ALL)
         if "North" not in map["point" + str(map_location)]["blocked"]:
             print("You can go North")
         if "South" not in map["point" + str(map_location)]["blocked"]:
@@ -139,13 +231,16 @@ def run(play):
             print("You can go East")
         if "West" not in map["point" + str(map_location)]["blocked"]:
             print("You can go West")
-        if "None" not in map["point" + str(map_location)]["item"]:
-            take_item = input(COLOR_GREEN + "There are these items on the ground: " + COLOR_RESET_ALL + str(map["point" + str(map_location)]["item"]))
+        if "None" not in map["point" + str(map_location)]["item"] and map_location not in player["taken items"]:
+            take_item = input(COLOR_GREEN + "There are these items on the ground: " + COLOR_RESET_ALL + str(map["point" + str(map_location)]["item"]) + " ")
             if take_item in map["point" + str(map_location)]["item"]:
-                if take_item in player["inventory"]:
-                    print("You already have that.")
+                if take_item in player["inventory"] and item[take_item]["type"] == "Utility":
+                    print("You cannot take that item")
+                elif player["inventory slots remaining"] == 0:
+                    print("You cannot take that item, you don't have enough slots in your inventory")
                 else:
                     player["inventory"].append(take_item)
+                    player["taken items"].append(map_location)
         if map["point" + str(map_location)]["enemy"] > 0 and map_location not in player["defeated enemies"]:
             enemies_remaining = map["point" + str(map_location)]["enemy"]
             while enemies_remaining > 0:
@@ -206,13 +301,39 @@ def run(play):
         elif command.lower().startswith('i'):
             print("Current Health: " + COLOR_RED + str(player["health"]) + COLOR_RESET_ALL)
             print("Maximum Health: " + COLOR_RED + str(player["max health"]) + COLOR_RESET_ALL)
-            print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
+            print("Armor Protection: " + COLOR_RED + str(player["armor protection"]) + COLOR_RESET_ALL)
+            print(" ")
+            # inventory slots
+            print("Inventory Slots: " + COLOR_RED + str(player["inventory slots"]) + COLOR_RESET_ALL)
+            print("Inventory Slots Remaining: " + COLOR_RED + str(player["inventory slots remaining"]) + COLOR_RESET_ALL)
+            print(" ")
+            # equipment
+            if player["held item"] == " ":
+                print("You are currently holding no weapon")
+            else:
+                print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
+            if player["held chestplate"] == " ":
+                print("You are currently wearing no chestplate")
+            else:
+                print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
+            if player["held boots"] == " ":
+                print("You are currently holding no boots")
+            else:
+                print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
+            if player["held leggings"] == " ":
+                print("You are currently holding no leggings")
+            else:
+                print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
+            print(" ")
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
             if which_item in player["inventory"]:
                 print(" ")
                 print("Name: " + which_item)
                 print("Type: " + item[which_item]["type"])
                 print("Description: " + item[which_item]["description"])
+                if item[which_item]["type"] == "Armor Piece: Chestplate" or item[which_item]["type"] == "Armor Piece: Boots" or item[which_item]["type"] == "Armor Piece: Leggings":
+                    print("             Armor pieces can protect you in fights, more the armor protection is higher, the more it protects you.")
+                    print("Armor Protection: " + COLOR_RED + str(item[which_item]["armor protection"]) + COLOR_RESET_ALL)
                 if item[which_item]["type"] == "Weapon":
                     print("Damage: " + COLOR_RED + str(item[which_item]["damage"]) + COLOR_RESET_ALL)
                     print("Defense: " + COLOR_RED + str(item[which_item]["defend"]) + COLOR_RESET_ALL)
@@ -222,13 +343,94 @@ def run(play):
                 print(" ")
             else:
                 print("You do not have that item.")
+                print(" ")
+        elif command.lower().startswith('t'):
+            # equipment
+            if player["held item"] == " ":
+                print("You are currently holding no weapon")
+            else:
+                print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
+            if player["held chestplate"] == " ":
+                print("You are currently holding no chestplate")
+            else:
+                print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
+            if player["held boots"] == " ":
+                print("You are currently holding no boots")
+            else:
+                print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
+            if player["held leggings"] == " ":
+                print("You are currently holding no leggings")
+            else:
+                print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
+            which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
+            if which_item in player["inventory"]:
+                ask = input("You won't be able to get this item back if your throw it away. Are you sure you want to throw away this item? (y/n) ")
+                if ask.lower().startswith('y'):
+                    if item[which_item]["type"] == "Bag":
+                        if ( player["inventory slots remaining"] - item[which_item]["inventory slots"] ) < 0:
+                            print("You cannot throw that item because it would cause your remaining inventory slots to be negative")
+                            print(" ")
+                    else:
+                        player["inventory"].remove(which_item)
+                        if which_item == player["held item"]:
+                            player["held item"] = " "
+                        if which_item == player["held chestplate"]:
+                            player["held chestplate"] = " "
+                        if which_item == player["held boots"]:
+                            player["held boots"] = " "
+                        if which_item == player["held leggings"]:
+                            player["held leggings"] = " "
+                    print(" ")
+            else:
+                print("You do not have that item.")
+                print(" ")
+        elif command.lower().startswith('p'):
+            # equipment
+            if player["held item"] == " ":
+                print("You are currently holding no weapon")
+            else:
+                print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
+            if player["held chestplate"] == " ":
+                print("You are currently holding no chestplate")
+            else:
+                print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
+            if player["held boots"] == " ":
+                print("You are currently holding no boots")
+            else:
+                print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
+            if player["held leggings"] == " ":
+                print("You are currently holding no leggings")
+            else:
+                print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
+            which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
+            if which_item in player["inventory"]:
+                if item[which_item]["type"] == "Weapon":
+                    player["held item"] = which_item
+                    print("Equipped a/an " + which_item)
+                elif item[which_item]["type"] == "Armor Piece: Chestplate":
+                    player["held chestplate"] = which_item
+                    print("Equipped a/an " + which_item)
+                elif item[which_item]["type"] == "Armor Piece: Boots":
+                    player["held boots"] = which_item
+                    print("Equipped a/an " + which_item)
+                elif item[which_item]["type"] == "Armor Piece: Leggings":
+                    player["held leggings"] = which_item
+                    print("Equipped a/an " + which_item)
+                else:
+                    print("You cannot equip a/an " + which_item)
+                print(" ")
+            else:
+                print("You do not have that item.")
+                print(" ")
         elif command.lower().startswith('m'):
             if "Map" in player["inventory"]:
                 print("**|**")
                 print("*[+]*")
                 print("**⊥**")
+                print(" ")
             else:
                 print("You do not have a map.")
+                print(" ")
         elif command in map["point" + str(map_location)]["item"]:
             if command not in player["inventory"]:
                 player["inventory"].append(command)

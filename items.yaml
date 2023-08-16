@@ -7,6 +7,7 @@ Bow:
   type: "Weapon"
   damage: 4
   defend: 9
+  description: "A bow. Perfectly normal. You use it to shoot arrows."
 Healing Potion:
   type: "Consumable"
   max bonus: 5

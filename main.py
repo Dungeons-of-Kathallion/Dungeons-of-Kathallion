@@ -405,13 +405,18 @@ def run(play):
             if which_item in player["inventory"]:
                 if item[which_item]["type"] == "Weapon":
                     player["held item"] = which_item
-                if item[which_item]["type"] == "Armor Piece: Chestplate":
+                    print("Equipped a/an " + which_item)
+                elif item[which_item]["type"] == "Armor Piece: Chestplate":
                     player["held chestplate"] = which_item
-                if item[which_item]["type"] == "Armor Piece: Boots":
+                    print("Equipped a/an " + which_item)
+                elif item[which_item]["type"] == "Armor Piece: Boots":
                     player["held boots"] = which_item
-                if item[which_item]["type"] == "Armor Piece: Leggings":
+                    print("Equipped a/an " + which_item)
+                elif item[which_item]["type"] == "Armor Piece: Leggings":
                     player["held leggings"] = which_item
-                print("Equipped a/an " + which_item)
+                    print("Equipped a/an " + which_item)
+                else:
+                    print("You cannot equip a/an " + which_item)
                 print(" ")
             else:
                 print("You do not have that item.")

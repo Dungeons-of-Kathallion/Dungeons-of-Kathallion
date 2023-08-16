@@ -365,15 +365,19 @@ def run(play):
             if which_item in player["inventory"]:
                 ask = input("You won't be able to get this item back if your throw it away. Are you sure you want to throw away this item? (y/n) ")
                 if ask.lower().startswith('y'):
-                    player["inventory"].remove(which_item)
-                    if which_item == player["held item"]:
-                        player["held item"] = " "
-                    if which_item == player["held chestplate"]:
-                        player["held chestplate"] = " "
-                    if which_item == player["held boots"]:
-                        player["held boots"] = " "
-                    if which_item == player["held leggings"]:
-                        player["held leggings"] = " "
+                    if ( player["inventory slots remaining"] - item[which_item]["inventory slots"] ) < 0:
+                        print("You cannot throw that item because it would cause your remaining inventory slots to be negative")
+                        print(" ")
+                    else:
+                        player["inventory"].remove(which_item)
+                        if which_item == player["held item"]:
+                            player["held item"] = " "
+                        if which_item == player["held chestplate"]:
+                            player["held chestplate"] = " "
+                        if which_item == player["held boots"]:
+                            player["held boots"] = " "
+                        if which_item == player["held leggings"]:
+                            player["held leggings"] = " "
                     print(" ")
             else:
                 print("You do not have that item.")

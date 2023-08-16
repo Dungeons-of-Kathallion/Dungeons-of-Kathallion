@@ -3,6 +3,10 @@ Sword:
   damage: 5
   defend: 6
   description: "Your generic sword."
+Bow:
+  type: "Weapon"
+  damage: 4
+  defend: 9
 Healing Potion:
   type: "Consumable"
   max bonus: 5

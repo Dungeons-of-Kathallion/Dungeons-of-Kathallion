@@ -182,6 +182,38 @@ def run(play):
              
         player["armor protection"] = global_armor_protection
         
+        # calculate player agility and
+        # write it to the save file
+        player_items = player["inventory"]
+        player_items_number = len(player_items)
+        count = 0
+        global_agility = 0
+        p = True
+        
+        # loop to get player total agility
+        while p:
+            if count > ( player_items_number - 1 ):
+                p = False
+            if p == True:
+            
+                player_items_select = player_items[int(count)]
+                
+                if item[player_items_select]["type"] == "Armor Piece: Chestplate" and player["held chestplate"] == player_items_select:
+                    item_agility = item[player_items_select]["agility"]
+                elif item[player_items_select]["type"] == "Armor Piece: Boots" and player["held boots"] == player_items_select:
+                    item_agility = item[player_items_select]["agility"]
+                elif item[player_items_select]["type"] == "Armor Piece: Leggings" and player["held leggings"] == player_items_select:
+                    item_agility = item[player_items_select]["agility"]
+                else:
+                    item_agility = 0
+                
+                global_agility += item_agility
+                
+                count += 1
+             
+        global_agility = round(global_agility, 2)
+        player["agility"] = global_agility
+        
         # calculate remaining inventory slots
         # and write it to the save files
         p2 = True

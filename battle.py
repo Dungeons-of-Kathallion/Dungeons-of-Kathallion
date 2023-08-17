@@ -35,7 +35,7 @@ def fight(player, item):
             # print HP stats and possible actions for the player
 
             print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL) + "; " + str(COLOR_BLUE) + "You: " + str(player["health"]) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(player["max health"]) + str(COLOR_RESET_ALL))
-            action = input("(A)ttack, (D)efend, (U)se Item? ")
+            action = input("[A]ttack, [D]efend, [U]se Item? ")
 
             # if player attack
             if action.lower().startswith('a'):

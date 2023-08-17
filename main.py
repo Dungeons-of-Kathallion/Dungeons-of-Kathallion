@@ -144,7 +144,7 @@ def run(play):
     print(" ")
     print(COLOR_GREEN + COLOR_STYLE_BRIGHT +"Hints:" + COLOR_RESET_ALL)
     print("If you find an item on the ground, type the name of the item to take it.")
-    print("Some items have special triggers, wich will often be stated in the description. Others can only be activated in certain situations, like in combat.")
+    print("Some items have special triggers, which will often be stated in the description. Others can only be activated in certain situations, like in combat.")
     print(" ")
     # Mapping stuff
 
@@ -206,7 +206,7 @@ def run(play):
                     item_agility = item[player_items_select]["agility"]
                 elif item[player_items_select]["type"] == "Armor Piece: Leggings" and player["held leggings"] == player_items_select:
                     item_agility = item[player_items_select]["agility"]
-                elif item[player_items_select]["type"] == "Weapon" and player["held weapon"] == player_items_select:
+                elif item[player_items_select]["type"] == "Weapon" and player["held item"] == player_items_select:
                     item_agility = item[player_items_select]["agility"]
                 else:
                     item_agility = 0

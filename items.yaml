@@ -2,11 +2,13 @@ Sword:
   type: "Weapon"
   damage: 5
   defend: 6
+  agility: .1
   description: "Your generic sword."
 Bow:
   type: "Weapon"
   damage: 4
   defend: 9
+  agility: .15
   description: "A bow. Perfectly normal. You use it to shoot arrows."
 Healing Potion:
   type: "Consumable"
@@ -20,22 +22,27 @@ Axe:
   type: "Weapon"
   damage: 7
   defend: 5
+  agility: .05
   description: "An ancient axe found in the dungeons. You wonder what happened to it's previous owner..."
 Leather Jacket:
   type: "Armor Piece: Chestplate"
   armor protection: .6
+  agility: .2
   description: "A small jacket that may not protect you much but keeps you warm when it's cold."
 Leather Boots:
   type: "Armor Piece: Boots"
   armor protection: .1
+  agility: .35
   description: "While these boots are dirty and wet, they grant you great mobility."
 Old Pants:
   type: "Armor Piece: Leggings"
   armor protection: .25
+  agility: .25
   description: "An old pair of pants. It is large and very dirty."
 Knight Boots:
   type: "Armor Piece: Boots"
   armor protection: .24
+  agility: .2
   description: "The generic boots of any good knight."
 Stretched Bag:
   type: "Bag"

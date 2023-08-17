@@ -144,7 +144,7 @@ def run(play):
     print(" ")
     print(COLOR_GREEN + COLOR_STYLE_BRIGHT +"Hints:" + COLOR_RESET_ALL)
     print("If you find an item on the ground, type the name of the item to take it.")
-    print("Some items have special triggers, wich will often be stated in the description. Others can only be activated in certain situations, like in combat.")
+    print("Some items have special triggers, which will often be stated in the description. Others can only be activated in certain situations, like in combat.")
     print(" ")
     # Mapping stuff
 
@@ -179,8 +179,44 @@ def run(play):
                 global_armor_protection += item_armor_protection
                 
                 count += 1
+                
+        global_armor_protection = round(global_armor_protection, 2)
              
         player["armor protection"] = global_armor_protection
+        
+        # calculate player agility and
+        # write it to the save file
+        player_items = player["inventory"]
+        player_items_number = len(player_items)
+        count = 0
+        global_agility = 0
+        p = True
+        
+        # loop to get player total agility
+        while p:
+            if count > ( player_items_number - 1 ):
+                p = False
+            if p == True:
+            
+                player_items_select = player_items[int(count)]
+                
+                if item[player_items_select]["type"] == "Armor Piece: Chestplate" and player["held chestplate"] == player_items_select:
+                    item_agility = item[player_items_select]["agility"]
+                elif item[player_items_select]["type"] == "Armor Piece: Boots" and player["held boots"] == player_items_select:
+                    item_agility = item[player_items_select]["agility"]
+                elif item[player_items_select]["type"] == "Armor Piece: Leggings" and player["held leggings"] == player_items_select:
+                    item_agility = item[player_items_select]["agility"]
+                elif item[player_items_select]["type"] == "Weapon" and player["held item"] == player_items_select:
+                    item_agility = item[player_items_select]["agility"]
+                else:
+                    item_agility = 0
+                
+                global_agility += item_agility
+                
+                count += 1
+             
+        global_agility = round(global_agility, 2)
+        player["agility"] = global_agility
         
         # calculate remaining inventory slots
         # and write it to the save files
@@ -302,6 +338,7 @@ def run(play):
             print("Current Health: " + COLOR_RED + str(player["health"]) + COLOR_RESET_ALL)
             print("Maximum Health: " + COLOR_RED + str(player["max health"]) + COLOR_RESET_ALL)
             print("Armor Protection: " + COLOR_RED + str(player["armor protection"]) + COLOR_RESET_ALL)
+            print("Agility: " + COLOR_RED + str(player["agility"]) + COLOR_RESET_ALL)
             print(" ")
             # inventory slots
             print("Inventory Slots: " + COLOR_RED + str(player["inventory slots"]) + COLOR_RESET_ALL)

@@ -11,6 +11,7 @@ enemy_max = random.randint(5, 21)
 enemy_health = enemy_max
 enemy_max_damage = random.randint(4, 8)
 enemy_damage = 0
+enemy_agility = round(random.uniform(.40, .80), 2)
 defend = 0
 turn = True
 
@@ -25,6 +26,7 @@ def fight(player, item):
     # import stats
     global turn, enemy_health, defend, enemy_max, enemy_max_damage
     armor_protection = player["armor protection"]
+    player_agility = player["agility"]
     print(" ") # do not merge with possible actions text
 
     # while player still alive
@@ -33,20 +35,28 @@ def fight(player, item):
             # print HP stats and possible actions for the player
 
             print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL) + "; " + str(COLOR_BLUE) + "You: " + str(player["health"]) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(player["max health"]) + str(COLOR_RESET_ALL))
-            action = input("Attack, Defend, Use Item? ")
+            action = input("[A]ttack, [D]efend, [U]se Item? ")
 
             # if player attack
             if action.lower().startswith('a'):
                 print(" ")
                 # attack formula
-                enemy_health -= random.randint(0, int(item[player["held item"]]["damage"]))
-                print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL))
+                enemy_dodged = False
+                enemy_dodge_chance = round(random.uniform(0.10, enemy_agility), 2)
+                if enemy_dodge_chance > round(random.uniform(.50, .90), 2):
+                    enemy_dodged = True
+                    print("Your enemy dodged your attack!")
+                if not enemy_dodged:
+                    player_damage = random.randint(0, int(item[player["held item"]]["damage"]))
+                    enemy_health -= player_damage
+                    print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL))
+                    print("You dealt " + str(player_damage) + " damage to your enemy.")
                 turn = False
 
             # if player defend
             elif action.lower().startswith('d'):
                 print(" ")
-                defend += random.randint(0, int(item[player["held item"]]["defend"]))
+                defend += random.randint(0, int(item[player["held item"]]["defend"])) * player_agility
                 # defend formula
                 player["health"] += random.randint(0, 3)
                 if player["health"] > player["max health"]:
@@ -81,9 +91,14 @@ def fight(player, item):
                 damage = random.randint(0, enemy_max_damage) - defend * ( armor_protection * round(random.uniform(0.50, 0.90), 1) )
                 damage = round(damage)
                 defend = 0
-                if damage > 0:
+                player_dodged = False
+                player_dodge_chance = round(random.uniform(0.10, player_agility), 2)
+                if player_dodge_chance > round(random.uniform(.50, .90), 2):
+                    player_dodged = True
+                    print("You dodged your enemy attack!")
+                if damage > 0 and not player_dodged:
                     player["health"] -= damage
-                print("The enemy dealt ", str(damage), " points of damage.")
+                    print("The enemy dealt ", str(damage), " points of damage.")
                 print("You have", str(player["health"]), "health points.")
                 print(" ")
                 turn = True

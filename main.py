@@ -206,6 +206,8 @@ def run(play):
                     item_agility = item[player_items_select]["agility"]
                 elif item[player_items_select]["type"] == "Armor Piece: Leggings" and player["held leggings"] == player_items_select:
                     item_agility = item[player_items_select]["agility"]
+                elif item[player_items_select]["type"] == "Weapon" and player["held weapon"] == player_items_select:
+                    item_agility = item[player_items_select]["agility"]
                 else:
                     item_agility = 0
                 

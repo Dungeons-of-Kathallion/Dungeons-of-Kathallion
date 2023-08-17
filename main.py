@@ -179,6 +179,8 @@ def run(play):
                 global_armor_protection += item_armor_protection
                 
                 count += 1
+                
+        global_armor_protection = round(global_armor_protection, 2)
              
         player["armor protection"] = global_armor_protection
         

@@ -31,7 +31,7 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
     if enemies_number > 1:
         print("You encounter a group of " + str(enemy_plural) + " that won't let you pass.")
     else:
-        print("You find a " + str(enemy_singular) + " on your way.")
+        print("You find a/an " + str(enemy_singular) + " on your way.")
                 
     startup_action = input("[R]un Away, [F]ight, [U]se Item? ")
             

@@ -28,7 +28,7 @@ Dagger:
   damage: 4
   defend: 4
   agility: .2
-  description: "The daggers are a generic longer knife that is often used by orcs."
+  description: "The daggers are a generic longer knife that is often used by Yrch."
 Axe:
   type: "Weapon"
   damage: 7
@@ -87,12 +87,12 @@ Orc Iron Legginsg:
   type: "Armor Piece: Leggings"
   armor protection: .28
   agility: .15
-  description: "The generics boots of Goblins and Orcs. These leggings continues more longer on your legs since orcs and goblins don't wear boots.'"
+  description: "The generics boots of Goblins and Yrch. These leggings continues more longer on your legs since Yrch and goblins don't wear boots.'"
 Orc Shredded Chestplate:
   type: "Armor Piece: Chestplate"
   armor protection: .32
   agility: .15
-  description: "The generic boots of Goblins and Orcs."
+  description: "The generic boots of Goblins and Yrch."
 # Bags
 Stretched Bag:
   type: "Bag"

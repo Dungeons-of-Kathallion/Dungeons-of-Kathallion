@@ -11,13 +11,6 @@ defend = 0
 turn = True
 fighting = True
 
-#opens "save.yaml"
-# with open("save.yaml") as f:
-    # player = yaml.safe_load(f)
-
-# if player["xp"] < 0:
-#     player["xp"] = 0
-
 def encounter_text_show(player, item, enemy, map, map_location, enemies_remaining):
     # import stats
     global turn, defend, fighting, already_encountered
@@ -208,11 +201,6 @@ def fight(player, item, enemy, map, map_location, enemies_remaining):
                     player["xp"] += enemy_max * enemy_max_damage / 3
                     player["health"] += random.randint(0, 3)
                     enemies_remaining -= 1
-                    # enemy_max = random.randint(5, 21)
-                    # enemy_health = enemy_max
-                    # enemy_max_damage = random.randint(4, 8)
-                    # defend = 0
-                    # turn = True
                     still_playing = False
                     return
         return
@@ -221,46 +209,5 @@ def fight(player, item, enemy, map, map_location, enemies_remaining):
 
 still_playing = True
 
-# while still_playing:
-
-#     fight()
-
-#     still_playing = False
-
-#     if player["health"] <= 0:
-#         if player["cheat"] < 3:
-#             cheatcode = input("What is the not-die code? ")
-#             if cheatcode == "4":
-#                 # cheat code was correct so keep playing
-#                 player["cheat"] += 1
-#                 player["health"] = 10
-#                 still_playing = True
-#             else:
-#                 player["health"] = 10
-#                 player["max health"] = 10
-#                 player["x"] = 0
-#                 player["y"] = 0
-#                 player["inventory"] = ["Sword", "Healing Potion"]
-#                 player["held item"] = "Sword"
-#                 player["cheat"] = 0
-#                 player["xp"] -= 100
-
-#         else:
-#             print("YOU DIED")
-#             player["health"] = 10
-#             player["max health"] = 10
-#             player["x"] = 0
-#             player["y"] = 0
-#             player["inventory"] = ["Sword", "Healing Potion"]
-#             player["held item"] = "Sword"
-#             player["cheat"] = 0
-#             player["xp"] -= 100
-
-# put all the new data in the file
-# dumped = yaml.dump(player)
-
 # deinitialize colorama
 deinit()
-
-# with open("save.yaml", "w") as f:
-#     f.write(dumped)

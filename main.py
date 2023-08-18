@@ -3,8 +3,12 @@ import yaml
 import pickle
 import battle
 import os
+import time
 from colorama import Fore, Back, Style, deinit, init
 from colors import *
+
+# get start time
+start_time = time.time()
 
 # initialize colorama
 init()
@@ -510,6 +514,19 @@ def run(play):
 
 if play == 1:
     play = run(1)
+    
+# get end time
+end_time = time.time()
+
+# calculate and convert elapsed time
+elapsed_time = end_time - start_time
+elapsed_time = round(elapsed_time, 2)
+
+game_elapsed_time = .0.004167 * elapsed_time # 60 seconds irl = 0.25 days in-game
+game_elapsed_time = round(game_elapsed_time, 2)
+
+player["elapsed time seconds"] = elapsed_time + player["elapsed time seconds"]
+player["elapsed time game days"] = game_elapsed_time + player["elapsed time game days"]
 
 # finish up and save
 dumped = yaml.dump(player)
@@ -517,6 +534,7 @@ dumped = yaml.dump(player)
 save_file_quit = save_file
 with open(save_file_quit, "w") as f:
     f.write(dumped)
+
 
 # deinitialize colorame
 deinit()

@@ -21,8 +21,8 @@ fought_enemy = False
 separator = COLOR_STYLE_BRIGHT + "###############################" + COLOR_RESET_ALL
 
 # opens data files
-plugin_vanila = input("Do you want to use plugin or vanila data files? (y/n)")
-if plugin_vanila.lower().startswith('y'):
+plugin_vanila = input("Do you want to use [p]lugin or [v]anila data files? ")
+if plugin_vanila.lower().startswith('p'):
     what_plugin = input("What plugin do you want to open? (use the name of the downloaded file) ")
     with open(what_plugin + "/map.yaml") as f:
         map = yaml.safe_load(f)
@@ -53,10 +53,10 @@ else:
 res = []
 
 for search_for_saves in os.listdir():
-    if search_for_saves.startswith("save_"):
+    if search_for_saves.startswith("saves/save_"):
         res.append(search_for_saves)
 
-char1 = 'save_'
+char1 = 'saves/save_'
 char2 = '.yaml'
 
 for idx, ele in enumerate(res):
@@ -73,7 +73,7 @@ if save_selection.lower().startswith('n'):
     enter_save_name = input("Please name your save: ")
     player = start_player
     dumped = yaml.dump(player)
-    save_name = "save_" + enter_save_name + ".yaml"
+    save_name = "saves/save_" + enter_save_name + ".yaml"
     check_file = os.path.isfile(save_name)
     if check_file == True:
         print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Save file '" + save_name + "'" + " already exists" + COLOR_RESET_ALL)
@@ -85,7 +85,7 @@ if save_selection.lower().startswith('n'):
     play = 1
 elif save_selection.lower().startswith('o'):
     open_save = input("Please choose a save to open: ")
-    save_file = "save_" + open_save + ".yaml"
+    save_file = "saves/save_" + open_save + ".yaml"
     check_file = os.path.isfile(save_file)
     if check_file == False:
         print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
@@ -99,7 +99,7 @@ elif save_selection.lower().startswith('q'):
     exit(1)
 elif save_selection.lower().startswith('d'):
     delete_save = input("Please choose a save to delete: ")
-    save_file = "save_" + delete_save + ".yaml"
+    save_file = "saves/save_" + delete_save + ".yaml"
     check_file = os.path.isfile(save_file)
     if check_file == False:
         print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
@@ -108,7 +108,7 @@ elif save_selection.lower().startswith('d'):
     with open(save_file) as f:
         verify = input("Are you sure you want to delete the following save (y/n)? ")
         if verify == "y":
-            save_file = "save_" + delete_save + ".yaml"
+            save_file = "saves/save_" + delete_save + ".yaml"
             player = "placeholder, do not delete"
             os.remove(save_file)
             play = 0

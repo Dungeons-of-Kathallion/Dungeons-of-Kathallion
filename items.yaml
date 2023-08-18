@@ -78,21 +78,36 @@ Old Pants:
   armor protection: .25
   agility: .25
   description: "An old pair of pants. It is large and very dirty."
+Broken Shield:
+  type: "Armor Piece: Shield"
+  armor protection: .05
+  agility: .1
+  description: "A sheild from ancient times, cloven in two and left for travelers to find."
 Knight Boots:
   type: "Armor Piece: Boots"
   armor protection: .24
   agility: .2
   description: "The generic boots of any good knight."
-Orc Iron Legginsg:
+Orc Iron Leggings:
   type: "Armor Piece: Leggings"
   armor protection: .28
   agility: .15
-  description: "The generics leggings of Goblins and Yrch. These leggings continues more longer on your legs since Yrch and goblins don't wear boots.'"
+  description: "The generics leggings of Goblins and Yrch. These leggings continue further along on your legs since Yrch and goblins don't wear boots.'"
 Orc Shredded Chestplate:
   type: "Armor Piece: Chestplate"
   armor protection: .32
   agility: .15
   description: "The generic chestplate of Goblins and Yrch."
+Shield:
+  type: "Armor Piece: Shield"
+  armor protection: .1
+  agility: .2
+  description: "While not very strong, this shield will serve you well in deflecting enemy attacks."
+Orc Shield:
+  type: "Armor Piece: Shield"
+  armor protection: .05
+  agility: .3
+  description: "A shield built for weight; used by the Black Yrch."
 # Bags
 Stretched Bag:
   type: "Bag"
@@ -127,7 +142,7 @@ Raw Salmon:
   type: "Food"
   max bonus: 0
   healing level: 2
-  description: "A raw salmon may not be the best thing to eat but it's always better than nothing.'"
+  description: "A raw salmon may not be the best thing to eat but it's always better than nothing."
 # Misc
 Bone:
   type: "Misc"
@@ -141,3 +156,7 @@ Wolf Skin:
 Wolf Skull:
   type: "Misc"
   description: "A huge skull of a head of a Warg."
+# Notes
+Note1:
+  type: "Note"
+  description: "The note reads: 'Help! Help!'. You wonder what it means..."

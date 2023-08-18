@@ -150,7 +150,7 @@ def run(play):
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "Throw an item. When in this view, type the name of an item to throw it away." + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Q: " + COLOR_RESET_ALL + "Quit game")
     print(" ")
-    print(COLOR_GREEN + COLOR_STYLE_BRIGHT +"Hints:" + COLOR_RESET_ALL)
+    print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Hints:" + COLOR_RESET_ALL)
     print("If you find an item on the ground, type the name of the item to take it.")
     print("Some items have special triggers, which will often be stated in the description. Others can only be activated in certain situations, like in combat.")
     print(" ")
@@ -180,6 +180,8 @@ def run(play):
                 elif item[player_items_select]["type"] == "Armor Piece: Boots" and player["held boots"] == player_items_select:
                     item_armor_protection = item[player_items_select]["armor protection"]
                 elif item[player_items_select]["type"] == "Armor Piece: Leggings" and player["held leggings"] == player_items_select:
+                    item_armor_protection = item[player_items_select]["armor protection"]
+                elif item[player_items_select]["type"] == "Armor Piece: Shield" and player["held shield"] == player_items_select:
                     item_armor_protection = item[player_items_select]["armor protection"]
                 else:
                     item_armor_protection = 0
@@ -213,6 +215,8 @@ def run(play):
                 elif item[player_items_select]["type"] == "Armor Piece: Boots" and player["held boots"] == player_items_select:
                     item_agility = item[player_items_select]["agility"]
                 elif item[player_items_select]["type"] == "Armor Piece: Leggings" and player["held leggings"] == player_items_select:
+                    item_agility = item[player_items_select]["agility"]
+                elif item[player_items_select]["type"] == "Armor Piece: Shield" and player["held shield"] == player_items_select:
                     item_agility = item[player_items_select]["agility"]
                 elif item[player_items_select]["type"] == "Weapon" and player["held item"] == player_items_select:
                     item_agility = item[player_items_select]["agility"]
@@ -296,9 +300,9 @@ def run(play):
                 battle.fight(player, item, enemy, map, map_location, enemies_remaining)
                 enemies_remaining -= 1
             # if round(random.uniform(.20, .50), 2) > .35:
-            if map["point" + str(map_location)]["enemy_type"] == "generic":
+            if map["point" + str(map_location)]["enemy type"] == "generic":
                 list_enemies = ['Goblin', 'Orc', 'Orc Archer', 'Warg', "Cavern Troll"]
-            if map["point" + str(map_location)]["enemy_type"] == "black":
+            if map["point" + str(map_location)]["enemy type"] == "black":
                 list_enemies = ['Black Orc', 'Dark Marksman', 'Doomed Horror']
 
             if player["health"] > 0:
@@ -330,8 +334,8 @@ def run(play):
                     print("You can go East")
                 if "West" not in map["point" + str(map_location)]["blocked"]:
                     print("You can go West")
-                if "None" not in map["point" + str(map_location)]["item"]:
-                    print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "There are these items on the ground: ", map["point" + str(map_location)]["item"] + COLOR_RESET_ALL)
+                # if "None" not in map["point" + str(map_location)]["item"]:
+                #     print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "There are these items on the ground: ", map["point" + str(map_location)]["item"] + COLOR_RESET_ALL)
             else:
                 if player["cheat"] < 3:
                     cheatcode = input("What is the not-die code? ")
@@ -442,7 +446,7 @@ def run(play):
                 print("Name: " + which_item)
                 print("Type: " + item[which_item]["type"])
                 print("Description: " + item[which_item]["description"])
-                if item[which_item]["type"] == "Armor Piece: Chestplate" or item[which_item]["type"] == "Armor Piece: Boots" or item[which_item]["type"] == "Armor Piece: Leggings":
+                if item[which_item]["type"] == "Armor Piece: Chestplate" or item[which_item]["type"] == "Armor Piece: Boots" or item[which_item]["type"] == "Armor Piece: Leggings" or item[which_item]["type"] == "Armor Piece: Shield":
                     print("             Armor pieces can protect you in fights, more the armor protection is higher, the more it protects you.")
                     print("Armor Protection: " + COLOR_RED + str(item[which_item]["armor protection"]) + COLOR_RESET_ALL)
                 if item[which_item]["type"] == "Weapon":
@@ -462,15 +466,19 @@ def run(play):
             else:
                 print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
             if player["held chestplate"] == " ":
-                print("You are currently holding no chestplate")
+                print("You are currently wearing no chestplate")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
             if player["held boots"] == " ":
-                print("You are currently holding no boots")
+                print("You are currently wearing no boots")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
+            if player["held shield"] == " ":
+                print("You are currently wearing no shields.")
+            else:
+                print("You are wearing a/an " + COLOR_RED + player["held shield"] + COLOR_RESET_ALL)
             if player["held leggings"] == " ":
-                print("You are currently holding no leggings")
+                print("You are currently wearing no leggings")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
@@ -527,6 +535,9 @@ def run(play):
                 elif item[which_item]["type"] == "Armor Piece: Leggings":
                     player["held leggings"] = which_item
                     print("Equipped a/an " + which_item)
+                elif item[which_item]["type"] == "Armor Piece: Shield":
+                     player["held shield"] = which_item
+                     print("Equipped a/an " + which_item)
                 else:
                     print("You cannot equip a/an " + which_item)
                 print(" ")

@@ -1,4 +1,4 @@
-coordinate count: 7
+coordinate count: 9
 point0:
   x: 0
   y: 0
@@ -67,8 +67,28 @@ point6:
   item:
   - None
   enemy: 1
-  enemy_type: generic
+  enemy type: generic
   blocked:
   - North
   - South
+point7:
+  x: 2
+  y: -1
+  map zone: "First Zone"
+  item:
+  - Note1
+  enemy: 0
+  blocked:
+  - North
+  - South
+point8:
+  x: 3
+  y: -1
+  map zone: "First Zone"
+  item:
+  - Shield
+  enemy: 2
+  enemy type: black
+  blocked:
   - East
+  - South

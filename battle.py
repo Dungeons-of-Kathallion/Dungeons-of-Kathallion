@@ -62,6 +62,9 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
             elif item_input in player["inventory"] and item[item_input]["type"] == "Armor Piece: Boots":
                 player["held boots"] = item_input
                 print("You are now wearing a/an ", player["held boots"])
+            elif item_input in player["inventory"] and item[item_input]["type"] == "Armor Piece: Sheild":
+                player["held shield"] = item_input
+                print("You are now wearing a/an ", player["held shield"])
     else:
         print("'" + startup_action + "' is not a valid option")
 
@@ -72,9 +75,9 @@ def get_enemy_stats(player, item, enemy, map, map_location):
     global enemy_singular, enemy_plural, enemy_max, enemy_health, enemy_max_damage, enemy_min_damage, enemy_agility, enemy_damage, choosen_item
     # load enemy stat
 
-    if map["point" + str(map_location)]["enemy_type"] == "generic":
+    if map["point" + str(map_location)]["enemy type"] == "generic":
         list_enemies = ['Goblin', 'Orc', 'Orc Archer', 'Warg', "Cavern Troll"]
-    if map["point" + str(map_location)]["enemy_type"] == "black":
+    if map["point" + str(map_location)]["enemy type"] == "black":
         list_enemies = ['Black Orc', 'Dark Marksman', 'Doomed Horror']
 
     choose_rand_enemy = random.randint(0, len(list_enemies) - 1)
@@ -175,6 +178,9 @@ def fight(player, item, enemy, map, map_location, enemies_remaining):
                         elif item_input in player["inventory"] and item[item_input]["type"] == "Armor Piece: Boots":
                             player["held boots"] = item_input
                             print("You are now wearing a/an ", player["held boots"])
+                        elif item_input in player["inventory"] and item[item_input]["type"] == "Armor Piece: Shield":
+                            player["held shield"] = item_input
+                            print("You are now holding a/an ", player["held shield"])
                     print(" ")
                 else:
                     print("'" + action + "' is not a valid option")

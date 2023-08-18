@@ -412,7 +412,7 @@ def run(play):
             print("Maximum Health: " + COLOR_RED + str(player["max health"]) + COLOR_RESET_ALL)
             print("Armor Protection: " + COLOR_RED + str(player["armor protection"]) + COLOR_RESET_ALL)
             print("Agility: " + COLOR_RED + str(player["agility"]) + COLOR_RESET_ALL)
-            print("XP: " + COLOR_RED + str(player["xp"]) + COLOR_RESET_ALL)
+            print("XP: " + COLOR_RED + str(round(player["xp"], 2)) + COLOR_RESET_ALL)
             print(" ")
             # inventory slots
             print("Inventory Slots: " + COLOR_RED + str(player["inventory slots"]) + COLOR_RESET_ALL)

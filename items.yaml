@@ -134,7 +134,7 @@ Bone:
   description: "An old bone that seems to come from a great beast."
 Wooden Stick:
   type: "Misc"
-  description: "Small stick made of wood. They often come from Goblins who destroy forests."
+  description: "Small stick made of wood. They often come from forest-destroying Goblins."
 Wolf Skin:
   type: "Misc"
   description: "A warm wolf skin."

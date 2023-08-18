@@ -21,17 +21,32 @@ fought_enemy = False
 separator = COLOR_STYLE_BRIGHT + "###############################" + COLOR_RESET_ALL
 
 # opens data files
-with open("data/map.yaml") as f:
-    map = yaml.safe_load(f)
+plugin_vanila = input("Do you want to use plugin or vanila data files? (y/n)")
+if plugin_vanila.lower().startswith('y'):
+    what_plugin = input("What plugin do you want to open? (use the name of the downloaded file) ")
+    with open(what_plugin + "/map.yaml") as f:
+        map = yaml.safe_load(f)
 
-with open("data/items.yaml") as f:
-    item = yaml.safe_load(f)
+    with open(what_plugin + "/items.yaml") as f:
+        item = yaml.safe_load(f)
 
-with open("data/enemies.yaml") as f:
-    enemy = yaml.safe_load(f)
+    with open(what_plugin + "/enemies.yaml") as f:
+        enemy = yaml.safe_load(f)
 
-with open("data/start.yaml") as f:
-    start_player = yaml.safe_load(f)
+    with open(what_plugin + "/start.yaml") as f:
+        start_player = yaml.safe_load(f)
+else:
+    with open("data/map.yaml") as f:
+        map = yaml.safe_load(f)
+
+    with open("data/items.yaml") as f:
+        item = yaml.safe_load(f)
+
+    with open("data/enemies.yaml") as f:
+        enemy = yaml.safe_load(f)
+
+    with open("data/start.yaml") as f:
+        start_player = yaml.safe_load(f)
 
 # first text you see
 

@@ -297,7 +297,9 @@ def run(play):
                 enemies_remaining -= 1
             if round(random.uniform(.20, .50), 2) > .35:
                 if map["point" + str(map_location)]["enemy_type"] == "generic":
-                    list_enemies = ['Goblin', 'Orc', 'Warg', "Cavern Troll"]
+                    list_enemies = ['Goblin', 'Orc', 'Orc Archer', 'Warg', "Cavern Troll"]
+                if map["point" + str(map_location)]["enemy_type"] == "black":
+                    list_enemies = ['Black Orc', 'Dark Marksman', 'Doomed Horror']
         
                 choose_rand_enemy = random.randint(0, len(list_enemies) - 1)
                 choose_rand_enemy = list_enemies[choose_rand_enemy]

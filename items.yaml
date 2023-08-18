@@ -98,6 +98,10 @@ Stretched Bag:
   type: "Bag"
   inventory slots: 9
   description: "An old stretched bag that lets you transport 9 items."
+Orc Bag:
+  type: "Bag"
+  inventory slots: 3
+  description: "A generic orc bag that lets you transport 3 items."
 # Food
 Beef:
   type: "Food"

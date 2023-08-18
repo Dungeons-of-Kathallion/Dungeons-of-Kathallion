@@ -20,7 +20,7 @@ Goblin:
   - Orc Shredded Chestplate
   description: "The Goblin may be an easy enemy to beat, but in groups, they can be very annoying to deal with."
 Orc:
-  plural: "Orcs"
+  plural: "Yrch"
   damage:
     min damage: 1
     max damage: 4
@@ -38,7 +38,28 @@ Orc:
   - Orc Iron Leggings
   - Orc Shredded Chestplate
   - Orc Bow
-  description: "Orcs are the smaller and swifter version of the Goblins. Even if they have low health, they are fast and hard to hit because of their agility."
+  description: "Yrch are the smaller and swifter version of the Goblins. Even if they have low health, they are fast and hard to hit because of their agility."
+Orc Archer:
+  plural: "Yrch Archer"
+  damage:
+    min damage: 1
+    max damage: 5
+  health:
+    min spawning health: 3
+    max spawning health: 7
+    max health level: 7
+  agility: 0.85
+  inventory:
+  - Knife
+  - Raw Salmon
+  - Bone
+  - Spear
+  - Dagger
+  - Orc Iron Leggings
+  - Orc Bow
+  - Orc Bag
+  - Wooden Stick
+  description: "The Yrch are specialized in bows and are not different from other Yrch."
 Warg:
   plural: "Wargs"
   damage:
@@ -74,3 +95,54 @@ Cavern Troll:
   - Wolf Fur
   - Mace
   - Spear
+  
+# Black enemies
+Black Orc:
+  plural: "Black Yrch"
+  damage:
+    min damage: 2
+    max damage: 5
+  health:
+    min spawning health: 6
+    max spawning health: 9
+    max health level: 9
+  agility: .58
+  inventory:
+  - Beef
+  - Prokchop
+  - Bone
+  - Spear
+  - Orc Shredded Chestplate
+  - Orc Bag
+  description: "Black Yrch are an old species of the Yrch, which are way more powerful, but you won't see them often during your journey.'"
+Dark Marksman:
+  plural: "Dark Marksmen"
+  damage:
+    min damage: 1
+    max damage: 7
+  health:
+    min spawning health: 5
+    max spawning health: 8
+    max health level: 8
+  agility: .68
+  inventory:
+  - Prokchop
+  - Raw Salmon
+  - Bone
+  - Orc Bags
+  - Orc Iron Leggings
+  - Orc Bow
+  description: "Dark Marksman are specialized Black Yrch in arching and are able to be swift and shoot you from long distances"
+Doomed Horror:
+  plural: "Doomed Horrors"
+  damage:
+    min damage: 0
+    max damage: 1.5
+  health:
+    min spawning health: 8
+    max spawning helath: 11
+    max health level: 11
+  agility: .35
+  inventory:
+  - Wooden Stick
+  description: "Doomed Horrors were once men, which are now cursed to anguish in the evil dungeons, roaming them to strike all enemies. They are slow and deal low damages but they have high health."

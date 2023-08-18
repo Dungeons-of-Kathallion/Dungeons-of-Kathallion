@@ -78,7 +78,9 @@ def get_enemy_stats(player, item, enemy, map, map_location):
     # load enemy stat
             
     if map["point" + str(map_location)]["enemy_type"] == "generic":
-        list_enemies = ['Goblin', 'Orc', 'Warg', "Cavern Troll"]
+        list_enemies = ['Goblin', 'Orc', 'Orc Archer', 'Warg', "Cavern Troll"]
+    if map["point" + str(map_location)]["enemy_type"] == "black":
+        list_enemies = ['Black Orc', 'Dark Marksman', 'Doomed Horror']
     
     choose_rand_enemy = random.randint(0, len(list_enemies) - 1)
     choose_rand_enemy = list_enemies[choose_rand_enemy]

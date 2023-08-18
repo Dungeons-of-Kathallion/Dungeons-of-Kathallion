@@ -22,6 +22,10 @@ with open("map.yaml") as f:
 
 with open("items.yaml") as f:
     item = yaml.safe_load(f)
+    
+with open("enemies.yaml") as f:
+    enemy = yaml.safe_load(f)
+    print(enemy)
 
 with open("start.yaml") as f:
     start_player = yaml.safe_load(f)
@@ -252,7 +256,7 @@ def run(play):
         map_location = search(player["x"], player["y"])
         map_location_x = search_specific_x()
         map_location_y = search_specific_y()
-        map_zone = map_zone = map["point" + str(map_location)]["map zone"]
+        map_zone = map["point" + str(map_location)]["map zone"]
         print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Coordinates:" + COLOR_RESET_ALL)
         print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "X: " + COLOR_RESET_ALL + str(map_location_x))
         print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Y: " + COLOR_RESET_ALL + str(map_location_y))
@@ -279,8 +283,13 @@ def run(play):
                     player["taken items"].append(map_location)
         if map["point" + str(map_location)]["enemy"] > 0 and map_location not in player["defeated enemies"]:
             enemies_remaining = map["point" + str(map_location)]["enemy"]
+            already_encountered = False
             while enemies_remaining > 0:
-                battle.fight(player, item)
+                battle.get_enemy_stats(player, item, enemy, map, map_location)
+                if not already_encountered:
+                    battle.encounter_text_show(player, item, enemy, map, map_location, enemies_remaining)
+                    already_encountered = True
+                battle.fight(player, item, enemy, map, map_location, enemies_remaining)
                 enemies_remaining -= 1
             if player["health"] > 0:
                 player["defeated enemies"].append(map_location)

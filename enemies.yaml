@@ -1,0 +1,76 @@
+# Generic enemies
+Goblin:
+  plural: "Goblins"
+  damage:
+    min damage: 1
+    max damage: 5
+  health:
+    min spawning health: 3
+    max spawning health: 8
+    max health level: 8
+  agility: 0.7
+  inventory:
+  - Knife
+  - Beef
+  - Chicken
+  - Raw Salmon
+  - Bone
+  - Wooden Stick
+  - Orc Iron Leggings
+  - Orc Shredded Chestplate
+  description: "The Goblin may be an easy enemy to beat, but in groups, they can be very annoying to deal with."
+Orc:
+  plural: "Orcs"
+  damage:
+    min damage: 1
+    max damage: 4
+  health:
+    min spawning health: 4
+    max spawning health: 6
+    max health level: 6
+  agility: 0.95
+  inventory:
+  - Knife
+  - Raw Salmon
+  - Bone
+  - Spear
+  - Dagger
+  - Orc Iron Leggings
+  - Orc Shredded Chestplate
+  - Orc Bow
+  description: "Orcs are the smaller and swifter version of the Goblins. Even if they have low health, they are fast and hard to hit because of their agility."
+Warg:
+  plural: "Wargs"
+  damage:
+    min damage: 2
+    max damage: 5
+  health:
+    min spawning health: 3
+    max spawning health: 9
+    max health level: 9
+  agility: 1.05
+  inventory:
+  - Beef
+  - Bone
+  - Porkchop
+  - Wolf Skin
+  - Wolf Fur
+  - Wolf Skull
+  description: "Wargs are deadly wolves that can easily outcome any adventurer that is not awarded of them. They are fast and they can deal important amount of damage while they have great health."
+Cavern Troll:
+  plural: "Cavern Trolls"
+  damage:
+    min damage: 3
+    max damage: 8
+  health:
+    min spawning health: 6
+    max spawning health: 11
+    max health level: 11
+  agility: .35
+  inventory:
+  - Beef
+  - Porkchop
+  - Bone
+  - Wolf Fur
+  - Mace
+  - Spear

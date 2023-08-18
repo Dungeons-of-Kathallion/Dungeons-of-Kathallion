@@ -67,6 +67,7 @@ point6:
   item:
   - None
   enemy: 1
+  enemy_type: generic
   blocked:
   - North
   - South

@@ -1,3 +1,4 @@
+# Weapons
 Sword:
   type: "Weapon"
   damage: 5
@@ -10,20 +11,58 @@ Bow:
   defend: 9
   agility: .15
   description: "A bow. Perfectly normal. You use it to shoot arrows."
-Healing Potion:
-  type: "Consumable"
-  max bonus: 5
-  healing level: "max health"
-  description: "A generic healing potion that restores your health to it's max and gives it a bonus 5 to that maximum."
-Map:
-  type: "Utility"
-  description: "It's a map of the dungeons! [Press 'M' to activate.]"
+Orc Bow:
+  type: "Weapon"
+  damage: 3
+  defend: 7
+  agility: .25
+  description: "Orc bows are less powerful than generic bows but are way more easy to use and transport."
+Knife:
+  type: "Weapon"
+  damage: 3
+  defend: 5
+  agility: .25
+  description: "A simple knife. Fast and easy to use. Most goblins uses this weapon."
+Dagger:
+  type: "Weapon"
+  damage: 4
+  defend: 4
+  agility: .2
+  description: "The daggers are a generic longer knife that is often used by Yrch."
 Axe:
   type: "Weapon"
   damage: 7
   defend: 5
   agility: .05
   description: "An ancient axe found in the dungeons. You wonder what happened to it's previous owner..."
+Mace:
+  type: "Weapon"
+  damage: 9
+  defend: 2
+  agility: -.15
+  description: "A huge mace used by cavern trolls. It is an extremely damaging weapon but also a very slow weapon."
+Spear:
+  type: "Weapon"
+  damage: 4
+  defend: 4
+  agility: .2
+  description: "The spear is a fast and agile weapon that lets you attack your enemy without letting them the time to attack you."
+# Conumables
+Healing Potion:
+  type: "Consumable"
+  max bonus: 5
+  healing level: "max health"
+  description: "A generic healing potion that restores your health to it's max and gives it a bonus 5 to that maximum."
+# Utilities
+Map:
+  type: "Utility"
+  description: "It's a map of the dungeons! [Press 'M' to activate.]"
+# Armors
+Wolf Fur:
+  type: "Armor Piece: Chestplate"
+  armor protection: .3
+  agility: .35
+  description: "A wolf fur that can also be used as a chestplate."
 Leather Jacket:
   type: "Armor Piece: Chestplate"
   armor protection: .6
@@ -44,7 +83,61 @@ Knight Boots:
   armor protection: .24
   agility: .2
   description: "The generic boots of any good knight."
+Orc Iron Legginsg:
+  type: "Armor Piece: Leggings"
+  armor protection: .28
+  agility: .15
+  description: "The generics leggings of Goblins and Yrch. These leggings continues more longer on your legs since Yrch and goblins don't wear boots.'"
+Orc Shredded Chestplate:
+  type: "Armor Piece: Chestplate"
+  armor protection: .32
+  agility: .15
+  description: "The generic chestplate of Goblins and Yrch."
+# Bags
 Stretched Bag:
   type: "Bag"
   inventory slots: 9
   description: "An old stretched bag that lets you transport 9 items."
+Orc Bag:
+  type: "Bag"
+  inventory slots: 3
+  description: "A generic orc bag that lets you transport 3 items."
+# Food
+Beef:
+  type: "Food"
+  max bonus: 0
+  healing level: 6
+  description: "A generic cooked beef than can restore your energy."
+Chicken:
+  type: "Food"
+  max bonus: 0
+  healing level: 4
+  description: "A generic cooked chicken leg that can restore your energy."
+Apple:
+  tpye: "Food"
+  max bonus: 0
+  healing level: 1
+  description: "Apples are not great for energy but are easy to find."
+Porkchop:
+  type: "Food"
+  max bonus: 0
+  healing level: 5
+  description: "Cooked porkchops are great food that restore your energy by a lot."
+Raw Salmon:
+  type: "Food"
+  max bonus: 0
+  healing level: 2
+  description: "A raw salmon may not be the best thing to eat but it's always better than nothing.'"
+# Misc
+Bone:
+  type: "Misc"
+  description: "An old bone that seems to come from a great beast."
+Wooden Stick:
+  type: "Misc"
+  description: "Small stick made of wood. They often come from forest-destroying Goblins."
+Wolf Skin:
+  type: "Misc"
+  description: "A warm wolf skin."
+Wolf Skull:
+  type: "Misc"
+  description: "A huge skull of a head of a Warg."

@@ -144,6 +144,7 @@ def run(play):
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "S: "+ COLOR_RESET_ALL + "Go south" + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "E: " + COLOR_RESET_ALL + "Go east" + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "W: " + COLOR_RESET_ALL + "Go west" + COLOR_RESET_ALL)
+    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "D: " + COLOR_RESET_ALL + "Access to your diary.")
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "I: " + COLOR_RESET_ALL + "View items. When in this view, type the name of an item to examine it." + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "P: " + COLOR_RESET_ALL + "Choose which item to equip on you. When in this view, type the name of an item to equip it." + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "Throw an item. When in this view, type the name of an item to throw it away." + COLOR_RESET_ALL)
@@ -368,6 +369,29 @@ def run(play):
                 print("You cannot go that way.")
             else:
                 player["x"] -= 1
+        elif command.lower().startswith('d'):
+            print("Elapsed Days: " + COLOR_RED + str(round(player["elapsed time game days"], 1)) + COLOR_RESET_ALL)
+            print("Known enemies:")
+            enemies_list = str(player["enemies list"])
+            enemies_list = enemies_list.replace("'None', ", '')
+            which_enemy = input("You have these enemies in your diary: " + enemies_list + " ")
+            print(" ")
+            if which_enemy == "None":
+                print("You don't know about that enemy.")
+            elif which_enemy in player["enemies list"]:
+                print("Name: " + which_enemy)
+                
+                # drops
+                enemy_drops = str(enemy[which_enemy]["inventory"])
+                enemy_drops = enemy_drops.replace('[', '')
+                enemy_drops = enemy_drops.replace(']', '')
+                enemy_drops = enemy_drops.replace("'", '')
+                print("Drops: " + str(enemy_drops))
+                
+                print("Description: " + enemy[which_enemy]["description"])
+            else:
+                print("You don't know about that enemy.")
+            print(" ")
         elif command.lower().startswith('i'):
             print("Current Health: " + COLOR_RED + str(player["health"]) + COLOR_RESET_ALL)
             print("Maximum Health: " + COLOR_RED + str(player["max health"]) + COLOR_RESET_ALL)
@@ -514,15 +538,17 @@ def run(play):
 
 if play == 1:
     play = run(1)
-    
-# get end time
-end_time = time.time()
 
 # calculate and convert elapsed time
+
+# get end time
+end_time = time.time()
+        
+# calculate elapsed time
 elapsed_time = end_time - start_time
 elapsed_time = round(elapsed_time, 2)
-
-game_elapsed_time = .0.004167 * elapsed_time # 60 seconds irl = 0.25 days in-game
+        
+game_elapsed_time = 0.004167 * elapsed_time # 60 seconds irl = 0.25 days in-game
 game_elapsed_time = round(game_elapsed_time, 2)
 
 player["elapsed time seconds"] = elapsed_time + player["elapsed time seconds"]

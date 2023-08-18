@@ -100,6 +100,8 @@ def get_enemy_stats(player, item, enemy, map, map_location):
     enemy_total_inventory = choosen_enemy["inventory"]
     enemy_items_number = len(enemy_total_inventory)
     choosen_item = enemy_total_inventory[random.randint(0, enemy_items_number - 1)]
+    
+    player["enemies list"].append(choose_rand_enemy)
 
 def fight(player, item, enemy, map, map_location, enemies_remaining):
     # import stats

@@ -388,6 +388,13 @@ def run(play):
 
                 print("Name: " + which_enemy)
 
+                print("Plural: " + enemy[which_enemy]["plural"])
+                enemy_average_damage = ( enemy[which_enemy]["damage"]["min damage"] + enemy[which_enemy]["damage"]["max damage"] ) / 2
+                enemy_average_health = ( enemy[which_enemy]["health"]["min spawning health"] + enemy[which_enemy]["health"]["max spawning health"] ) / 2
+                print("Average Damage: " + COLOR_RED + str(enemy_average_damage) + COLOR_RESET_ALL)
+                print("Average Health: " + COLOR_RED + str(enemy_average_health) + COLOR_RESET_ALL)
+                print("Agility: " + COLOR_RED + str(enemy[which_enemy]["agility"]) + COLOR_RESET_ALL)
+
                 # drops
                 enemy_drops = str(enemy[which_enemy]["inventory"])
                 enemy_drops = enemy_drops.replace('[', '')

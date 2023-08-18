@@ -295,11 +295,11 @@ def run(play):
                     already_encountered = True
                 battle.fight(player, item, enemy, map, map_location, enemies_remaining)
                 enemies_remaining -= 1
-            if round(random.uniform(.20, .50), 2) > .35:
-                if map["point" + str(map_location)]["enemy_type"] == "generic":
-                    list_enemies = ['Goblin', 'Orc', 'Orc Archer', 'Warg', "Cavern Troll"]
-                if map["point" + str(map_location)]["enemy_type"] == "black":
-                    list_enemies = ['Black Orc', 'Dark Marksman', 'Doomed Horror']
+            # if round(random.uniform(.20, .50), 2) > .35:
+            if map["point" + str(map_location)]["enemy_type"] == "generic":
+                list_enemies = ['Goblin', 'Orc', 'Orc Archer', 'Warg', "Cavern Troll"]
+            if map["point" + str(map_location)]["enemy_type"] == "black":
+                list_enemies = ['Black Orc', 'Dark Marksman', 'Doomed Horror']
 
             if player["health"] > 0:
                 choose_rand_enemy = random.randint(0, len(list_enemies) - 1)
@@ -412,6 +412,7 @@ def run(play):
             print("Maximum Health: " + COLOR_RED + str(player["max health"]) + COLOR_RESET_ALL)
             print("Armor Protection: " + COLOR_RED + str(player["armor protection"]) + COLOR_RESET_ALL)
             print("Agility: " + COLOR_RED + str(player["agility"]) + COLOR_RESET_ALL)
+            print("XP: " + COLOR_RED + str(player["xp"]) + COLOR_RESET_ALL)
             print(" ")
             # inventory slots
             print("Inventory Slots: " + COLOR_RED + str(player["inventory slots"]) + COLOR_RESET_ALL)

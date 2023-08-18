@@ -87,12 +87,12 @@ Orc Iron Legginsg:
   type: "Armor Piece: Leggings"
   armor protection: .28
   agility: .15
-  description: "The generics boots of Goblins and Yrch. These leggings continues more longer on your legs since Yrch and goblins don't wear boots.'"
+  description: "The generics leggings of Goblins and Yrch. These leggings continues more longer on your legs since Yrch and goblins don't wear boots.'"
 Orc Shredded Chestplate:
   type: "Armor Piece: Chestplate"
   armor protection: .32
   agility: .15
-  description: "The generic boots of Goblins and Yrch."
+  description: "The generic chestplate of Goblins and Yrch."
 # Bags
 Stretched Bag:
   type: "Bag"

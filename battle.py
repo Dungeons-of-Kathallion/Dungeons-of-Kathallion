@@ -25,25 +25,25 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
     player_agility = player["agility"]
     print(" ") # do not merge with possible actions text
     # load and create enemies list type
-            
+
     enemies_number = map["point" + str(map_location)]["enemy"]
-            
+
     if enemies_number > 1:
         print("You encounter a group of " + str(enemy_plural) + " that won't let you pass.")
     else:
         print("You find a/an " + str(enemy_singular) + " on your way.")
-                
+
     startup_action = input("[R]un Away, [F]ight, [U]se Item? ")
-            
+
     if startup_action.lower().startswith('r'):
         # run away chance
         if player["agility"] / round(random.uniform(1.10, 1.25), 2) > enemy_agility:
             print("You succeeded in running away from your enemy!")
-            fighting = False      
+            fighting = False
         else:
             print("You failed in running away from your enemy! You now have to fight him!")
     elif startup_action.lower().startswith('f'):
-           pass
+            pass
     elif startup_action.lower().startswith('u'):
         print(" ")
         item_input = input(str(player["inventory"]) + " ")
@@ -69,24 +69,26 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
             elif item_input in player["inventory"] and item[item_input]["type"] == "Armor Piece: Boots":
                 player["held boots"] = item_input
                 print("You are now wearing a/an ", player["held boots"])
-        
-            
+    else:
+        print("'" + startup_action + "' is not a valid option")
+
+
     print(" ")
 
 def get_enemy_stats(player, item, enemy, map, map_location):
     global enemy_singular, enemy_plural, enemy_max, enemy_health, enemy_max_damage, enemy_min_damage, enemy_agility, enemy_damage, choosen_item
     # load enemy stat
-            
+
     if map["point" + str(map_location)]["enemy_type"] == "generic":
         list_enemies = ['Goblin', 'Orc', 'Orc Archer', 'Warg', "Cavern Troll"]
     if map["point" + str(map_location)]["enemy_type"] == "black":
         list_enemies = ['Black Orc', 'Dark Marksman', 'Doomed Horror']
-    
+
     choose_rand_enemy = random.randint(0, len(list_enemies) - 1)
     choose_rand_enemy = list_enemies[choose_rand_enemy]
-                
+
     choosen_enemy = enemy[choose_rand_enemy]
-            
+
     # enemy stats
     enemy_singular = choose_rand_enemy
     enemy_plural = choosen_enemy["plural"]
@@ -96,13 +98,13 @@ def get_enemy_stats(player, item, enemy, map, map_location):
     enemy_min_damage = choosen_enemy["damage"]["min damage"]
     enemy_damage = 0
     enemy_agility = choosen_enemy["agility"]
-                
+
     # calculate enemy inventory stuff
-                
+
     enemy_total_inventory = choosen_enemy["inventory"]
     enemy_items_number = len(enemy_total_inventory)
     choosen_item = enemy_total_inventory[random.randint(0, enemy_items_number - 1)]
-    
+
     player["enemies list"].append(choose_rand_enemy)
 
 def fight(player, item, enemy, map, map_location, enemies_remaining):
@@ -112,17 +114,17 @@ def fight(player, item, enemy, map, map_location, enemies_remaining):
     armor_protection = player["armor protection"]
     player_agility = player["agility"]
     # load and create enemies list type
-            
+
     enemies_number = map["point" + str(map_location)]["enemy"]
 
     # while the player is still fighting (for run away)
-    
+
     while fighting:
 
         # while player still alive
         while player["health"] > 0:
             while turn:
-            
+
                 # print HP stats and possible actions for the player
 
                 print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL) + "; " + str(COLOR_BLUE) + "You: " + str(player["health"]) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(player["max health"]) + str(COLOR_RESET_ALL))
@@ -242,7 +244,7 @@ still_playing = True
 #                 player["held item"] = "Sword"
 #                 player["cheat"] = 0
 #                 player["xp"] -= 100
-                
+
 #         else:
 #             print("YOU DIED")
 #             player["health"] = 10

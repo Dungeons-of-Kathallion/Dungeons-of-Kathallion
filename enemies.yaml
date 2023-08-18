@@ -95,7 +95,7 @@ Cavern Troll:
   - Wolf Fur
   - Mace
   - Spear
-  
+  description: "Cavern Trolls are powerful but slow enemies. They can deal huge amounts of damages but they are quit easy to dodge."
 # Black enemies
 Black Orc:
   plural: "Black Yrch"

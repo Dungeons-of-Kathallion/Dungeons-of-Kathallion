@@ -26,7 +26,7 @@ with open("map.yaml") as f:
 
 with open("items.yaml") as f:
     item = yaml.safe_load(f)
-    
+
 with open("enemies.yaml") as f:
     enemy = yaml.safe_load(f)
 
@@ -40,7 +40,7 @@ res = []
 for search_for_saves in os.listdir():
     if search_for_saves.startswith("save_"):
         res.append(search_for_saves)
-        
+
 char1 = 'save_'
 char2 = '.yaml'
 
@@ -49,7 +49,7 @@ for idx, ele in enumerate(res):
 
 for idx, ele in enumerate(res):
     res[idx] = ele.replace(char2, '')
-        
+
 print(COLOR_STYLE_BRIGHT + "Current saves: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL)
 
 save_selection = input(COLOR_STYLE_BRIGHT + "Do you want to [o]pen saved game, create [n]ew game or [d]elete an existing save? " + COLOR_RESET_ALL)
@@ -76,7 +76,7 @@ elif save_selection.lower().startswith('o'):
         print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
         play = 0
         exit(1)
-    with open(save_file) as f:    
+    with open(save_file) as f:
         player = yaml.safe_load(f)
     play = 1
 elif save_selection.lower().startswith('q'):
@@ -166,15 +166,15 @@ def run(play):
         count = 0
         global_armor_protection = 0
         p = True
-        
+
         # loop to get player total armor protection
         while p:
             if count > ( player_items_number - 1 ):
                 p = False
             if p == True:
-            
+
                 player_items_select = player_items[int(count)]
-                
+
                 if item[player_items_select]["type"] == "Armor Piece: Chestplate" and player["held chestplate"] == player_items_select:
                     item_armor_protection = item[player_items_select]["armor protection"]
                 elif item[player_items_select]["type"] == "Armor Piece: Boots" and player["held boots"] == player_items_select:
@@ -183,15 +183,15 @@ def run(play):
                     item_armor_protection = item[player_items_select]["armor protection"]
                 else:
                     item_armor_protection = 0
-                
+
                 global_armor_protection += item_armor_protection
-                
+
                 count += 1
-                
+
         global_armor_protection = round(global_armor_protection, 2)
-             
+
         player["armor protection"] = global_armor_protection
-        
+
         # calculate player agility and
         # write it to the save file
         player_items = player["inventory"]
@@ -199,15 +199,15 @@ def run(play):
         count = 0
         global_agility = 0
         p = True
-        
+
         # loop to get player total agility
         while p:
             if count > ( player_items_number - 1 ):
                 p = False
             if p == True:
-            
+
                 player_items_select = player_items[int(count)]
-                
+
                 if item[player_items_select]["type"] == "Armor Piece: Chestplate" and player["held chestplate"] == player_items_select:
                     item_agility = item[player_items_select]["agility"]
                 elif item[player_items_select]["type"] == "Armor Piece: Boots" and player["held boots"] == player_items_select:
@@ -218,14 +218,14 @@ def run(play):
                     item_agility = item[player_items_select]["agility"]
                 else:
                     item_agility = 0
-                
+
                 global_agility += item_agility
-                
+
                 count += 1
-             
+
         global_agility = round(global_agility, 2)
         player["agility"] = global_agility
-        
+
         # calculate remaining inventory slots
         # and write it to the save files
         p2 = True
@@ -233,30 +233,30 @@ def run(play):
         global_inventory_slots = 0
         player_items = player["inventory"]
         player_items_number = len(player_items)
-        
+
         # loop to get player total inventory slots
         while p2:
             if count2 > ( player_items_number - 1 ):
                 p2 = False
             if p2 == True:
-                
+
                 player_items_select = player_items[int(count2)]
-                
+
                 if item[player_items_select]["type"] == "Bag":
                     item_invetory_slot = item[player_items_select]["inventory slots"]
                 else:
                     item_invetory_slot = 0
-                
+
                 global_inventory_slots += item_invetory_slot
-                
+
                 count2 += 1
-                
+
             player["inventory slots"] = global_inventory_slots
-        
+
         # calculate remaining item slots
-        
+
         player["inventory slots remaining"] = int(player["inventory slots"]) - int(player_items_number)
-        
+
         map_location = search(player["x"], player["y"])
         map_location_x = search_specific_x()
         map_location_y = search_specific_y()
@@ -300,16 +300,16 @@ def run(play):
                     list_enemies = ['Goblin', 'Orc', 'Orc Archer', 'Warg', "Cavern Troll"]
                 if map["point" + str(map_location)]["enemy_type"] == "black":
                     list_enemies = ['Black Orc', 'Dark Marksman', 'Doomed Horror']
-        
+
                 choose_rand_enemy = random.randint(0, len(list_enemies) - 1)
                 choose_rand_enemy = list_enemies[choose_rand_enemy]
                 choosen_enemy = enemy[choose_rand_enemy]
-                
+
                 enemy_total_inventory = choosen_enemy["inventory"]
-                
+
                 enemy_items_number = len(enemy_total_inventory)
                 choosen_item = enemy_total_inventory[random.randint(0, enemy_items_number - 1)]
-                
+
                 drop = input("Your enemy dropped a/an " + choosen_item + ". Do you want to grab it (y/n)?")
                 if drop.lower().startswith('y'):
                     if choosen_item in player["inventory"] and item[choosen_item]["type"] == "Utility":
@@ -381,15 +381,20 @@ def run(play):
             if which_enemy == "None":
                 print("You don't know about that enemy.")
             elif which_enemy in player["enemies list"]:
+
+                enemy_thumbnail = "imgs/" + which_enemy + ".txt"
+                with open(enemy_thumbnail, 'r') as f:
+                    print(f.read())
+
                 print("Name: " + which_enemy)
-                
+
                 # drops
                 enemy_drops = str(enemy[which_enemy]["inventory"])
                 enemy_drops = enemy_drops.replace('[', '')
                 enemy_drops = enemy_drops.replace(']', '')
                 enemy_drops = enemy_drops.replace("'", '')
                 print("Drops: " + str(enemy_drops))
-                
+
                 print("Description: " + enemy[which_enemy]["description"])
             else:
                 print("You don't know about that enemy.")
@@ -545,11 +550,11 @@ if play == 1:
 
 # get end time
 end_time = time.time()
-        
+
 # calculate elapsed time
 elapsed_time = end_time - start_time
 elapsed_time = round(elapsed_time, 2)
-        
+
 game_elapsed_time = 0.004167 * elapsed_time # 60 seconds irl = 0.25 days in-game
 game_elapsed_time = round(game_elapsed_time, 2)
 

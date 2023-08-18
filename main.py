@@ -25,7 +25,6 @@ with open("items.yaml") as f:
     
 with open("enemies.yaml") as f:
     enemy = yaml.safe_load(f)
-    print(enemy)
 
 with open("start.yaml") as f:
     start_player = yaml.safe_load(f)

@@ -21,16 +21,16 @@ fought_enemy = False
 separator = COLOR_STYLE_BRIGHT + "###############################" + COLOR_RESET_ALL
 
 # opens data files
-with open("map.yaml") as f:
+with open("data/map.yaml") as f:
     map = yaml.safe_load(f)
 
-with open("items.yaml") as f:
+with open("data/items.yaml") as f:
     item = yaml.safe_load(f)
 
-with open("enemies.yaml") as f:
+with open("data/enemies.yaml") as f:
     enemy = yaml.safe_load(f)
 
-with open("start.yaml") as f:
+with open("data/start.yaml") as f:
     start_player = yaml.safe_load(f)
 
 # first text you see

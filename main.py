@@ -551,6 +551,7 @@ def run(play):
             return play
         else:
             print("'" + command + "' is not a valid command")
+            print(" ")
 
 if play == 1:
     play = run(1)

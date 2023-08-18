@@ -311,7 +311,7 @@ def run(play):
                 enemy_items_number = len(enemy_total_inventory)
                 choosen_item = enemy_total_inventory[random.randint(0, enemy_items_number - 1)]
 
-                drop = input("Your enemy dropped a/an " + choosen_item + ". Do you want to grab it (y/n)?")
+                drop = input("Your enemy dropped a/an " + choosen_item + ". Do you want to grab it (y/n)? ")
                 if drop.lower().startswith('y'):
                     if choosen_item in player["inventory"] and item[choosen_item]["type"] == "Utility":
                         print("You cannot take that item")

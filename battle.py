@@ -162,7 +162,7 @@ def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
                                 player["health"] += item[item_input]["healing level"]
                             player["max health"] += item[item_input]["max bonus"]
                             player["inventory"].remove(item_input)
-                         # hold weapon/armor piece if it is one
+                        # hold weapon/armor piece if it is one
                         if item_input in player["inventory"] and item[item_input]["type"] == "Weapon":
                             player["held item"] = item_input
                             print("You are now holding a/an ", player["held item"])

@@ -35,6 +35,8 @@ if plugin_vanila.lower().startswith('p'):
 
     with open(what_plugin + "/start.yaml") as f:
         start_player = yaml.safe_load(f)
+    with open(what_plugin + "/lists.yaml") as f:
+        lists = yaml.safe_load(f)
 else:
     with open("data/map.yaml") as f:
         map = yaml.safe_load(f)
@@ -48,15 +50,18 @@ else:
     with open("data/start.yaml") as f:
         start_player = yaml.safe_load(f)
 
+    with open("data/lists.yaml") as f:
+        lists = yaml.safe_load(f)
+
 # first text you see
 
 res = []
 
-for search_for_saves in os.listdir():
-    if search_for_saves.startswith("saves/save_"):
+for search_for_saves in os.listdir('saves/'):
+    if search_for_saves.startswith("save_"):
         res.append(search_for_saves)
 
-char1 = 'saves/save_'
+char1 = 'save_'
 char2 = '.yaml'
 
 for idx, ele in enumerate(res):
@@ -308,17 +313,14 @@ def run(play):
             enemies_remaining = map["point" + str(map_location)]["enemy"]
             already_encountered = False
             while enemies_remaining > 0:
-                battle.get_enemy_stats(player, item, enemy, map, map_location)
+                battle.get_enemy_stats(player, item, enemy, map, map_location, lists)
                 if not already_encountered:
-                    battle.encounter_text_show(player, item, enemy, map, map_location, enemies_remaining)
+                    battle.encounter_text_show(player, item, enemy, map, map_location, enemies_remaining, lists)
                     already_encountered = True
-                battle.fight(player, item, enemy, map, map_location, enemies_remaining)
+                battle.fight(player, item, enemy, map, map_location, enemies_remaining, lists)
                 enemies_remaining -= 1
             # if round(random.uniform(.20, .50), 2) > .35:
-            if map["point" + str(map_location)]["enemy type"] == "generic":
-                list_enemies = ['Goblin', 'Orc', 'Orc Archer', 'Warg', "Cavern Troll"]
-            if map["point" + str(map_location)]["enemy type"] == "black":
-                list_enemies = ['Black Orc', 'Dark Marksman', 'Doomed Horror']
+            list_enemies = lists[ map["point" + str(map_location)]["enemy type"]]
 
             if player["health"] > 0:
                 choose_rand_enemy = random.randint(0, len(list_enemies) - 1)

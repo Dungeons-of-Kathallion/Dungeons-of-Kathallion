@@ -11,7 +11,7 @@ defend = 0
 turn = True
 fighting = True
 
-def encounter_text_show(player, item, enemy, map, map_location, enemies_remaining):
+def encounter_text_show(player, item, enemy, map, map_location, enemies_remaining, lists):
     # import stats
     global turn, defend, fighting, already_encountered
     global enemy_singular, enemy_plural, enemy_max, enemy_health, enemy_max_damage, enemy_min_damage, enemy_agility, enemy_damage, choosen_item
@@ -71,14 +71,11 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
 
     print(" ")
 
-def get_enemy_stats(player, item, enemy, map, map_location):
+def get_enemy_stats(player, item, enemy, map, map_location, lists):
     global enemy_singular, enemy_plural, enemy_max, enemy_health, enemy_max_damage, enemy_min_damage, enemy_agility, enemy_damage, choosen_item
     # load enemy stat
 
-    if map["point" + str(map_location)]["enemy type"] == "generic":
-        list_enemies = ['Goblin', 'Orc', 'Orc Archer', 'Warg', "Cavern Troll"]
-    if map["point" + str(map_location)]["enemy type"] == "black":
-        list_enemies = ['Black Orc', 'Dark Marksman', 'Doomed Horror']
+    list_enemies = lists[ map["point" + str(map_location)]["enemy type"]]
 
     choose_rand_enemy = random.randint(0, len(list_enemies) - 1)
     choose_rand_enemy = list_enemies[choose_rand_enemy]
@@ -103,7 +100,7 @@ def get_enemy_stats(player, item, enemy, map, map_location):
 
     player["enemies list"].append(choose_rand_enemy)
 
-def fight(player, item, enemy, map, map_location, enemies_remaining):
+def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
     # import stats
     global turn, defend, fighting, already_encountered
     global enemy_singular, enemy_plural, enemy_max, enemy_health, enemy_max_damage, enemy_min_damage, enemy_agility, enemy_damage, choosen_item

@@ -52,8 +52,8 @@ else:
 
 res = []
 
-for search_for_saves in os.listdir():
-    if search_for_saves.startswith("saves/save_"):
+for search_for_saves in os.listdir('saves/'):
+    if search_for_saves.startswith("save_"):
         res.append(search_for_saves)
 
 char1 = 'save_'

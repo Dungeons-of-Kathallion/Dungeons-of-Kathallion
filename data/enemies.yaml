@@ -58,6 +58,7 @@ Orc Archer:
   - Orc Iron Leggings
   - Orc Bow
   - Orc Bag
+  - Orc Shield
   - Wooden Stick
   description: "The Yrch are specialized in bows and are not different from other Yrch."
 Warg:
@@ -114,6 +115,7 @@ Black Orc:
   - Spear
   - Orc Shredded Chestplate
   - Orc Bag
+  - Warg Fur Shield
   description: "Black Yrch are an old species of the Yrch, which are way more powerful, but you won't see them often during your journey.'"
 Dark Marksman:
   plural: "Dark Marksmen"

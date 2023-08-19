@@ -3,7 +3,11 @@ import yaml
 import pickle
 import battle
 import os
+import sys
 import time
+import enquiries
+import fade
+import subprocess
 from colorama import Fore, Back, Style, deinit, init
 from colors import *
 
@@ -13,6 +17,8 @@ start_time = time.time()
 # initialize colorama
 init()
 
+os.system('clear')
+
 # says you are not playing.
 play = 0
 
@@ -20,112 +26,190 @@ fought_enemy = False
 
 separator = COLOR_STYLE_BRIGHT + "###############################" + COLOR_RESET_ALL
 
-# opens data files
-plugin_vanila = input("Do you want to use [p]lugin or [v]anila data files? ")
-if plugin_vanila.lower().startswith('p'):
-    what_plugin = input("What plugin do you want to open? (use the name of the downloaded file) ")
-    with open(what_plugin + "/map.yaml") as f:
-        map = yaml.safe_load(f)
+def print_title():
+    with open('imgs/Title.txt', 'r') as f:
+        faded_text = fade.fire(f.read())
+        print(faded_text)
 
-    with open(what_plugin + "/items.yaml") as f:
-        item = yaml.safe_load(f)
+def print_speech_text_effect(text):
+    text = text + "\n"
+    for character in text:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(.05)
 
-    with open(what_plugin + "/enemies.yaml") as f:
-        enemy = yaml.safe_load(f)
-
-    with open(what_plugin + "/start.yaml") as f:
-        start_player = yaml.safe_load(f)
-    with open(what_plugin + "/lists.yaml") as f:
-        lists = yaml.safe_load(f)
-else:
-    with open("data/map.yaml") as f:
-        map = yaml.safe_load(f)
-
-    with open("data/items.yaml") as f:
-        item = yaml.safe_load(f)
-
-    with open("data/enemies.yaml") as f:
-        enemy = yaml.safe_load(f)
-
-    with open("data/start.yaml") as f:
-        start_player = yaml.safe_load(f)
-
-    with open("data/lists.yaml") as f:
-        lists = yaml.safe_load(f)
-
-# first text you see
-
-res = []
-
-for search_for_saves in os.listdir('saves/'):
-    if search_for_saves.startswith("save_"):
-        res.append(search_for_saves)
-
-char1 = 'save_'
-char2 = '.yaml'
-
-for idx, ele in enumerate(res):
-    res[idx] = ele.replace(char1, '')
-
-for idx, ele in enumerate(res):
-    res[idx] = ele.replace(char2, '')
-
-print(COLOR_STYLE_BRIGHT + "Current saves: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL)
-
-save_selection = input(COLOR_STYLE_BRIGHT + "Do you want to [o]pen saved game, create [n]ew game or [d]elete an existing save? " + COLOR_RESET_ALL)
-
-if save_selection.lower().startswith('n'):
-    enter_save_name = input("Please name your save: ")
-    player = start_player
-    dumped = yaml.dump(player)
-    save_name = "saves/save_" + enter_save_name + ".yaml"
-    check_file = os.path.isfile(save_name)
-    if check_file == True:
-        print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Save file '" + save_name + "'" + " already exists" + COLOR_RESET_ALL)
-        play = 0
-        exit(1)
-    with open(save_name, "w") as f:
-        f.write(dumped)
-    save_file = save_name
-    play = 1
-elif save_selection.lower().startswith('o'):
-    open_save = input("Please choose a save to open: ")
-    save_file = "saves/save_" + open_save + ".yaml"
-    check_file = os.path.isfile(save_file)
-    if check_file == False:
-        print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
-        play = 0
-        exit(1)
-    with open(save_file) as f:
-        player = yaml.safe_load(f)
-    play = 1
-elif save_selection.lower().startswith('q'):
-    play = 0
+def exit_game():
+    time.sleep(1.5)
+    print(COLOR_YELLOW + "Warning: closing game now" + COLOR_RESET_ALL)
+    time.sleep(.5)
+    os.system('clear')
     exit(1)
-elif save_selection.lower().startswith('d'):
-    delete_save = input("Please choose a save to delete: ")
-    save_file = "saves/save_" + delete_save + ".yaml"
-    check_file = os.path.isfile(save_file)
-    if check_file == False:
-        print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
-        play = 0
-        exit(1)
-    with open(save_file) as f:
-        verify = input("Are you sure you want to delete the following save (y/n)? ")
-        if verify == "y":
-            save_file = "saves/save_" + delete_save + ".yaml"
-            player = "placeholder, do not delete"
-            os.remove(save_file)
-            play = 0
-        if verify == "n":
-            player = "placeholder, do not delete"
-            print("Aborting current process...")
-            play = 0
-    exit(1)
-else:
-    print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: That option is not allowed." + COLOR_RESET_ALL)
-    play = 0
-    exit(1)
+
+menu = True
+
+# main menu start
+while menu:
+    time.sleep(.5)
+    os.system('clear')
+    print_title()
+
+    options = ['Play Game', 'Manage Saves', 'Preferences', 'Quit']
+    choice = enquiries.choose('', options)
+    os.system('clear')
+
+    print_title()
+
+    if choice == 'Play Game':
+        options = ['Play Vanilla', 'Play Plugin']
+        choice = enquiries.choose('', options)
+
+        # load data files
+        if choice == 'Play Plugin':
+            text = "What plugin do you want to open? (use the name of the downloaded file) "
+            print_speech_text_effect(text)
+            what_plugin = input("")
+            with open(what_plugin + "/map.yaml") as f:
+                map = yaml.safe_load(f)
+
+            with open(what_plugin + "/items.yaml") as f:
+                item = yaml.safe_load(f)
+
+            with open(what_plugin + "/enemies.yaml") as f:
+                enemy = yaml.safe_load(f)
+
+            with open(what_plugin + "/start.yaml") as f:
+                start_player = yaml.safe_load(f)
+            with open(what_plugin + "/lists.yaml") as f:
+                lists = yaml.safe_load(f)
+        else:
+            with open("data/map.yaml") as f:
+                map = yaml.safe_load(f)
+
+            with open("data/items.yaml") as f:
+                item = yaml.safe_load(f)
+
+            with open("data/enemies.yaml") as f:
+                enemy = yaml.safe_load(f)
+
+            with open("data/start.yaml") as f:
+                start_player = yaml.safe_load(f)
+
+            with open("data/lists.yaml") as f:
+                lists = yaml.safe_load(f)
+
+        text = "Please select an action:"
+        print_speech_text_effect(text)
+        options = ['Open Save', 'New Save']
+        choice = enquiries.choose('', options)
+
+        if choice == 'Open Save':
+            res = []
+
+            for search_for_saves in os.listdir('saves/'):
+                if search_for_saves.startswith("save_"):
+                    res.append(search_for_saves)
+
+            char1 = 'save_'
+            char2 = '.yaml'
+
+            for idx, ele in enumerate(res):
+                res[idx] = ele.replace(char1, '')
+
+            for idx, ele in enumerate(res):
+                res[idx] = ele.replace(char2, '')
+
+            text = "Please select a save to open."
+            print_speech_text_effect(text)
+            open_save = input(COLOR_STYLE_BRIGHT + "Current saves: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL + " ")
+
+            save_file = "saves/save_" + open_save + ".yaml"
+            check_file = os.path.isfile(save_file)
+            if check_file == False:
+                print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
+                play = 0
+                exit(1)
+            with open(save_file) as f:
+                player = yaml.safe_load(f)
+            play = 1
+            menu = False
+        else:
+            text = "Please name your save: "
+            print_speech_text_effect(text)
+            enter_save_name = input('> ')
+            player = start_player
+            dumped = yaml.dump(player)
+            save_name = "saves/save_" + enter_save_name + ".yaml"
+            check_file = os.path.isfile(save_name)
+            if check_file == True:
+                print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Save file '" + save_name + "'" + " already exists" + COLOR_RESET_ALL)
+                play = 0
+                exit_game()
+            with open(save_name, "w") as f:
+                f.write(dumped)
+            save_file = save_name
+            play = 1
+            time.sleep(.5)
+            menu = False
+
+    elif choice == 'Manage Saves':
+
+        res = []
+
+        for search_for_saves in os.listdir('saves/'):
+            if search_for_saves.startswith("save_"):
+                res.append(search_for_saves)
+
+        char1 = 'save_'
+        char2 = '.yaml'
+
+        for idx, ele in enumerate(res):
+            res[idx] = ele.replace(char1, '')
+
+        for idx, ele in enumerate(res):
+            res[idx] = ele.replace(char2, '')
+
+        text = "Please choose an action."
+        print_speech_text_effect(text)
+        options = ['Edit Save', 'Delete Save']
+        choice = enquiries.choose('', options)
+        if choice == 'Edit Save':
+            text = "Please select a save to edit."
+            print_speech_text_effect(text)
+            open_save = input(COLOR_STYLE_BRIGHT + "Current saves: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL + " ")
+            check_file = os.path.isfile("saves/save_" + open_save + ".yaml")
+            if check_file == False:
+                print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Save file '" + "saves/save_" + open_save + ".yaml" + "'" + " does not exists" + COLOR_RESET_ALL)
+                play = 0
+                start_main_menu()
+            text = "Select an action for the selected save."
+            print_speech_text_effect(text)
+            options = ['Rename Save', 'Manually Edit Save']
+            choice = enquiries.choose('', options)
+            if choice == 'Rename Save':
+                rename_name = input("Select a new name for the save: ")
+                os.rename("saves/save_" + open_save + ".yaml", "saves/save_" + rename_name + ".yaml")
+            else:
+                save_to_open ="saves/save_" + open_save + ".yaml"
+                try:
+                    editor = os.environ['EDITOR']
+                except KeyError:
+                    editor = 'nano'
+                subprocess.call([editor, save_to_open])
+        else:
+            text = "Please select a save to delete."
+            print_speech_text_effect(text)
+            open_save = input(COLOR_STYLE_BRIGHT + "Current saves: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL + " ")
+            check_file = os.path.isfile("saves/save_" + open_save + ".yaml")
+            if check_file == False:
+                print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Save file '" + "saves/save_" + open_save + ".yaml" + "'" + " does not exists" + COLOR_RESET_ALL)
+                play = 0
+            check = input("Are you sure you want to delete the following save (y/n)")
+            if check.lower().startswith('y'):
+                os.remove("saves/save_" + open_save + ".yaml")
+    elif choice == 'Preferences':
+        text = ""
+    else:
+        exit_game()
 
 # funcion to search through the map file
 def search(x, y):
@@ -394,6 +478,7 @@ def run(play):
             else:
                 player["x"] -= 1
         elif command.lower().startswith('d'):
+            print("Adventurer Name: " + COLOR_GREEN + str(res[0]) + COLOR_RESET_ALL)
             print("Elapsed Days: " + COLOR_RED + str(round(player["elapsed time game days"], 1)) + COLOR_RESET_ALL)
             print("Known enemies:")
             enemies_list = str(player["enemies list"])
@@ -553,8 +638,8 @@ def run(play):
                     player["held leggings"] = which_item
                     print("Equipped a/an " + which_item)
                 elif item[which_item]["type"] == "Armor Piece: Shield":
-                     player["held shield"] = which_item
-                     print("Equipped a/an " + which_item)
+                    player["held shield"] = which_item
+                    print("Equipped a/an " + which_item)
                 else:
                     print("You cannot equip a/an " + which_item)
                 print(" ")
@@ -611,4 +696,5 @@ with open(save_file_quit, "w") as f:
 
 # deinitialize colorame
 deinit()
+os.system('clear')
 

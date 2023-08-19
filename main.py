@@ -56,7 +56,7 @@ for search_for_saves in os.listdir():
     if search_for_saves.startswith("saves/save_"):
         res.append(search_for_saves)
 
-char1 = 'saves/save_'
+char1 = 'save_'
 char2 = '.yaml'
 
 for idx, ele in enumerate(res):

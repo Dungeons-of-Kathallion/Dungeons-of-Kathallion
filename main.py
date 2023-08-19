@@ -320,10 +320,7 @@ def run(play):
                 battle.fight(player, item, enemy, map, map_location, enemies_remaining, lists)
                 enemies_remaining -= 1
             # if round(random.uniform(.20, .50), 2) > .35:
-            if map["point" + str(map_location)]["enemy type"] == "generic":
-                list_enemies = lists['generic']
-            if map["point" + str(map_location)]["enemy type"] == "black":
-                list_enemies = lists['black']
+            list_enemies = lists[ map["point" + str(map_location)]["enemy type"]]
 
             if player["health"] > 0:
                 choose_rand_enemy = random.randint(0, len(list_enemies) - 1)

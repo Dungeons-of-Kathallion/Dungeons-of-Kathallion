@@ -9,6 +9,8 @@ import enquiries
 import fade
 import subprocess
 import curses
+import git
+from git import Repo
 from curses import wrapper
 from colorama import Fore, Back, Style, deinit, init
 from colors import *
@@ -94,7 +96,7 @@ while menu:
     os.system('clear')
     print_title()
 
-    options = ['Play Game', 'Manage Saves', 'Preferences', 'Quit']
+    options = ['Play Game', 'Manage Saves', 'Preferences', 'Check Update', 'Quit']
     choice = enquiries.choose('', options)
     os.system('clear')
 
@@ -276,6 +278,15 @@ while menu:
         except KeyError:
             editor = 'nano'
         subprocess.call([editor, "preferences.yaml"])
+    elif choice == 'Check Update':
+        text = "Checking for updates..."
+        print_speech_text_effect(text)
+        repo = Repo('.git')
+        assert not repo.bare
+        git = repo.git
+        git.pull()
+        text = "Finished Updating."
+        print_speech_text_effect(text)
     else:
         exit(1)
 

@@ -30,6 +30,13 @@ fought_enemy = False
 
 separator = COLOR_STYLE_BRIGHT + "###############################" + COLOR_RESET_ALL
 
+# get terminal size
+import fcntl, termios, struct
+h, w, hp, wp = struct.unpack('HHHH',
+    fcntl.ioctl(0, termios.TIOCGWINSZ,
+    struct.pack('HHHH', 0, 0, 0, 0)))
+term_width = w
+
 def print_title():
     if preferences["theme"] == "OFF":
         with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
@@ -38,6 +45,7 @@ def print_title():
         if preferences["theme"] == "blackwhite":
             with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
                 faded_text = fade.blackwhite(f.read())
+                faded_text = faded_text.center(109)
                 print(faded_text)
         elif preferences["theme"] == "purplepink":
             with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:

@@ -640,7 +640,15 @@ def run(play):
             else:
                 print("You are holding a/an " + COLOR_RED + str(player["held shield"]) + COLOR_RESET_ALL)
             print(" ")
-            which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
+            player_inventory = str(player["inventory"])
+            player_inventory = player_inventory.replace("'", '')
+            player_inventory = player_inventory.replace("[", '')
+            player_inventory = player_inventory.replace("]", '')
+            player_inventory = player_inventory.replace(", ", '\n')
+            text = "You have these items in your inventory: "
+            print_speech_text_effect(text)
+            print(player_inventory)
+            which_item = input("> ")
             if which_item in player["inventory"]:
                 print(" ")
                 print("Name: " + which_item)
@@ -681,7 +689,17 @@ def run(play):
                 print("You are currently holding no shield")
             else:
                 print("You are holding a/an " + COLOR_RED + player["held shield"] + COLOR_RESET_ALL)
-            which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
+            print(" ")
+            player_inventory = str(player["inventory"])
+            player_inventory = player_inventory.replace("'", '')
+            player_inventory = player_inventory.replace("[", '')
+            player_inventory = player_inventory.replace("]", '')
+            player_inventory = player_inventory.replace(", ", '\n')
+            text = "You have these items in your inventory: "
+            print_speech_text_effect(text)
+            print(player_inventory)
+            which_item = input("> ")
+            print(" ")
             if which_item in player["inventory"]:
                 ask = input("You won't be able to get this item back if your throw it away. Are you sure you want to throw away this item? (y/n) ")
                 if ask.lower().startswith('y'):
@@ -727,7 +745,17 @@ def run(play):
                 print("You are currently holding no shield")
             else:
                 print("You are holding a/an " + COLOR_RED + player["held shield"] + COLOR_RESET_ALL)
-            which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
+            print(" ")
+            player_inventory = str(player["inventory"])
+            player_inventory = player_inventory.replace("'", '')
+            player_inventory = player_inventory.replace("[", '')
+            player_inventory = player_inventory.replace("]", '')
+            player_inventory = player_inventory.replace(", ", '\n')
+            text = "You have these items in your inventory: "
+            print_speech_text_effect(text)
+            print(player_inventory)
+            which_item = input("> ")
+            print(" ")
             if which_item in player["inventory"]:
                 if item[which_item]["type"] == "Weapon":
                     player["held item"] = which_item

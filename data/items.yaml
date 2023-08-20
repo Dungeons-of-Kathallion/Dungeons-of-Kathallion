@@ -90,7 +90,7 @@ Knight Boots:
   description: "The generic boots of any good knight."
 Orc Iron Leggings:
   type: "Armor Piece: Leggings"
-  armor protection: .28
+  armor protection: .32
   agility: .15
   description: "The generics leggings of Goblins and Yrch. These leggings continue further along on your legs since Yrch and goblins don't wear boots.'"
 Orc Shredded Chestplate:

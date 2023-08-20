@@ -4,6 +4,7 @@ EXAMPLE*
 __pycache__
 __pycache__/**
 **/save_*
+**/~0*
 plugins/
 plugins/**
 preferences.yaml

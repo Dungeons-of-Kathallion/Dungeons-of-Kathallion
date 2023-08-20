@@ -106,9 +106,22 @@ while menu:
 
         # load data files
         if choice == 'Play Plugin':
-            text = "What plugin do you want to open? (use the name of the downloaded file) "
+            text = "Please select a plugin to use"
             print_speech_text_effect(text)
-            what_plugin = input("> ")
+            res = []
+
+            for search_for_saves in os.listdir('plugins/'):
+                res.append(search_for_saves)
+            
+            res.remove('.gitkeep')
+
+            what_plugin = input(COLOR_STYLE_BRIGHT + "Current plugins: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL + " ")
+
+            check_file = os.path.isfile(what_plugin)
+            if check_file == False:
+                print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find plugin '" + what_plugin + "'" + COLOR_RESET_ALL)
+                play = 0
+                exit(1)
             with open(what_plugin + "/map.yaml") as f:
                 map = yaml.safe_load(f)
 

@@ -296,6 +296,7 @@ def run(play):
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "I: " + COLOR_RESET_ALL + "View items. When in this view, type the name of an item to examine it." + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "P: " + COLOR_RESET_ALL + "Choose which item to equip on you. When in this view, type the name of an item to equip it." + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "Throw an item. When in this view, type the name of an item to throw it away." + COLOR_RESET_ALL)
+    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "H: " + COLOR_RESET_ALL + "Print this page")
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Q: " + COLOR_RESET_ALL + "Quit game")
     print(" ")
     print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Hints:" + COLOR_RESET_ALL)
@@ -731,6 +732,24 @@ def run(play):
             else:
                 print("You do not have a map.")
                 print(" ")
+            finished = input(" ")
+        elif command.lower().startswith('h'):
+            os.system('clear')
+            print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Reserved keys:" + COLOR_RESET_ALL)
+            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "N: "+ COLOR_RESET_ALL + "Go north" + COLOR_RESET_ALL)
+            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "S: "+ COLOR_RESET_ALL + "Go south" + COLOR_RESET_ALL)
+            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "E: " + COLOR_RESET_ALL + "Go east" + COLOR_RESET_ALL)
+            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "W: " + COLOR_RESET_ALL + "Go west" + COLOR_RESET_ALL)
+            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "D: " + COLOR_RESET_ALL + "Access to your diary.")
+            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "I: " + COLOR_RESET_ALL + "View items. When in this view, type the name of an item to examine it." + COLOR_RESET_ALL)
+            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "P: " + COLOR_RESET_ALL + "Choose which item to equip on you. When in this view, type the name of an item to equip it." + COLOR_RESET_ALL)
+            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "Throw an item. When in this view, type the name of an item to throw it away." + COLOR_RESET_ALL)
+            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "H: " + COLOR_RESET_ALL + "Print this page")
+            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Q: " + COLOR_RESET_ALL + "Quit game")
+            print(" ")
+            print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Hints:" + COLOR_RESET_ALL)
+            print("If you find an item on the ground, type the name of the item to take it.")
+            print("Some items have special triggers, which will often be stated in the description. Others can only be activated in certain situations, like in combat.")
             finished = input(" ")
         elif command in map["point" + str(map_location)]["item"]:
             if command not in player["inventory"]:

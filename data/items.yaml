@@ -110,7 +110,7 @@ Orc Shield:
   description: "A shield built for weight; used by the Black Yrch."
 Warg Fur Shield:
   type: "Armor Piece: Shield"
-  armor protection: .025
+  armor protection: .045
   agility: .15
   description: "A shredded orc shield with warg fur on it."
 # Bags

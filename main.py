@@ -8,6 +8,8 @@ import time
 import enquiries
 import fade
 import subprocess
+import curses
+from curses import wrapper
 from colorama import Fore, Back, Style, deinit, init
 from colors import *
 
@@ -27,9 +29,46 @@ fought_enemy = False
 separator = COLOR_STYLE_BRIGHT + "###############################" + COLOR_RESET_ALL
 
 def print_title():
-    with open('imgs/Title.txt', 'r') as f:
-        faded_text = fade.fire(f.read())
-        print(faded_text)
+    if preferences["theme"] == "OFF":
+        with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
+            print(f.read())
+    else:
+        if preferences["theme"] == "blackwhite":
+            with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
+                faded_text = fade.blackwhite(f.read())
+                print(faded_text)
+        elif preferences["theme"] == "purplepink":
+            with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
+                faded_text = fade.purplepink(f.read())
+                print(faded_text)
+        elif preferences["theme"] == "greenblue":
+            with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
+                faded_text = fade.greenblue(f.read())
+                print(faded_text)
+        elif preferences["theme"] == "water":
+            with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
+                faded_text = fade.water(f.read())
+                print(faded_text)
+        elif preferences["theme"] == "fire":
+            with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
+                faded_text = fade.fire(f.read())
+                print(faded_text)
+        elif preferences["theme"] == "pinkred":
+            with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
+                faded_text = fade.pinkred(f.read())
+                print(faded_text)
+        elif preferences["theme"] == "purpleblue":
+            with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
+                faded_text = fade.purpleblue(f.read())
+                print(faded_text)
+        elif preferences["theme"] == "brazil":
+            with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
+                faded_text = fade.brazil(f.read())
+                print(faded_text)
+        elif preferences["theme"] == "random":
+            with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
+                faded_text = fade.random(f.read())
+                print(faded_text)
 
 def print_speech_text_effect(text):
     text = text + "\n"
@@ -49,6 +88,8 @@ menu = True
 
 # main menu start
 while menu:
+    with open('preferences.yaml', 'r') as f:
+        preferences = yaml.safe_load(f)
     time.sleep(.5)
     os.system('clear')
     print_title()
@@ -180,7 +221,6 @@ while menu:
             if check_file == False:
                 print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Save file '" + "saves/save_" + open_save + ".yaml" + "'" + " does not exists" + COLOR_RESET_ALL)
                 play = 0
-                start_main_menu()
             text = "Select an action for the selected save."
             print_speech_text_effect(text)
             options = ['Rename Save', 'Manually Edit Save']
@@ -207,7 +247,11 @@ while menu:
             if check.lower().startswith('y'):
                 os.remove("saves/save_" + open_save + ".yaml")
     elif choice == 'Preferences':
-        text = ""
+        try:
+            editor = os.environ['EDITOR']
+        except KeyError:
+            editor = 'nano'
+        subprocess.call([editor, "preferences.yaml"])
     else:
         exit_game()
 
@@ -258,10 +302,26 @@ def run(play):
     print("If you find an item on the ground, type the name of the item to take it.")
     print("Some items have special triggers, which will often be stated in the description. Others can only be activated in certain situations, like in combat.")
     print(" ")
+
+    loading = 10
+    while loading > 0:
+        print("Loading game... ▅▃▁", end='\r')
+        time.sleep(.15)
+        print("Loading game... ▃▃▃", end='\r')
+        time.sleep(.15)
+        print("Loading game... ▁▃▅", end='\r')
+        time.sleep(.15)
+        print("Loading game... ▃▃▃", end='\r')
+        time.sleep(.15)
+        loading -= 1
+
     # Mapping stuff
 
     while play == 1:
         global player
+
+        # clear text
+        os.system('clear')
 
         # calculate player armor protection
         # and write it to the save file
@@ -449,6 +509,7 @@ def run(play):
                         return play
                 else:
                     print("You've cheated too much! No more lives!")
+                    time.sleep(1)
                     player = start_player
                     play = 0
                     return play
@@ -460,21 +521,25 @@ def run(play):
         elif command.lower().startswith('n'):
             if "North" in map["point" + str(map_location)]["blocked"]:
                 print("You cannot go that way.")
+                time.sleep(1)
             else:
                 player["y"] += 1
         elif command.lower().startswith('s'):
             if "South" in map["point" + str(map_location)]["blocked"]:
                 print("You cannot go that way.")
+                time.sleep(1)
             else:
                 player["y"] -= 1
         elif command.lower().startswith('e'):
             if "East" in map["point" + str(map_location)]["blocked"]:
                 print("You cannot go that way.")
+                time.sleep(1)
             else:
                 player["x"] += 1
         elif command.lower().startswith('w'):
             if "West" in map["point" + str(map_location)]["blocked"]:
                 print("You cannot go that way.")
+                time.sleep(1)
             else:
                 player["x"] -= 1
         elif command.lower().startswith('d'):
@@ -512,7 +577,7 @@ def run(play):
                 print("Description: " + enemy[which_enemy]["description"])
             else:
                 print("You don't know about that enemy.")
-            print(" ")
+            finished = input(" ")
         elif command.lower().startswith('i'):
             print("Current Health: " + COLOR_RED + str(player["health"]) + COLOR_RESET_ALL)
             print("Maximum Health: " + COLOR_RED + str(player["max health"]) + COLOR_RESET_ALL)
@@ -564,7 +629,7 @@ def run(play):
                 print(" ")
             else:
                 print("You do not have that item.")
-                print(" ")
+            finished = input(" ")
         elif command.lower().startswith('t'):
             # equipment
             if player["held item"] == " ":
@@ -610,7 +675,7 @@ def run(play):
                     print(" ")
             else:
                 print("You do not have that item.")
-                print(" ")
+            finished = input(" ")
         elif command.lower().startswith('p'):
             # equipment
             if player["held item"] == " ":
@@ -656,6 +721,7 @@ def run(play):
             else:
                 print("You do not have that item.")
                 print(" ")
+            time.sleep(1)
         elif command.lower().startswith('m'):
             if "Map" in player["inventory"]:
                 print("**|**")
@@ -665,6 +731,7 @@ def run(play):
             else:
                 print("You do not have a map.")
                 print(" ")
+            finished = input(" ")
         elif command in map["point" + str(map_location)]["item"]:
             if command not in player["inventory"]:
                 player["inventory"].append(command)
@@ -703,6 +770,10 @@ save_file_quit = save_file
 with open(save_file_quit, "w") as f:
     f.write(dumped)
 
+dumped = yaml.dump(preferences)
+
+with open('preferences.yaml', 'w') as f:
+    f.write(dumped)
 
 # deinitialize colorame
 deinit()

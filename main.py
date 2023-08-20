@@ -112,7 +112,7 @@ while menu:
 
             for search_for_saves in os.listdir('plugins/'):
                 res.append(search_for_saves)
-            
+
             res.remove('.gitkeep')
 
             what_plugin = input(COLOR_STYLE_BRIGHT + "Current plugins: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL + " ")
@@ -570,7 +570,14 @@ def run(play):
             print("Known enemies:")
             enemies_list = str(player["enemies list"])
             enemies_list = enemies_list.replace("'None', ", '')
-            which_enemy = input("You have these enemies in your diary: " + enemies_list + " ")
+            enemies_list = enemies_list.replace("'", '')
+            enemies_list = enemies_list.replace("[", '')
+            enemies_list = enemies_list.replace("]", '')
+            enemies_list = enemies_list.replace(", ", '\n')
+            text = "You have these enemies in your diary: "
+            print_speech_text_effect(text)
+            print(enemies_list)
+            which_enemy = input("> ")
             print(" ")
             if which_enemy == "None":
                 print("You don't know about that enemy.")

@@ -200,12 +200,15 @@ while menu:
             player = start_player
             dumped = yaml.dump(player)
             save_name = "saves/save_" + enter_save_name + ".yaml"
+            save_name_backup = "saves/~0 save_" + enter_save_name + ".yaml"
             check_file = os.path.isfile(save_name)
             if check_file == True:
                 print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Save file '" + save_name + "'" + " already exists" + COLOR_RESET_ALL)
                 play = 0
                 exit_game()
             with open(save_name, "w") as f:
+                f.write(dumped)
+            with open(save_name_backup, "w") as f:
                 f.write(dumped)
             save_file = save_name
             play = 1
@@ -266,6 +269,7 @@ while menu:
             check = input("Are you sure you want to delete the following save (y/n)")
             if check.lower().startswith('y'):
                 os.remove("saves/save_" + open_save + ".yaml")
+                os.remove("saves/~0 save_" + open_save + ".yaml")
     elif choice == 'Preferences':
         try:
             editor = os.environ['EDITOR']
@@ -273,7 +277,7 @@ while menu:
             editor = 'nano'
         subprocess.call([editor, "preferences.yaml"])
     else:
-        exit_game()
+        exit(1)
 
 # funcion to search through the map file
 def search(x, y):
@@ -874,6 +878,11 @@ dumped = yaml.dump(player)
 
 save_file_quit = save_file
 with open(save_file_quit, "w") as f:
+    f.write(dumped)
+
+save_name_backup = save_file.replace('save_', '~0 save_')
+
+with open(save_name_backup, "w") as f:
     f.write(dumped)
 
 dumped = yaml.dump(preferences)

@@ -133,8 +133,12 @@ while menu:
 
             with open("plugins/" + what_plugin + "/start.yaml") as f:
                 start_player = yaml.safe_load(f)
+
             with open("plugins/" + what_plugin + "/lists.yaml") as f:
                 lists = yaml.safe_load(f)
+
+            with open("plugins/" + what_plugin + "/zone.yaml") as f:
+                zone = yaml.safe_load(f)
         else:
             with open("data/map.yaml") as f:
                 map = yaml.safe_load(f)
@@ -150,6 +154,9 @@ while menu:
 
             with open("data/lists.yaml") as f:
                 lists = yaml.safe_load(f)
+
+            with open("data/zone.yaml") as f:
+                zone = yaml.safe_load(f)
 
         text = "Please select an action:"
         print_speech_text_effect(text)
@@ -433,11 +440,11 @@ def run(play):
                 player_items_select = player_items[int(count2)]
 
                 if item[player_items_select]["type"] == "Bag":
-                    item_invetory_slot = item[player_items_select]["inventory slots"]
+                    item_inventory_slot = item[player_items_select]["inventory slots"]
                 else:
-                    item_invetory_slot = 0
+                    item_inventory_slot = 0
 
-                global_inventory_slots += item_invetory_slot
+                global_inventory_slots += item_inventory_slot
 
                 count2 += 1
 
@@ -447,10 +454,21 @@ def run(play):
 
         player["inventory slots remaining"] = int(player["inventory slots"]) - int(player_items_number)
 
+
         map_location = search(player["x"], player["y"])
         map_location_x = search_specific_x()
         map_location_y = search_specific_y()
         map_zone = map["point" + str(map_location)]["map zone"]
+
+        # add current player location and map
+        # zone to visited areas in the player
+        # save file if there aren't there yet
+        if map_location not in player["visited points"]:
+            player["visited points"].append(map_location)
+
+        if map_zone not in player["visited zones"]:
+            player["visited zones"].append(map_zone)
+
         print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Coordinates:" + COLOR_RESET_ALL)
         print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "X: " + COLOR_RESET_ALL + str(map_location_x))
         print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Y: " + COLOR_RESET_ALL + str(map_location_y))
@@ -567,6 +585,20 @@ def run(play):
         elif command.lower().startswith('d'):
             print("Adventurer Name: " + COLOR_GREEN + str(res[0]) + COLOR_RESET_ALL)
             print("Elapsed Days: " + COLOR_RED + str(round(player["elapsed time game days"], 1)) + COLOR_RESET_ALL)
+            print(" ")
+            print("Visited Areas: ")
+            zones_list = str(player["visited zones"])
+            zones_list = zones_list.replace("'", '')
+            zones_list = zones_list.replace("[", '')
+            zones_list = zones_list.replace("]", '')
+            zones_list = zones_list.replace(", ", '\n')
+            print(zones_list)
+            which_zone = input("> ")
+            print(" ")
+            if which_zone in player["visited zones"]:
+                print("Name: " + zone[which_zone]["name"])
+                print("Description: " + zone[which_zone]["description"])
+            print(" ")
             print("Known enemies:")
             enemies_list = str(player["enemies list"])
             enemies_list = enemies_list.replace("'None', ", '')

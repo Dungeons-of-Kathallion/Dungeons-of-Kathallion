@@ -82,7 +82,7 @@ Broken Shield:
   type: "Armor Piece: Shield"
   armor protection: .05
   agility: .1
-  description: "A sheild from ancient times, cloven in two and left for travelers to find."
+  description: "A shield from ancient times, cloven in two and left for travelers to find."
 Knight Boots:
   type: "Armor Piece: Boots"
   armor protection: .24

@@ -743,6 +743,7 @@ def run(play):
             return play
         else:
             print("'" + command + "' is not a valid command")
+            time.sleep(2)
             print(" ")
 
 if play == 1:

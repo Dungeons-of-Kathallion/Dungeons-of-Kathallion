@@ -108,7 +108,7 @@ while menu:
         if choice == 'Play Plugin':
             text = "What plugin do you want to open? (use the name of the downloaded file) "
             print_speech_text_effect(text)
-            what_plugin = input("")
+            what_plugin = input("> ")
             with open(what_plugin + "/map.yaml") as f:
                 map = yaml.safe_load(f)
 

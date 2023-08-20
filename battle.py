@@ -1,5 +1,8 @@
 import yaml
 import random
+import os
+import sys
+import time
 from colors import *
 from colorama import Fore, Back, Style, init, deinit
 
@@ -20,6 +23,8 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
     # load and create enemies list type
 
     enemies_number = map["point" + str(map_location)]["enemy"]
+
+    os.system('clear')
 
     if enemies_number > 1:
         print("You encounter a group of " + str(enemy_plural) + " that won't let you pass.")
@@ -114,11 +119,11 @@ def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
     # while the player is still fighting (for run away)
 
     while fighting:
-
         # while player still alive
         while player["health"] > 0:
             while turn:
-
+                wait = input("Press ENTER to continue > ")
+                os.system('clear')
                 # print HP stats and possible actions for the player
 
                 print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL) + "; " + str(COLOR_BLUE) + "You: " + str(player["health"]) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(player["max health"]) + str(COLOR_RESET_ALL))

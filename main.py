@@ -609,7 +609,7 @@ def run(play):
             if player["held shield"] == " ":
                 print("You are currently holding no shield")
             else:
-                print("You are holding a/an " + COLOR_RED + player["held shield"] + COLOR_RESET_ALL)
+                print("You are holding a/an " + COLOR_RED + str(player["held shield"]) + COLOR_RESET_ALL)
             print(" ")
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
             if which_item in player["inventory"]:

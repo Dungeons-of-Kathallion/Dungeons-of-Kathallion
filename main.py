@@ -117,7 +117,7 @@ while menu:
 
             what_plugin = input(COLOR_STYLE_BRIGHT + "Current plugins: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL + " ")
 
-            check_file = os.path.isfile("plugins/" + what_plugin)
+            check_file = os.path.exists("plugins/" + what_plugin )
             if check_file == False:
                 print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find plugin '" + what_plugin + "'" + COLOR_RESET_ALL)
                 play = 0

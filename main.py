@@ -327,6 +327,16 @@ def search_specific_y():
             map_location_y = i
             return map_location_y
 
+def add_gold(amount):
+    player_gold = player["gold"]
+    player_gold += amount
+    player["gold"] = player_gold
+
+def remove_gold(amount):
+    player_gold = player["gold"]
+    player_gold += amount
+    player["gold"] = player_gold
+
 # gameplay here:
 def run(play):
     print(separator)
@@ -539,8 +549,13 @@ def run(play):
                 enemy_items_number = len(enemy_total_inventory)
                 choosen_item = enemy_total_inventory[random.randint(0, enemy_items_number - 1)]
 
+                if random.randint(0, 3) >= 2.5:
+                    choosen_item = "Gold"
+
                 drop = input("Your enemy dropped a/an " + choosen_item + ". Do you want to grab it (y/n)? ")
                 if drop.lower().startswith('y'):
+                    if choosen_item == "Gold":
+                        add_gold(round(random.uniform(1.00, 6.30), 2))
                     if choosen_item in player["inventory"] and item[choosen_item]["type"] == "Utility":
                         print("You cannot take that item")
                     elif player["inventory slots remaining"] == 0:
@@ -663,6 +678,7 @@ def run(play):
         elif command.lower().startswith('i'):
             print("Current Health: " + COLOR_RED + str(player["health"]) + COLOR_RESET_ALL)
             print("Maximum Health: " + COLOR_RED + str(player["max health"]) + COLOR_RESET_ALL)
+            print("Gold: " + COLOR_YELLOW + str(player["gold"]) + COLOR_RESET_ALL)
             print("Armor Protection: " + COLOR_RED + str(player["armor protection"]) + COLOR_RESET_ALL)
             print("Agility: " + COLOR_RED + str(player["agility"]) + COLOR_RESET_ALL)
             print("XP: " + COLOR_RED + str(round(player["xp"], 2)) + COLOR_RESET_ALL)

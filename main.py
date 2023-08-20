@@ -304,15 +304,23 @@ def run(play):
     print("Some items have special triggers, which will often be stated in the description. Others can only be activated in certain situations, like in combat.")
     print(" ")
 
-    loading = 10
+    loading = 4
     while loading > 0:
         print("Loading game... ▅▃▁", end='\r')
         time.sleep(.15)
-        print("Loading game... ▃▃▃", end='\r')
+        print("Loading game... ▅▅▃", end='\r')
+        time.sleep(.15)
+        print("Loading game... ▅▅▅", end='\r')
+        time.sleep(.15)
+        print("Loading game... ▃▅▅", end='\r')
         time.sleep(.15)
         print("Loading game... ▁▃▅", end='\r')
         time.sleep(.15)
-        print("Loading game... ▃▃▃", end='\r')
+        print("Loading game... ▃▅▅", end='\r')
+        time.sleep(.15)
+        print("Loading game... ▅▅▃", end='\r')
+        time.sleep(.15)
+        print("Loading game... ▅▅▁", end='\r')
         time.sleep(.15)
         loading -= 1
 

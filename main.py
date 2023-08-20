@@ -574,8 +574,6 @@ def run(play):
             enemies_list = enemies_list.replace("[", '')
             enemies_list = enemies_list.replace("]", '')
             enemies_list = enemies_list.replace(", ", '\n')
-            text = "You have these enemies in your diary: "
-            print_speech_text_effect(text)
             print(enemies_list)
             which_enemy = input("> ")
             print(" ")

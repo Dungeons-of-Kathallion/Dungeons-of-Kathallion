@@ -29,18 +29,22 @@ Once you have permissions on this repo or in the organization, you have a role t
 
 ### coder
 The coder is in charge of developing the game; creating pull requests to expand it. They also give coding suggestions in reviews. They do not merge pull requests.
+
 Permission: Read
 
 ### documentation reviewers
 The job of documentation reviewers is to keep the wiki up to date. They do not merge pull requests.
+
 Permission: Read
 
 ### playtester
 A playtester is someone who will test out PRs and check for bugs while playing. They do not merge pull requests.
+
 Permission: Read
 
 ### inflow control [placeholder name]
 Everyone in inflow control has the power to merge pull requests and assign labels. They will usually be in another team. Their job is to merge pull requests and add/remove labels.
+
 Permission: Write
 
 ## Naming conventions

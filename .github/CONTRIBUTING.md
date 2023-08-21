@@ -44,3 +44,6 @@ You are requested to name commints in a certain style:
 For large things, you use the `progress - ` prefix. You can add a little more detail to the prefix by saying `progress [major | minor] - `.
 For smaller things, say `tweak - ` or `bugfix - ` (for bugfixes).
 For documentation changes, begin with `documentation - `
+
+## Merging Pull Requests
+When you merge a pull request, please `Squash Merge`, remove commit listing, use the [naming convention](#naming-conventions), and add extra details if necesary. You do not have to use the name of a PR in the commit name.

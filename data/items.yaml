@@ -161,6 +161,9 @@ Wolf Skin:
 Wolf Skull:
   type: "Misc"
   description: "A huge skull of a head of a Warg."
+Slime:
+  type: "Misc"
+  description: "While slime may seems useless, it's actually used in many elixirs recipes."
 # Notes
 Note1:
   type: "Note"

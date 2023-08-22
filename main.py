@@ -8,20 +8,18 @@ import time
 import enquiries
 import fade
 import subprocess
-import curses
 import git
 from git import Repo
-from curses import wrapper
 from colorama import Fore, Back, Style, deinit, init
 from colors import *
-
-# get start time
-start_time = time.time()
 
 # initialize colorama
 init()
 
 os.system('clear')
+
+# get terminal size
+terminal_rows, terminal_columns = os.popen('stty size', 'r').read().split()
 
 # says you are not playing.
 play = 0
@@ -45,7 +43,6 @@ def print_title():
         if preferences["theme"] == "blackwhite":
             with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
                 faded_text = fade.blackwhite(f.read())
-                faded_text = faded_text.center(109)
                 print(faded_text)
         elif preferences["theme"] == "purplepink":
             with open('imgs/Title' + str(preferences["title style"]) + '.txt', 'r') as f:
@@ -111,11 +108,83 @@ while menu:
     print_title()
 
     if choice == 'Play Game':
-        options = ['Play Vanilla', 'Play Plugin']
+        options = ['Use Latest Preset', 'Play Vanilla', 'Play Plugin']
         choice = enquiries.choose('', options)
+        using_latest_preset = False
 
         # load data files
-        if choice == 'Play Plugin':
+        if choice == 'Use Latest Preset':
+            using_latest_preset = True
+            if preferences["latest preset"]["type"] == 'vanilla':
+                with open("data/map.yaml") as f:
+                    map = yaml.safe_load(f)
+
+                with open("data/items.yaml") as f:
+                    item = yaml.safe_load(f)
+
+                with open("data/drinks.yaml") as f:
+                    drinks = yaml.safe_load(f)
+
+                with open("data/enemies.yaml") as f:
+                    enemy = yaml.safe_load(f)
+
+                with open("data/npcs.yaml") as f:
+                    npcs = yaml.safe_load(f)
+
+                with open("data/start.yaml") as f:
+                    start_player = yaml.safe_load(f)
+
+                with open("data/lists.yaml") as f:
+                    lists = yaml.safe_load(f)
+
+                with open("data/zone.yaml") as f:
+                    zone = yaml.safe_load(f)
+            else:
+
+                what_plugin = preferences["latest preset"]["plugin"]
+
+                check_file = os.path.exists("plugins/" + what_plugin )
+                if check_file == False:
+                    print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find plugin '" + what_plugin + "'" + COLOR_RESET_ALL)
+                    play = 0
+                    exit(1)
+                with open("plugins/" + what_plugin + "/map.yaml") as f:
+                    map = yaml.safe_load(f)
+
+                with open("plugins/" + what_plugin + "/items.yaml") as f:
+                    item = yaml.safe_load(f)
+
+                with open("plugins/" + what_plugin + "/drinks.yaml") as f:
+                    drinks = yaml.safe_load(f)
+
+                with open("plugins/" + what_plugin + "/enemies.yaml") as f:
+                    enemy = yaml.safe_load(f)
+
+                with open("plugins/" + what_plugin + "/npcs.yaml") as f:
+                    npcs = yaml.safe_load(f)
+
+                with open("plugins/" + what_plugin + "/start.yaml") as f:
+                    start_player = yaml.safe_load(f)
+
+                with open("plugins/" + what_plugin + "/lists.yaml") as f:
+                    lists = yaml.safe_load(f)
+
+                with open("plugins/" + what_plugin + "/zone.yaml") as f:
+                    zone = yaml.safe_load(f)
+
+            open_save = preferences["latest preset"]["save"]
+            save_file = "saves/save_" + open_save + ".yaml"
+            check_file = os.path.isfile(save_file)
+            if check_file == False:
+                print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
+                play = 0
+                exit(1)
+            with open(save_file) as f:
+                player = yaml.safe_load(f)
+            play = 1
+            menu = False
+
+        elif choice == 'Play Plugin':
             text = "Please select a plugin to use"
             print_speech_text_effect(text)
             res = []
@@ -126,6 +195,8 @@ while menu:
             res.remove('.gitkeep')
 
             what_plugin = input(COLOR_STYLE_BRIGHT + "Current plugins: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL + " ")
+            preferences["latest preset"]["type"] = "plugin"
+            preferences["latest preset"]["plugin"] = what_plugin
 
             check_file = os.path.exists("plugins/" + what_plugin )
             if check_file == False:
@@ -138,8 +209,14 @@ while menu:
             with open("plugins/" + what_plugin + "/items.yaml") as f:
                 item = yaml.safe_load(f)
 
+            with open("plugins/" + what_plugin + "/drinks.yaml") as f:
+                drinks = yaml.safe_load(f)
+
             with open("plugins/" + what_plugin + "/enemies.yaml") as f:
                 enemy = yaml.safe_load(f)
+
+            with open("plugins/" + what_plugin + "/npcs.yaml") as f:
+                npcs = yaml.safe_load(f)
 
             with open("plugins/" + what_plugin + "/start.yaml") as f:
                 start_player = yaml.safe_load(f)
@@ -150,14 +227,22 @@ while menu:
             with open("plugins/" + what_plugin + "/zone.yaml") as f:
                 zone = yaml.safe_load(f)
         else:
+            preferences["latest preset"]["type"] = "vanilla"
+            preferences["latest preset"]["plugin"] == "none"
             with open("data/map.yaml") as f:
                 map = yaml.safe_load(f)
 
             with open("data/items.yaml") as f:
                 item = yaml.safe_load(f)
 
+            with open("data/drinks.yaml") as f:
+                drinks = yaml.safe_load(f)
+
             with open("data/enemies.yaml") as f:
                 enemy = yaml.safe_load(f)
+
+            with open("data/npcs.yaml") as f:
+                npcs = yaml.safe_load(f)
 
             with open("data/start.yaml") as f:
                 start_player = yaml.safe_load(f)
@@ -168,62 +253,64 @@ while menu:
             with open("data/zone.yaml") as f:
                 zone = yaml.safe_load(f)
 
-        text = "Please select an action:"
-        print_speech_text_effect(text)
-        options = ['Open Save', 'New Save']
-        choice = enquiries.choose('', options)
-
-        if choice == 'Open Save':
-            res = []
-
-            for search_for_saves in os.listdir('saves/'):
-                if search_for_saves.startswith("save_"):
-                    res.append(search_for_saves)
-
-            char1 = 'save_'
-            char2 = '.yaml'
-
-            for idx, ele in enumerate(res):
-                res[idx] = ele.replace(char1, '')
-
-            for idx, ele in enumerate(res):
-                res[idx] = ele.replace(char2, '')
-
-            text = "Please select a save to open."
+        if using_latest_preset == False:
+            text = "Please select an action:"
             print_speech_text_effect(text)
-            open_save = input(COLOR_STYLE_BRIGHT + "Current saves: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL + " ")
+            options = ['Open Save', 'New Save']
+            choice = enquiries.choose('', options)
 
-            save_file = "saves/save_" + open_save + ".yaml"
-            check_file = os.path.isfile(save_file)
-            if check_file == False:
-                print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
-                play = 0
-                exit(1)
-            with open(save_file) as f:
-                player = yaml.safe_load(f)
-            play = 1
-            menu = False
-        else:
-            text = "Please name your save: "
-            print_speech_text_effect(text)
-            enter_save_name = input('> ')
-            player = start_player
-            dumped = yaml.dump(player)
-            save_name = "saves/save_" + enter_save_name + ".yaml"
-            save_name_backup = "saves/~0 save_" + enter_save_name + ".yaml"
-            check_file = os.path.isfile(save_name)
-            if check_file == True:
-                print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Save file '" + save_name + "'" + " already exists" + COLOR_RESET_ALL)
-                play = 0
-                exit_game()
-            with open(save_name, "w") as f:
-                f.write(dumped)
-            with open(save_name_backup, "w") as f:
-                f.write(dumped)
-            save_file = save_name
-            play = 1
-            time.sleep(.5)
-            menu = False
+            if choice == 'Open Save':
+                res = []
+
+                for search_for_saves in os.listdir('saves/'):
+                    if search_for_saves.startswith("save_"):
+                        res.append(search_for_saves)
+
+                char1 = 'save_'
+                char2 = '.yaml'
+
+                for idx, ele in enumerate(res):
+                    res[idx] = ele.replace(char1, '')
+
+                for idx, ele in enumerate(res):
+                    res[idx] = ele.replace(char2, '')
+
+                text = "Please select a save to open."
+                print_speech_text_effect(text)
+                open_save = input(COLOR_STYLE_BRIGHT + "Current saves: " + COLOR_RESET_ALL + COLOR_GREEN + str(res) + COLOR_RESET_ALL + " ")
+                preferences["latest preset"]["save"] = open_save
+
+                save_file = "saves/save_" + open_save + ".yaml"
+                check_file = os.path.isfile(save_file)
+                if check_file == False:
+                    print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Couldn't find save file '" + save_file + "'" + COLOR_RESET_ALL)
+                    play = 0
+                    exit(1)
+                with open(save_file) as f:
+                    player = yaml.safe_load(f)
+                play = 1
+                menu = False
+            else:
+                text = "Please name your save: "
+                print_speech_text_effect(text)
+                enter_save_name = input('> ')
+                player = start_player
+                dumped = yaml.dump(player)
+                save_name = "saves/save_" + enter_save_name + ".yaml"
+                save_name_backup = "saves/~0 save_" + enter_save_name + ".yaml"
+                check_file = os.path.isfile(save_name)
+                if check_file == True:
+                    print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: Save file '" + save_name + "'" + " already exists" + COLOR_RESET_ALL)
+                    play = 0
+                    exit_game()
+                with open(save_name, "w") as f:
+                    f.write(dumped)
+                with open(save_name_backup, "w") as f:
+                    f.write(dumped)
+                save_file = save_name
+                play = 1
+                time.sleep(.5)
+                menu = False
 
     elif choice == 'Manage Saves':
 
@@ -329,13 +416,98 @@ def search_specific_y():
 
 def add_gold(amount):
     player_gold = player["gold"]
-    player_gold += amount
-    player["gold"] = player_gold
+    player_gold += float(amount)
+    player["gold"] = round(player_gold, 2)
 
 def remove_gold(amount):
     player_gold = player["gold"]
-    player_gold += amount
+    player_gold -= float(amount)
     player["gold"] = player_gold
+
+def print_zone_map(zone_name):
+    to_print = zone[zone_name]["map"]["map full"]
+    to_print = to_print.replace('$RED', '\033[0;31m')
+    to_print = to_print.replace('$GREEN', '\033[0;32m')
+    to_print = to_print.replace('$YELLOW', '\033[0;33m')
+    to_print = to_print.replace('$BLUE', '\033[0;34m')
+    to_print = to_print.replace('$PURPLE', '\033[0;34m')
+    to_print = to_print.replace('$CYAN', '\033[0;36m')
+    to_print = to_print.replace('$WHITE', '\033[0;37m')
+
+    player_equipment = []
+
+    if player["held item"] != " ":
+        player_equipment.append(player["held item"])
+    if player["held chestplate"] != " ":
+        player_equipment.append(player["held chestplate"])
+    if player["held leggings"] != " ":
+        player_equipment.append(player["held leggings"])
+    if player["held boots"] != " ":
+        player_equipment.append(player["held boots"])
+
+    player_equipment = str(player_equipment)
+    player_equipment = player_equipment.replace("'", "")
+
+    count = 0
+    for line in to_print.splitlines():
+        if count == 0:
+            print(line + " NAME: " + preferences["latest preset"]["save"])
+        if count == 1:
+            print(line + " HEALTH: " + COLOR_STYLE_BRIGHT + COLOR_BLUE + str(player["health"]) + COLOR_RESET_ALL + "/" + COLOR_STYLE_BRIGHT + COLOR_BLUE+ str(player["max health"]) + COLOR_RESET_ALL)
+        if count == 2:
+            print(line + " INVENTORY: " + COLOR_STYLE_BRIGHT + COLOR_CYAN + str(len(player["inventory"])) + COLOR_RESET_ALL + "/" + COLOR_STYLE_BRIGHT + COLOR_CYAN + str(player["inventory slots"]) + COLOR_RESET_ALL)
+        if count == 3:
+            print(line + " ELAPSED DAYS: " + COLOR_STYLE_BRIGHT + COLOR_MAGENTA + str(round(player["elapsed time game days"], 1)) + COLOR_RESET_ALL)
+        if count == 4:
+            print(line + " EXP: " + COLOR_STYLE_BRIGHT + COLOR_GREEN + str(round(player["xp"], 2)) + COLOR_RESET_ALL)
+        if count == 5:
+            print(line + " GOLD: " + COLOR_STYLE_BRIGHT + COLOR_YELLOW + str(player["gold"]) + COLOR_RESET_ALL)
+        count += 1
+
+def print_zone_map_alone(zone_name):
+    to_print = zone[zone_name]["map"]["map full"]
+    to_print = to_print.replace('$RED', '\033[0;31m')
+    to_print = to_print.replace('$GREEN', '\033[0;32m')
+    to_print = to_print.replace('$YELLOW', '\033[0;33m')
+    to_print = to_print.replace('$BLUE', '\033[0;34m')
+    to_print = to_print.replace('$PURPLE', '\033[0;34m')
+    to_print = to_print.replace('$CYAN', '\033[0;36m')
+    to_print = to_print.replace('$WHITE', '\033[0;37m')
+
+    player_equipment = []
+
+    if player["held item"] != " ":
+        player_equipment.append(player["held item"])
+    if player["held chestplate"] != " ":
+        player_equipment.append(player["held chestplate"])
+    if player["held leggings"] != " ":
+        player_equipment.append(player["held leggings"])
+    if player["held boots"] != " ":
+        player_equipment.append(player["held boots"])
+
+    player_equipment = str(player_equipment)
+    player_equipment = player_equipment.replace("'", "")
+
+    count = 0
+    for line in to_print.splitlines():
+        print(line)
+        count += 1
+
+def print_separator(character):
+    count = 0
+
+    while count < 55:
+        sys.stdout.write(COLOR_STYLE_BRIGHT + character + COLOR_RESET_ALL)
+        sys.stdout.flush()
+        count += 1
+    sys.stdout.write('\n')
+
+def overstrike_text(text):
+    result = ""
+    for character in text:
+        result = result + character + '\u0336'
+    print(str(result))
+
 
 # gameplay here:
 def run(play):
@@ -347,14 +519,12 @@ def run(play):
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "W: " + COLOR_RESET_ALL + "Go west" + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "D: " + COLOR_RESET_ALL + "Access to your diary.")
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "I: " + COLOR_RESET_ALL + "View items. When in this view, type the name of an item to examine it." + COLOR_RESET_ALL)
-    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "P: " + COLOR_RESET_ALL + "Choose which item to equip on you. When in this view, type the name of an item to equip it." + COLOR_RESET_ALL)
-    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "Throw an item. When in this view, type the name of an item to throw it away." + COLOR_RESET_ALL)
-    print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "H: " + COLOR_RESET_ALL + "Print this page")
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Q: " + COLOR_RESET_ALL + "Quit game")
     print(" ")
     print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Hints:" + COLOR_RESET_ALL)
     print("If you find an item on the ground, type the name of the item to take it.")
     print("Some items have special triggers, which will often be stated in the description. Others can only be activated in certain situations, like in combat.")
+    print(separator)
     print(" ")
 
     loading = 4
@@ -382,8 +552,28 @@ def run(play):
     while play == 1:
         global player
 
+        # get start time
+        start_time = time.time()
+
+        # get terminal size
+        terminal_rows, terminal_columns = os.popen('stty size', 'r').read().split()
+
         # clear text
         os.system('clear')
+
+        # calculate day time
+        day_time = "PLACEHOLDER" # .25 = morning .50 = day .75 = evening .0 = night
+        day_time_decimal = "." + str(player["elapsed time game days"]).split(".",1)[1]
+        day_time_decimal = float(day_time_decimal)
+        if day_time_decimal < .25 and day_time_decimal > .0:
+            day_time = COLOR_RED + COLOR_STYLE_BRIGHT + "NIGHT" + COLOR_RESET_ALL
+        elif day_time_decimal > .25 and day_time_decimal < .50:
+            day_time = COLOR_BLUE + COLOR_STYLE_BRIGHT + "MORNING" + COLOR_RESET_ALL
+        elif day_time_decimal > .50 and day_time_decimal < .75:
+            day_time = COLOR_GREEN + COLOR_STYLE_BRIGHT + "DAY" + COLOR_RESET_ALL
+        elif day_time_decimal > .75 and day_time_decimal:
+            day_time = COLOR_YELLOW + COLOR_STYLE_BRIGHT + "EVENING" + COLOR_RESET_ALL
+
 
         # calculate player armor protection
         # and write it to the save file
@@ -502,30 +692,107 @@ def run(play):
         if map_zone not in player["visited zones"]:
             player["visited zones"].append(map_zone)
 
-        print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Coordinates:" + COLOR_RESET_ALL)
-        print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "X: " + COLOR_RESET_ALL + str(map_location_x))
-        print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Y: " + COLOR_RESET_ALL + str(map_location_y))
-        print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Region: " + COLOR_RESET_ALL + str(map_zone))
-        print(" ")
-        print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Possible actions:" + COLOR_RESET_ALL)
+        # init curses
+
+        text = '='
+        print_separator(text)
+
+        print("DAY TIME: " + day_time)
+        print("LOCATION: " + map_zone + " (" + COLOR_STYLE_BRIGHT + COLOR_GREEN + str(player["x"]) + COLOR_RESET_ALL + ", " + COLOR_STYLE_BRIGHT + COLOR_GREEN + str(player["y"]) + COLOR_RESET_ALL + ")")
+
+        text = '='
+        print_separator(text)
+
+        print_zone_map(map_zone)
+
+        text = '='
+        print_separator(text)
+
+        print("DIRECTIONS: " + "          ACTIONS:")
+
         if "North" not in map["point" + str(map_location)]["blocked"]:
-            print("You can go North")
+            print("You can go North ▲" + "    " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "I: " + COLOR_RESET_ALL + "View items")
+        else:
+            print( "                  " + "    " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "I: " + COLOR_RESET_ALL + "View items")
         if "South" not in map["point" + str(map_location)]["blocked"]:
-            print("You can go South")
+            print("You can go South ▼" + "    " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "P: " + COLOR_RESET_ALL + "PLACEHOLDER")
+        else:
+            print( "                  " + "    " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "P: " + COLOR_RESET_ALL + "PLACEHOLDER")
         if "East" not in map["point" + str(map_location)]["blocked"]:
-            print("You can go East")
+            print("You can go East ►" + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "PLACEHOLDER")
+        else:
+            print("                 " + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "PLACEHOLDER")
         if "West" not in map["point" + str(map_location)]["blocked"]:
-            print("You can go West")
+            print("You can go West ◄" + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "D: " + COLOR_RESET_ALL + "Check your diary")
+        else:
+            print("                 " + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "D: " + COLOR_RESET_ALL + "Check your diary")
+
+        text = '='
+        print_separator(text)
+
+        print("")
         if "None" not in map["point" + str(map_location)]["item"] and map_location not in player["taken items"]:
-            take_item = input(COLOR_GREEN + "There are these items on the ground: " + COLOR_RESET_ALL + str(map["point" + str(map_location)]["item"]) + " ")
-            if take_item in map["point" + str(map_location)]["item"]:
-                if take_item in player["inventory"] and item[take_item]["type"] == "Utility":
-                    print("You cannot take that item")
-                elif player["inventory slots remaining"] == 0:
-                    print("You cannot take that item, you don't have enough slots in your inventory")
+            map_items = str(map["point" + str(map_location)]["item"])
+            map_items = map_items.replace('[', '')
+            map_items = map_items.replace(']', '')
+            map_items = map_items.replace("'", '')
+            map_items = map_items.replace(',', '')
+            take_item = "There are these items on the ground: " + map_items
+            print(take_item)
+            print("")
+        if "None" not in map["point" + str(map_location)]["npc"] and map_location not in player["met npcs"]:
+            os.system('clear')
+            current_npc = str(map["point" + str(map_location)]["npc"])
+            current_npc = current_npc.replace('[', '')
+            current_npc = current_npc.replace(']', '')
+            current_npc = current_npc.replace("'", '')
+            player["met npcs"].append(map_location)
+            print(" ")
+            print("You find a/an " + str(npcs[current_npc]["name"]) + " on your way.")
+            count = 0
+            npc_speech = npcs[current_npc]["speech"]
+            npc_speech_len = len(npc_speech)
+            print(" ")
+            print("He says:")
+            while count < npc_speech_len:
+                text = str(npcs[current_npc]["speech"][int(count)])
+                print_speech_text_effect(text)
+                count += 1
+            print(" ")
+            if "None" not in npcs[current_npc]["sells"]["drinks"]:
+                print("He wants to sell you the following drinks:")
+                count = 0
+                npc_drinks = npcs[current_npc]["sells"]["drinks"]
+                npc_drinks_len = len(npc_drinks)
+                while count < npc_drinks_len:
+                    text = str(npcs[current_npc]["sells"]["drinks"][int(count)])
+                    print_speech_text_effect(text)
+                    count += 1
+            if "None" not in npcs[current_npc]["sells"]["items"]:
+                print("He wants to sell you the following items:")
+                count = 0
+                npc_items = npcs[current_npc]["sells"]["items"]
+                npc_items_len = len(npc_items)
+                while count < npc_items_len:
+                    text = str(npcs[current_npc]["sells"]["items"][int(count)])
+                    print_speech_text_effect(text)
+                    count += 1
+            p = True
+            while p:
+                which_item = input("Which drink do you want to buy from him? q to exit.")
+                if which_item in npcs[current_npc]["sells"]["drinks"] and drinks[which_item]["gold"] < player["gold"]:
+                    remove_gold(str(drinks[which_item]["gold"]))
+                    if drinks[which_item]["healing level"] == "max health":
+                        player["health"] = player["max health"]
+                    else:
+                        player["health"] += drinks[which_item]["healing level"]
+                elif which_item == 'q' or which_item == 'Q':
+                    p = False
                 else:
-                    player["inventory"].append(take_item)
-                    player["taken items"].append(map_location)
+                    print("You don't have that item")
+                time.sleep(.6)
+                os.system('clear')
+
         if map["point" + str(map_location)]["enemy"] > 0 and map_location not in player["defeated enemies"]:
             enemies_remaining = map["point" + str(map_location)]["enemy"]
             already_encountered = False
@@ -591,38 +858,65 @@ def run(play):
                     player = start_player
                     play = 0
                     return play
-        print(" ")
-        command = input("What will you do?\n")
+        command = input("> ")
         print(" ")
         if command.lower().startswith('go'):
-            print("Rather than saying Go <direction>, simply say <direction>.")
+            print(COLOR_YELLOW + "Rather than saying Go <direction>, simply say <direction>." + COLOR_RESET_ALL)
+            time.sleep(1.5)
         elif command.lower().startswith('n'):
             if "North" in map["point" + str(map_location)]["blocked"]:
-                print("You cannot go that way.")
+                print(COLOR_YELLOW + "You cannot go that way." + COLOR_RESET_ALL)
                 time.sleep(1)
             else:
                 player["y"] += 1
         elif command.lower().startswith('s'):
             if "South" in map["point" + str(map_location)]["blocked"]:
-                print("You cannot go that way.")
+                print(COLOR_YELLOW + "You cannot go that way." + COLOR_RESET_ALL)
                 time.sleep(1)
             else:
                 player["y"] -= 1
         elif command.lower().startswith('e'):
             if "East" in map["point" + str(map_location)]["blocked"]:
-                print("You cannot go that way.")
+                print(COLOR_YELLOW + "You cannot go that way." + COLOR_RESET_ALL)
                 time.sleep(1)
             else:
                 player["x"] += 1
         elif command.lower().startswith('w'):
             if "West" in map["point" + str(map_location)]["blocked"]:
-                print("You cannot go that way.")
+                print(COLOR_YELLOW + "You cannot go that way." + COLOR_RESET_ALL)
                 time.sleep(1)
             else:
                 player["x"] -= 1
         elif command.lower().startswith('d'):
-            print("Adventurer Name: " + COLOR_GREEN + str(res[0]) + COLOR_RESET_ALL)
-            print("Elapsed Days: " + COLOR_RED + str(round(player["elapsed time game days"], 1)) + COLOR_RESET_ALL)
+            text = '='
+            print_separator(text)
+            print("ADVENTURER NAME: " + str(preferences["latest preset"]["save"]))
+            print("ELAPSED DAYS: " + COLOR_STYLE_BRIGHT + COLOR_MAGENTA + str(round(player["elapsed time game days"], 1)) + COLOR_RESET_ALL)
+            text = '='
+            print_separator(text)
+            options = ['Visited Places', 'Encountered Monsters', 'Encountered People']
+            choice = enquiries.choose('', options)
+            if choice == 'Visited Places':
+                print("VISITED AREAS: ")
+                zones_list = str(player["visited zones"])
+                zones_list = zones_list.replace("'", '')
+                zones_list = zones_list.replace("[", ' -')
+                zones_list = zones_list.replace("]", '')
+                zones_list = zones_list.replace(", ", '\n -')
+                print(zones_list)
+                text = '='
+                print_separator(text)
+                which_zone = input("> ")
+                if which_zone in player["visited zones"]:
+                    text = '='
+                    print_separator(text)
+                    print_zone_map_alone(which_zone)
+                    print("NAME: " + zone[which_zone]["name"])
+                    print("DESCRIPTION: " + zone[which_zone]["description"])
+                    text = '='
+                    print_separator(text)
+                    finished = input("")
+            """
             print(" ")
             print("Visited Areas: ")
             zones_list = str(player["visited zones"])
@@ -675,180 +969,91 @@ def run(play):
             else:
                 print("You don't know about that enemy.")
             finished = input(" ")
+            """
         elif command.lower().startswith('i'):
-            print("Gold: " + COLOR_YELLOW + str(player["gold"]) + COLOR_RESET_ALL)
-            print("XP: " + COLOR_GREEN + str(round(player["xp"], 2)) + COLOR_RESET_ALL)
-            print(" ")
-            print("Current Health: " + COLOR_RED + str(player["health"]) + COLOR_RESET_ALL)
-            print("Maximum Health: " + COLOR_RED + str(player["max health"]) + COLOR_RESET_ALL)
-            print("Armor Protection: " + COLOR_RED + str(player["armor protection"]) + COLOR_RESET_ALL)
-            print("Agility: " + COLOR_RED + str(player["agility"]) + COLOR_RESET_ALL)
-            print(" ")
-            # inventory slots
-            print("Inventory Slots: " + COLOR_RED + str(player["inventory slots"]) + COLOR_RESET_ALL)
-            print("Inventory Slots Remaining: " + COLOR_RED + str(player["inventory slots remaining"]) + COLOR_RESET_ALL)
+            text = '='
+            print_separator(text)
+            print("ARMOR PROTECTION: " + COLOR_GREEN + COLOR_STYLE_BRIGHT + str(player["armor protection"]) + COLOR_RESET_ALL + COLOR_RED + COLOR_STYLE_BRIGHT + " (" + COLOR_RESET_ALL + "More it's higher, the less you'll take damages in fights" + COLOR_RED + COLOR_STYLE_BRIGHT + ")" + COLOR_RESET_ALL)
+            print("AGILITY: " + COLOR_MAGENTA + COLOR_STYLE_BRIGHT + str(player["agility"]) + COLOR_RESET_ALL + COLOR_RED + COLOR_STYLE_BRIGHT + " (" + COLOR_RESET_ALL + "More it's higher, the more you'll have a chance to dodge attacks" + COLOR_RED + COLOR_STYLE_BRIGHT + ")" + COLOR_RESET_ALL)
             print(" ")
             # equipment
-            if player["held item"] == " ":
-                print("You are currently holding no weapon")
-            else:
-                print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
-            if player["held chestplate"] == " ":
-                print("You are currently wearing no chestplate")
-            else:
-                print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
-            if player["held boots"] == " ":
-                print("You are currently wearing no boots")
-            else:
-                print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
-            if player["held leggings"] == " ":
-                print("You are currently wearing no leggings")
-            else:
-                print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
-            if player["held shield"] == " ":
-                print("You are currently holding no shield")
-            else:
-                print("You are holding a/an " + COLOR_RED + str(player["held shield"]) + COLOR_RESET_ALL)
-            print(" ")
+            if player["held item"] != " ":
+                print("HELD WEAPON: " + COLOR_RED + COLOR_STYLE_BRIGHT + player["held item"] + COLOR_RESET_ALL)
+            if player["held chestplate"] != " ":
+                print("WORE CHESTPLATE: " + COLOR_RED + COLOR_STYLE_BRIGHT + player["held chestplate"] + COLOR_RESET_ALL)
+            if player["held leggings"] != " ":
+                print("WORE LEGGINGS: " + COLOR_RED + COLOR_STYLE_BRIGHT + player["held leggings"] + COLOR_RESET_ALL)
+            if player["held boots"] != " ":
+                print("WORE BOOTS: " + COLOR_RED + COLOR_STYLE_BRIGHT + player["held boots"] + COLOR_RESET_ALL)
+            if player["held shield"] != " ":
+                print("HELD SHIELD: " + COLOR_RED + COLOR_STYLE_BRIGHT + player["held shield"] + COLOR_RESET_ALL)
             player_inventory = str(player["inventory"])
             player_inventory = player_inventory.replace("'", '')
-            player_inventory = player_inventory.replace("[", '')
+            player_inventory = player_inventory.replace("[", ' -')
             player_inventory = player_inventory.replace("]", '')
-            player_inventory = player_inventory.replace(", ", '\n')
-            text = "You have these items in your inventory: "
-            print_speech_text_effect(text)
+            player_inventory = player_inventory.replace(", ", '\n -')
+            text = '='
+            print_separator(text)
+            print("INVENTORY:")
             print(player_inventory)
+            text = '='
+            print_separator(text)
             which_item = input("> ")
             if which_item in player["inventory"]:
-                print(" ")
-                print("Name: " + which_item)
-                print("Type: " + item[which_item]["type"])
-                print("Description: " + item[which_item]["description"])
+                text = '='
+                print_separator(text)
+                print("NAME: " + which_item)
+                print("TYPE: " + item[which_item]["type"])
+                print("DESCRIPTION: " + item[which_item]["description"])
                 if item[which_item]["type"] == "Armor Piece: Chestplate" or item[which_item]["type"] == "Armor Piece: Boots" or item[which_item]["type"] == "Armor Piece: Leggings" or item[which_item]["type"] == "Armor Piece: Shield":
                     print("             Armor pieces can protect you in fights, more the armor protection is higher, the more it protects you.")
-                    print("Armor Protection: " + COLOR_RED + str(item[which_item]["armor protection"]) + COLOR_RESET_ALL)
+                    print("ARMOR PROTECTION: " + COLOR_GREEN + COLOR_STYLE_BRIGHT + str(item[which_item]["armor protection"]) + COLOR_RESET_ALL)
                 if item[which_item]["type"] == "Weapon":
-                    print("Damage: " + COLOR_RED + str(item[which_item]["damage"]) + COLOR_RESET_ALL)
-                    print("Defense: " + COLOR_RED + str(item[which_item]["defend"]) + COLOR_RESET_ALL)
-                if item[which_item]["type"] == "Consumable":
-                    print("Max Bonus: " + COLOR_RED + str(item[which_item]["max bonus"]) + COLOR_RESET_ALL)
-                    print("Healing Level: " + COLOR_RED + str(item[which_item]["healing level"]) + COLOR_RESET_ALL)
-                print(" ")
-            else:
-                print("You do not have that item.")
-            finished = input(" ")
-        elif command.lower().startswith('t'):
-            # equipment
-            if player["held item"] == " ":
-                print("You are currently holding no weapon")
-            else:
-                print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
-            if player["held chestplate"] == " ":
-                print("You are currently wearing no chestplate")
-            else:
-                print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
-            if player["held boots"] == " ":
-                print("You are currently wearing no boots")
-            else:
-                print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
-            if player["held leggings"] == " ":
-                print("You are currently wearing no leggings")
-            else:
-                print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
-            if player["held shield"] == " ":
-                print("You are currently holding no shield")
-            else:
-                print("You are holding a/an " + COLOR_RED + player["held shield"] + COLOR_RESET_ALL)
-            print(" ")
-            player_inventory = str(player["inventory"])
-            player_inventory = player_inventory.replace("'", '')
-            player_inventory = player_inventory.replace("[", '')
-            player_inventory = player_inventory.replace("]", '')
-            player_inventory = player_inventory.replace(", ", '\n')
-            text = "You have these items in your inventory: "
-            print_speech_text_effect(text)
-            print(player_inventory)
-            which_item = input("> ")
-            print(" ")
-            if which_item in player["inventory"]:
-                ask = input("You won't be able to get this item back if your throw it away. Are you sure you want to throw away this item? (y/n) ")
-                if ask.lower().startswith('y'):
-                    if item[which_item]["type"] == "Bag":
-                        if ( player["inventory slots remaining"] - item[which_item]["inventory slots"] ) < 0:
-                            print("You cannot throw that item because it would cause your remaining inventory slots to be negative")
-                            print(" ")
-                    else:
-                        player["inventory"].remove(which_item)
-                        if which_item == player["held item"]:
-                            player["held item"] = " "
-                        if which_item == player["held chestplate"]:
-                            player["held chestplate"] = " "
-                        if which_item == player["held boots"]:
-                            player["held boots"] = " "
-                        if which_item == player["held leggings"]:
-                            player["held leggings"] = " "
-                        if which_item == player["held shield"]:
-                            player["held shield"] = " "
-                    print(" ")
-            else:
-                print("You do not have that item.")
-            finished = input(" ")
-        elif command.lower().startswith('p'):
-            # equipment
-            if player["held item"] == " ":
-                print("You are currently holding no weapon")
-            else:
-                print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
-            if player["held chestplate"] == " ":
-                print("You are currently holding no chestplate")
-            else:
-                print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
-            if player["held boots"] == " ":
-                print("You are currently holding no boots")
-            else:
-                print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
-            if player["held leggings"] == " ":
-                print("You are currently holding no leggings")
-            else:
-                print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
-            if player["held shield"] == " ":
-                print("You are currently holding no shield")
-            else:
-                print("You are holding a/an " + COLOR_RED + player["held shield"] + COLOR_RESET_ALL)
-            print(" ")
-            player_inventory = str(player["inventory"])
-            player_inventory = player_inventory.replace("'", '')
-            player_inventory = player_inventory.replace("[", '')
-            player_inventory = player_inventory.replace("]", '')
-            player_inventory = player_inventory.replace(", ", '\n')
-            text = "You have these items in your inventory: "
-            print_speech_text_effect(text)
-            print(player_inventory)
-            which_item = input("> ")
-            print(" ")
-            if which_item in player["inventory"]:
-                if item[which_item]["type"] == "Weapon":
-                    player["held item"] = which_item
-                    print("Equipped a/an " + which_item)
-                elif item[which_item]["type"] == "Armor Piece: Chestplate":
-                    player["held chestplate"] = which_item
-                    print("Equipped a/an " + which_item)
-                elif item[which_item]["type"] == "Armor Piece: Boots":
-                    player["held boots"] = which_item
-                    print("Equipped a/an " + which_item)
-                elif item[which_item]["type"] == "Armor Piece: Leggings":
-                    player["held leggings"] = which_item
-                    print("Equipped a/an " + which_item)
-                elif item[which_item]["type"] == "Armor Piece: Shield":
-                    player["held shield"] = which_item
-                    print("Equipped a/an " + which_item)
+                    print("DAMAGE: " + COLOR_CYAN + COLOR_STYLE_BRIGHT + str(item[which_item]["damage"]) + COLOR_RESET_ALL)
+                    print("DEFENSE: " + COLOR_CYAN + COLOR_STYLE_BRIGHT + str(item[which_item]["defend"]) + COLOR_RESET_ALL)
+                if item[which_item]["type"] == "Consumable" or item[which_item]["type"] == "Food":
+                    print("HEALTH BONUS: " + COLOR_STYLE_BRIGHT + COLOR_YELLOW  + str(item[which_item]["max bonus"]) + COLOR_RESET_ALL)
+                    print("HEALING: " + COLOR_STYLE_BRIGHT + COLOR_MAGENTA + str(item[which_item]["healing level"]) + COLOR_RESET_ALL)
+                text = '='
+                print_separator(text)
+                if str(item[which_item]["type"]).lower().startswith('Armor Piece: ') or str(item[which_item]["type"]) == 'Weapon':
+                    options = ['Equip', 'Get Rid', 'Exit']
                 else:
-                    print("You cannot equip a/an " + which_item)
-                print(" ")
+                    options = ['Get Rid', 'Exit']
+                choice = enquiries.choose('', options)
+                if choice == 'Equip':
+                    if item[which_item]["type"] == "Weapon":
+                        player["held item"] = which_item
+                    elif item[which_item]["type"] == "Armor Piece: Chestplate":
+                        player["held chestplate"] = which_item
+                    elif item[which_item]["type"] == "Armor Piece: Leggins":
+                        player["held leggings"] = which_item
+                    elif item[which_item]["type"] == "Armor Piece: Boots":
+                        player["held boots"] = which_item
+                    elif item[which_item]["type"] == "Armor Piece: Shield":
+                        player["held shield"] = which_item
+                elif choice == 'Get Rid':
+                    ask = input("You won't be able to get this item back if your throw it away. Are you sure you want to throw away this item? (y/n) ")
+                    if ask.lower().startswith('y'):
+                        if item[which_item]["type"] == "Bag":
+                            if ( player["inventory slots remaining"] - item[which_item]["inventory slots"] ) < 0:
+                                print("You cannot throw that item because it would cause your remaining inventory slots to be negative")
+                                print(" ")
+                        else:
+                            player["inventory"].remove(which_item)
+                            if which_item == player["held item"]:
+                                player["held item"] = " "
+                            if which_item == player["held chestplate"]:
+                                player["held chestplate"] = " "
+                            if which_item == player["held boots"]:
+                                player["held boots"] = " "
+                            if which_item == player["held leggings"]:
+                                player["held leggings"] = " "
+                            if which_item == player["held shield"]:
+                                player["held shield"] = " "
             else:
-                print("You do not have that item.")
-                print(" ")
-            time.sleep(1)
+                print(COLOR_YELLOW + "You do not have that item." + COLOR_RESET_ALL)
+                time.sleep(1.5)
         elif command.lower().startswith('m'):
             if "Map" in player["inventory"]:
                 print("**|**")
@@ -859,29 +1064,16 @@ def run(play):
                 print("You do not have a map.")
                 print(" ")
             finished = input(" ")
-        elif command.lower().startswith('h'):
-            os.system('clear')
-            print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Reserved keys:" + COLOR_RESET_ALL)
-            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "N: "+ COLOR_RESET_ALL + "Go north" + COLOR_RESET_ALL)
-            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "S: "+ COLOR_RESET_ALL + "Go south" + COLOR_RESET_ALL)
-            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "E: " + COLOR_RESET_ALL + "Go east" + COLOR_RESET_ALL)
-            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "W: " + COLOR_RESET_ALL + "Go west" + COLOR_RESET_ALL)
-            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "D: " + COLOR_RESET_ALL + "Access to your diary.")
-            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "I: " + COLOR_RESET_ALL + "View items. When in this view, type the name of an item to examine it." + COLOR_RESET_ALL)
-            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "P: " + COLOR_RESET_ALL + "Choose which item to equip on you. When in this view, type the name of an item to equip it." + COLOR_RESET_ALL)
-            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "Throw an item. When in this view, type the name of an item to throw it away." + COLOR_RESET_ALL)
-            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "H: " + COLOR_RESET_ALL + "Print this page")
-            print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Q: " + COLOR_RESET_ALL + "Quit game")
-            print(" ")
-            print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Hints:" + COLOR_RESET_ALL)
-            print("If you find an item on the ground, type the name of the item to take it.")
-            print("Some items have special triggers, which will often be stated in the description. Others can only be activated in certain situations, like in combat.")
-            finished = input(" ")
         elif command in map["point" + str(map_location)]["item"]:
-            if command not in player["inventory"]:
-                player["inventory"].append(command)
+            if command in player["inventory"] and item[command]["type"] == "Utility":
+                print(COLOR_YELLOW + "You cannot take that item." + COLOR_RESET_ALL)
+                time.sleep(1.5)
+            elif player["inventory slots remaining"] == 0:
+                print(COLOR_YELLOW + "You cannot take that item because you're out of inventory slots." + COLOR_RESET_ALL)
+                time.sleep(1.5)
             else:
-                print("You already have that item.")
+                player["inventory"].append(command)
+                player["taken items"].append(map_location)
         elif command.lower().startswith('q'):
             print(separator)
             play = 0
@@ -890,24 +1082,21 @@ def run(play):
             print("'" + command + "' is not a valid command")
             time.sleep(2)
             print(" ")
+        # get end time
+        end_time = time.time()
+
+        # calculate elapsed time
+        elapsed_time = end_time - start_time
+        elapsed_time = round(elapsed_time, 2)
+
+        game_elapsed_time = 0.004167 * elapsed_time # 60 seconds irl = 0.25 days in-game
+        game_elapsed_time = round(game_elapsed_time, 2)
+
+        player["elapsed time seconds"] = elapsed_time + player["elapsed time seconds"]
+        player["elapsed time game days"] = game_elapsed_time + player["elapsed time game days"]
 
 if play == 1:
     play = run(1)
-
-# calculate and convert elapsed time
-
-# get end time
-end_time = time.time()
-
-# calculate elapsed time
-elapsed_time = end_time - start_time
-elapsed_time = round(elapsed_time, 2)
-
-game_elapsed_time = 0.004167 * elapsed_time # 60 seconds irl = 0.25 days in-game
-game_elapsed_time = round(game_elapsed_time, 2)
-
-player["elapsed time seconds"] = elapsed_time + player["elapsed time seconds"]
-player["elapsed time game days"] = game_elapsed_time + player["elapsed time game days"]
 
 # finish up and save
 dumped = yaml.dump(player)

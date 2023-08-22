@@ -1,4 +1,18 @@
 # Generic enemies
+Slime:
+  plural: "Slimes"
+  damage:
+    min damage: 1
+    max damage: 3
+  health:
+    min spawning health: 3
+    max spawning health: 7
+    max health level: 7
+  agility: 0.87
+  inventory:
+  - Wooden Stick
+  - Slime
+  description: "Slimes are agile and annoying monsters."
 Goblin:
   plural: "Goblins"
   damage:

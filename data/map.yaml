@@ -6,6 +6,8 @@ point0:
   item:
   - None
   enemy: 0
+  npc:
+  - None
   blocked:
   - None
 point1:
@@ -15,6 +17,8 @@ point1:
   item:
   - None
   enemy: 0
+  npc:
+  - None
   blocked:
   - East
   - West
@@ -25,6 +29,8 @@ point2:
   item:
   - None
   enemy: 0
+  npc:
+  - None
   blocked:
   - South
 point3:
@@ -34,6 +40,8 @@ point3:
   item:
   - Map
   enemy: 0
+  npc:
+  - None
   blocked:
   - North
   - South
@@ -45,6 +53,8 @@ point4:
   item:
   - Axe
   enemy: 0
+  npc:
+  - None
   blocked:
   - North
   - South
@@ -56,6 +66,8 @@ point5:
   item:
   - None
   enemy: 0
+  npc:
+  - Old Man
   blocked:
   - North
   - South
@@ -68,6 +80,8 @@ point6:
   - None
   enemy: 1
   enemy type: generic
+  npc:
+  - None
   blocked:
   - North
   - South
@@ -78,6 +92,8 @@ point7:
   item:
   - Note1
   enemy: 0
+  npc:
+  - None
   blocked:
   - North
   - South
@@ -88,6 +104,8 @@ point8:
   item:
   - Shield
   enemy: 2
+  npc:
+  - None
   enemy type: black
   blocked:
   - East

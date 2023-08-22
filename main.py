@@ -1068,7 +1068,7 @@ def run(play):
             if player["held leggings"] != " ":
                 print("WORE LEGGINGS: " + COLOR_RED + COLOR_STYLE_BRIGHT + player["held leggings"] + COLOR_RESET_ALL)
             if player["held boots"] != " ":
-                print("WORE BOOTS: " + COLOR_RED + COLOR_STYLE_BRIGHT + player["held boots"] + COLOR_RESET_ALL)
+                print("WORN BOOTS: " + COLOR_RED + COLOR_STYLE_BRIGHT + player["held boots"] + COLOR_RESET_ALL)
             if player["held shield"] != " ":
                 print("HELD SHIELD: " + COLOR_RED + COLOR_STYLE_BRIGHT + player["held shield"] + COLOR_RESET_ALL)
             player_inventory = str(player["inventory"])

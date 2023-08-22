@@ -433,6 +433,7 @@ def print_zone_map(zone_name):
     to_print = to_print.replace('$PURPLE', '\033[0;34m')
     to_print = to_print.replace('$CYAN', '\033[0;36m')
     to_print = to_print.replace('$WHITE', '\033[0;37m')
+    to_print = to_print.replace('$BLACK', '\033[0;30m')
 
     player_equipment = []
 
@@ -473,20 +474,28 @@ def print_zone_map_alone(zone_name):
     to_print = to_print.replace('$PURPLE', '\033[0;34m')
     to_print = to_print.replace('$CYAN', '\033[0;36m')
     to_print = to_print.replace('$WHITE', '\033[0;37m')
+    to_print = to_print.replace('$BLACK', '\033[0;30m')
 
-    player_equipment = []
+    count = 0
+    for line in to_print.splitlines():
+        print(line)
+        count += 1
 
-    if player["held item"] != " ":
-        player_equipment.append(player["held item"])
-    if player["held chestplate"] != " ":
-        player_equipment.append(player["held chestplate"])
-    if player["held leggings"] != " ":
-        player_equipment.append(player["held leggings"])
-    if player["held boots"] != " ":
-        player_equipment.append(player["held boots"])
-
-    player_equipment = str(player_equipment)
-    player_equipment = player_equipment.replace("'", "")
+def print_npc_thumbnail(npc):
+    if preferences["latest preset"]["type"] == "vanilla":
+        with open('imgs/' + npc + ".txt") as f:
+            to_print = str(f.read())
+    else:
+        with open('plugins/' +  str(preferences["latest preset"]["plugin"]) + '/imgs/' + npc + ".txt") as f:
+            to_print = str(f.read())
+    to_print = to_print.replace('$RED', '\033[0;31m')
+    to_print = to_print.replace('$GREEN', '\033[0;32m')
+    to_print = to_print.replace('$YELLOW', '\033[0;33m')
+    to_print = to_print.replace('$BLUE', '\033[0;34m')
+    to_print = to_print.replace('$PURPLE', '\033[0;34m')
+    to_print = to_print.replace('$CYAN', '\033[0;36m')
+    to_print = to_print.replace('$WHITE', '\033[0;37m')
+    to_print = to_print.replace('$BLACK', '\033[0;30m')
 
     count = 0
     for line in to_print.splitlines():
@@ -508,6 +517,16 @@ def overstrike_text(text):
         result = result + character + '\u0336'
     print(str(result))
 
+def print_long_string(text):
+    new_input = ""
+    for i, letter in enumerate(text):
+        if i % 54 == 0:
+            new_input += '\n'
+        new_input += letter
+
+    # this is just because at the beginning too a `\n` character gets added
+    new_input = new_input[1:]
+    print(str(new_input))
 
 # gameplay here:
 def run(play):
@@ -715,17 +734,17 @@ def run(play):
         else:
             print( "                  " + "    " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "I: " + COLOR_RESET_ALL + "View items")
         if "South" not in map["point" + str(map_location)]["blocked"]:
-            print("You can go South ▼" + "    " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "P: " + COLOR_RESET_ALL + "PLACEHOLDER")
+            print("You can go South ▼" + "    " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "D: " + COLOR_RESET_ALL + "Check your diary")
         else:
-            print( "                  " + "    " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "P: " + COLOR_RESET_ALL + "PLACEHOLDER")
+            print( "                  " + "    " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "D: " + COLOR_RESET_ALL + "Check your diary")
         if "East" not in map["point" + str(map_location)]["blocked"]:
             print("You can go East ►" + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "PLACEHOLDER")
         else:
             print("                 " + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "PLACEHOLDER")
         if "West" not in map["point" + str(map_location)]["blocked"]:
-            print("You can go West ◄" + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "D: " + COLOR_RESET_ALL + "Check your diary")
+            print("You can go West ◄" + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "Q: " + COLOR_RESET_ALL + "Quit & save")
         else:
-            print("                 " + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "D: " + COLOR_RESET_ALL + "Check your diary")
+            print("                 " + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "Q: " + COLOR_RESET_ALL + "Quit & save")
 
         text = '='
         print_separator(text)
@@ -747,6 +766,7 @@ def run(play):
             current_npc = current_npc.replace(']', '')
             current_npc = current_npc.replace("'", '')
             player["met npcs"].append(map_location)
+            player["met npcs names"].append(str(npcs[current_npc]["name"]))
             print(" ")
             print("You find a/an " + str(npcs[current_npc]["name"]) + " on your way.")
             count = 0
@@ -912,64 +932,128 @@ def run(play):
                     print_separator(text)
                     print_zone_map_alone(which_zone)
                     print("NAME: " + zone[which_zone]["name"])
-                    print("DESCRIPTION: " + zone[which_zone]["description"])
+                    text = "DESCRIPTION: " + zone[which_zone]["description"]
+                    print_long_string(text)
+                    text = '='
+                    print_separator(text)
+                finished = input("")
+            elif choice == 'Encountered Monsters':
+                print("ENCOUNTERED MONSTERS: ")
+                enemies_list = str(player["enemies list"])
+                enemies_list = enemies_list.replace("'None', ", '')
+                enemies_list = enemies_list.replace("'", '')
+                enemies_list = enemies_list.replace("[", ' -')
+                enemies_list = enemies_list.replace("]", '')
+                enemies_list = enemies_list.replace(", ", '\n -')
+                print(enemies_list)
+                text = '='
+                print_separator(text)
+                which_enemy = input("> ")
+                if which_enemy == "None":
+                    print(" ")
+                    print(COLOR_YELLOW + "You don't know about that enemy." + COLOR_RESET_ALL)
+                    time.sleep(1.5)
+                elif which_enemy in player["enemies list"]:
+
+                    text = '='
+                    print_separator(text)
+
+                    if preferences["latest preset"]["type"] == "vanilla":
+                        enemy_thumbnail = "imgs/" + which_enemy + ".txt"
+                    else:
+                        enemy_thumbnail = 'plugins/' + str(preferences["latest preset"]["plugin"]) + "/imgs/" + which_enemy + ".txt"
+                    with open(enemy_thumbnail, 'r') as f:
+                        print(f.read())
+
+                    print("NAME: " + which_enemy)
+
+                    print("PLURAL: " + enemy[which_enemy]["plural"])
+                    enemy_average_damage = ( enemy[which_enemy]["damage"]["min damage"] + enemy[which_enemy]["damage"]["max damage"] ) / 2
+                    enemy_average_health = ( enemy[which_enemy]["health"]["min spawning health"] + enemy[which_enemy]["health"]["max spawning health"] ) / 2
+                    print("AVERAGE DAMAGE: " + COLOR_STYLE_BRIGHT + COLOR_CYAN + str(enemy_average_damage) + COLOR_RESET_ALL)
+                    print("AVERAGE HEALTH: " + COLOR_STYLE_BRIGHT + COLOR_RED + str(enemy_average_health) + COLOR_RESET_ALL)
+                    print("AGILITY: " + COLOR_STYLE_BRIGHT + COLOR_MAGENTA + str(enemy[which_enemy]["agility"]) + COLOR_RESET_ALL)
+
+                    # drops
+                    enemy_drops = str(enemy[which_enemy]["inventory"])
+                    enemy_drops = enemy_drops.replace('[', '')
+                    enemy_drops = enemy_drops.replace(']', '')
+                    enemy_drops = enemy_drops.replace("'", '')
+                    text = "DROPS: " + str(enemy_drops)
+                    print_long_string(text)
+
+                    text = "DESCRIPTION: " + enemy[which_enemy]["description"]
+                    print_long_string(text)
                     text = '='
                     print_separator(text)
                     finished = input("")
-            """
-            print(" ")
-            print("Visited Areas: ")
-            zones_list = str(player["visited zones"])
-            zones_list = zones_list.replace("'", '')
-            zones_list = zones_list.replace("[", '')
-            zones_list = zones_list.replace("]", '')
-            zones_list = zones_list.replace(", ", '\n')
-            print(zones_list)
-            which_zone = input("> ")
-            print(" ")
-            if which_zone in player["visited zones"]:
-                print("Name: " + zone[which_zone]["name"])
-                print("Description: " + zone[which_zone]["description"])
-            print(" ")
-            print("Known enemies:")
-            enemies_list = str(player["enemies list"])
-            enemies_list = enemies_list.replace("'None', ", '')
-            enemies_list = enemies_list.replace("'", '')
-            enemies_list = enemies_list.replace("[", '')
-            enemies_list = enemies_list.replace("]", '')
-            enemies_list = enemies_list.replace(", ", '\n')
-            print(enemies_list)
-            which_enemy = input("> ")
-            print(" ")
-            if which_enemy == "None":
-                print("You don't know about that enemy.")
-            elif which_enemy in player["enemies list"]:
+                else:
+                    print(" ")
+                    print(COLOR_YELLOW + "You don't know about that enemy." + COLOR_RESET_ALL)
+                    time.sleep(1.5)
+            elif choice == 'Encountered People':
+                print("ENCOUNTERED PEOPLE: ")
+                enemies_list = str(player["met npcs names"])
+                enemies_list = enemies_list.replace("'None', ", '')
+                enemies_list = enemies_list.replace("'", '')
+                enemies_list = enemies_list.replace("[", ' -')
+                enemies_list = enemies_list.replace("]", '')
+                enemies_list = enemies_list.replace(", ", '\n -')
+                print(enemies_list)
+                text = '='
+                print_separator(text)
+                which_npc = input("> ")
+                if which_npc == "None":
+                    print(" ")
+                    print(COLOR_YELLOW + "You don't know about that people." + COLOR_RESET_ALL)
+                    time.sleep(1.5)
+                elif which_npc in player["met npcs names"]:
 
-                enemy_thumbnail = "imgs/" + which_enemy + ".txt"
-                with open(enemy_thumbnail, 'r') as f:
-                    print(f.read())
+                    text = '='
+                    print_separator(text)
 
-                print("Name: " + which_enemy)
+                    print_npc_thumbnail(which_npc)
+                    print(" ")
 
-                print("Plural: " + enemy[which_enemy]["plural"])
-                enemy_average_damage = ( enemy[which_enemy]["damage"]["min damage"] + enemy[which_enemy]["damage"]["max damage"] ) / 2
-                enemy_average_health = ( enemy[which_enemy]["health"]["min spawning health"] + enemy[which_enemy]["health"]["max spawning health"] ) / 2
-                print("Average Damage: " + COLOR_RED + str(enemy_average_damage) + COLOR_RESET_ALL)
-                print("Average Health: " + COLOR_RED + str(enemy_average_health) + COLOR_RESET_ALL)
-                print("Agility: " + COLOR_RED + str(enemy[which_enemy]["agility"]) + COLOR_RESET_ALL)
+                    print("NAME: " + which_npc)
 
-                # drops
-                enemy_drops = str(enemy[which_enemy]["inventory"])
-                enemy_drops = enemy_drops.replace('[', '')
-                enemy_drops = enemy_drops.replace(']', '')
-                enemy_drops = enemy_drops.replace("'", '')
-                print("Drops: " + str(enemy_drops))
 
-                print("Description: " + enemy[which_enemy]["description"])
-            else:
-                print("You don't know about that enemy.")
-            finished = input(" ")
-            """
+                    print("COST VALUE: " + COLOR_YELLOW + COLOR_STYLE_BRIGHT  + str(npcs[which_npc]["cost value"]) + COLOR_RESET_ALL)
+                    sells_list_drinks = str(npcs[which_npc]["sells"]["drinks"])
+                    sells_list_items = str(npcs[which_npc]["sells"]["items"])
+                    buys_list = str(npcs[which_npc]["buys"]["items"])
+                    sells_list_drinks = sells_list_drinks.replace("'None', ", '')
+                    sells_list_drinks = sells_list_drinks.replace("'", '')
+                    sells_list_drinks = sells_list_drinks.replace("[", '')
+                    sells_list_drinks = sells_list_drinks.replace("]", '')
+                    sells_list_items = sells_list_items.replace("'None', ", '')
+                    sells_list_items = sells_list_items.replace("'", '')
+                    sells_list_items = sells_list_items.replace("[", '')
+                    sells_list_items = sells_list_items.replace("]", '')
+                    buys_list = buys_list.replace("'None', ", '')
+                    buys_list = buys_list.replace("'", '')
+                    buys_list = buys_list.replace("[", '')
+                    buys_list = buys_list.replace("]", '')
+                    print(" ")
+                    print("SELLS:")
+                    text = "DRINKS: " + sells_list_drinks
+                    print_long_string(text)
+                    text = "ITEMS: " + sells_list_items
+                    print_long_string(text)
+                    print(" ")
+                    print("BUYS:")
+                    text = "ITEMS: " + buys_list
+                    print_long_string(text)
+
+                    text = "DESCRIPTION: " + npcs[which_npc]["description"]
+                    print_long_string(text)
+                    text = '='
+                    print_separator(text)
+                    finished = input("")
+                else:
+                    print(" ")
+                    print(COLOR_YELLOW + "You don't know about that enemy." + COLOR_RESET_ALL)
+                    time.sleep(1.5)
         elif command.lower().startswith('i'):
             text = '='
             print_separator(text)
@@ -1004,7 +1088,8 @@ def run(play):
                 print_separator(text)
                 print("NAME: " + which_item)
                 print("TYPE: " + item[which_item]["type"])
-                print("DESCRIPTION: " + item[which_item]["description"])
+                text = "DESCRIPTION: " + item[which_item]["description"]
+                print_long_string(text)
                 if item[which_item]["type"] == "Armor Piece: Chestplate" or item[which_item]["type"] == "Armor Piece: Boots" or item[which_item]["type"] == "Armor Piece: Leggings" or item[which_item]["type"] == "Armor Piece: Shield":
                     print("             Armor pieces can protect you in fights, more the armor protection is higher, the more it protects you.")
                     print("ARMOR PROTECTION: " + COLOR_GREEN + COLOR_STYLE_BRIGHT + str(item[which_item]["armor protection"]) + COLOR_RESET_ALL)
@@ -1033,11 +1118,15 @@ def run(play):
                     elif item[which_item]["type"] == "Armor Piece: Shield":
                         player["held shield"] = which_item
                 elif choice == 'Get Rid':
-                    ask = input("You won't be able to get this item back if your throw it away. Are you sure you want to throw away this item? (y/n) ")
+                    text = "You won't be able to get this item back if your throw it away. Are you sure you want to throw away this item"
+                    print_long_string(text)
+                    ask = input("? (y/n) ")
                     if ask.lower().startswith('y'):
                         if item[which_item]["type"] == "Bag":
                             if ( player["inventory slots remaining"] - item[which_item]["inventory slots"] ) < 0:
-                                print("You cannot throw that item because it would cause your remaining inventory slots to be negative")
+                                text = COLOR_YELLOW + "You cannot throw that item because it would cause your remaining inventory slots to be negative" + COLOR_RESET_ALL
+                                print_long_string(text)
+                                time.sleep(1.5)
                                 print(" ")
                         else:
                             player["inventory"].remove(which_item)

@@ -149,6 +149,8 @@ def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
 
     enemy_max_health = enemy_health
 
+    critical_hit_chance = item[player["held item"]]["critical hit chance"]
+
     # while the player is still fighting (for run away)
 
     while fighting:
@@ -208,12 +210,19 @@ def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
                     print(" ")
                     # attack formula
                     enemy_dodged = False
+                    player_critical_hit = False
                     enemy_dodge_chance = round(random.uniform(0.10, enemy_agility), 2)
+                    critical_hit_chance_formula = round(critical_hit_chance / random.uniform(0.03, critical_hit_chance), 2)
                     if enemy_dodge_chance > round(random.uniform(.50, .90), 2):
                         enemy_dodged = True
                         print("Your enemy dodged your attack!")
+                    if critical_hit_chance / random.uniform(.10, .20) < critical_hit_chance_formula:
+                        player_critical_hit = True
+                        print("You dealt a critical hit to your opponent!")
                     if not enemy_dodged:
                         player_damage = random.randint(0, int(item[player["held item"]]["damage"]))
+                        if player_critical_hit:
+                            player_damage = player_damage * 2
                         enemy_health -= player_damage
                         print("You dealt " + str(player_damage) + " damage to your enemy.")
                     turn = False

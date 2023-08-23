@@ -762,7 +762,6 @@ def run(play):
             map_items = map_items.replace('[', '')
             map_items = map_items.replace(']', '')
             map_items = map_items.replace("'", '')
-            map_items = map_items.replace(',', '')
             take_item = "There are these items on the ground: " + map_items
             print(take_item)
             print("")
@@ -1167,6 +1166,7 @@ def run(play):
                 if item[which_item]["type"] == "Weapon":
                     print("DAMAGE: " + COLOR_CYAN + COLOR_STYLE_BRIGHT + str(item[which_item]["damage"]) + COLOR_RESET_ALL)
                     print("DEFENSE: " + COLOR_CYAN + COLOR_STYLE_BRIGHT + str(item[which_item]["defend"]) + COLOR_RESET_ALL)
+                    print("CRITICAL HIT CHANCE: " + COLOR_MAGENTA + COLOR_STYLE_BRIGHT + str(item[which_item]["critical hit chance"]) + COLOR_RESET_ALL)
                 if item[which_item]["type"] == "Consumable" or item[which_item]["type"] == "Food":
                     print("HEALTH BONUS: " + COLOR_STYLE_BRIGHT + COLOR_YELLOW  + str(item[which_item]["max bonus"]) + COLOR_RESET_ALL)
                     print("HEALING: " + COLOR_STYLE_BRIGHT + COLOR_MAGENTA + str(item[which_item]["healing level"]) + COLOR_RESET_ALL)

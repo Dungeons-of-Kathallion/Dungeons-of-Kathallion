@@ -3,6 +3,7 @@ import random
 import os
 import sys
 import time
+import enquiries
 from colors import *
 from colorama import Fore, Back, Style, init, deinit
 
@@ -212,15 +213,15 @@ def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
                     enemy_dodged = False
                     player_critical_hit = False
                     enemy_dodge_chance = round(random.uniform(0.10, enemy_agility), 2)
-                    critical_hit_chance_formula = round(critical_hit_chance / random.uniform(0.03, critical_hit_chance), 2)
+                    critical_hit_chance_formula = round(critical_hit_chance / random.uniform(0.03, critical_hit_chance * 2.8), 2)
                     if enemy_dodge_chance > round(random.uniform(.50, .90), 2):
                         enemy_dodged = True
                         print("Your enemy dodged your attack!")
-                    if critical_hit_chance / random.uniform(.10, .20) < critical_hit_chance_formula:
+                    if critical_hit_chance / random.uniform(.20, .35) < critical_hit_chance_formula:
                         player_critical_hit = True
                         print("You dealt a critical hit to your opponent!")
                     if not enemy_dodged:
-                        player_damage = random.randint(0, int(item[player["held item"]]["damage"]))
+                        player_damage = random.randint(1, int(item[player["held item"]]["damage"]))
                         if player_critical_hit:
                             player_damage = player_damage * 2
                         enemy_health -= player_damage
@@ -239,8 +240,17 @@ def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
 
                 # if player use an item
                 elif action.lower().startswith('u'):
+                    player_inventory = str(player["inventory"])
+                    player_inventory = player_inventory.replace("'", '')
+                    player_inventory = player_inventory.replace("[", ' -')
+                    player_inventory = player_inventory.replace("]", '')
+                    player_inventory = player_inventory.replace(", ", '\n -')
                     print(" ")
-                    item_input = input(str(player["inventory"]) + " ")
+                    text = '='
+                    print_separator(text)
+                    print("INVENTORY:")
+                    print(player_inventory)
+                    item_input = input("> ")
                     # use item
                     if item_input in player["inventory"]:
                         if item[item_input]["type"] == "Consumable" or item[item_input]["type"] == "Food":
@@ -263,10 +273,12 @@ def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
                         elif item_input in player["inventory"] and item[item_input]["type"] == "Armor Piece: Boots":
                             player["held boots"] = item_input
                             print("You are now wearing a/an ", player["held boots"])
-                        elif item_input in player["inventory"] and item[item_input]["type"] == "Armor Piece: Shield":
+                        elif item_input in player["inventory"] and item[item_input]["type"] == "Armor Piece: Sheild":
                             player["held shield"] = item_input
                             print("You are now holding a/an ", player["held shield"])
-                    print(" ")
+                        text = '='
+                        print_separator(text)
+                        print(" ")
                 else:
                     print("'" + action + "' is not a valid option")
                     print(" ")

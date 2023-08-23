@@ -14,6 +14,26 @@ defend = 0
 turn = True
 fighting = True
 
+def print_long_string(text):
+    new_input = ""
+    for i, letter in enumerate(text):
+        if i % 54 == 0:
+            new_input += '\n'
+        new_input += letter
+
+    # this is just because at the beginning too a `\n` character gets added
+    new_input = new_input[1:]
+    print(str(new_input))
+
+def print_separator(character):
+    count = 0
+
+    while count < 55:
+        sys.stdout.write(COLOR_STYLE_BRIGHT + character + COLOR_RESET_ALL)
+        sys.stdout.flush()
+        count += 1
+    sys.stdout.write('\n')
+
 def encounter_text_show(player, item, enemy, map, map_location, enemies_remaining, lists):
     # import stats
     global turn, defend, fighting, already_encountered
@@ -24,14 +44,25 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
 
     enemies_number = map["point" + str(map_location)]["enemy"]
 
-    os.system('clear')
+    text = '='
+    print_separator(text)
 
     if enemies_number > 1:
         print("You encounter a group of " + str(enemy_plural) + " that won't let you pass.")
     else:
         print("You find a/an " + str(enemy_singular) + " on your way.")
 
-    startup_action = input("[R]un Away, [F]ight, [U]se Item? ")
+    print("[R]un Away, [F]ight, [U]se Item? ")
+
+    text = '='
+    print_separator(text)
+
+    print(" ")
+    startup_action = input("> ")
+    print("")
+
+    text = '='
+    print_separator(text)
 
     if startup_action.lower().startswith('r'):
         # run away chance
@@ -39,12 +70,21 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
             print("You succeeded in running away from your enemy!")
             fighting = False
         else:
-            print("You failed in running away from your enemy! You now have to fight him!")
+            text = "You failed in running away from your enemy! You now have to fight him!"
+            print_long_string(text)
+            text = '='
+            print_separator(text)
     elif startup_action.lower().startswith('f'):
             pass
     elif startup_action.lower().startswith('u'):
-        print(" ")
-        item_input = input(str(player["inventory"]) + " ")
+        player_inventory = str(player["inventory"])
+        player_inventory = player_inventory.replace("'", '')
+        player_inventory = player_inventory.replace("[", ' -')
+        player_inventory = player_inventory.replace("]", '')
+        player_inventory = player_inventory.replace(", ", '\n -')
+        print("INVENTORY:")
+        print(player_inventory)
+        item_input = input("> ")
         # use item
         if item_input in player["inventory"]:
             if item[item_input]["type"] == "Consumable" or item[item_input]["type"] == "Food":
@@ -69,23 +109,20 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
                 print("You are now wearing a/an ", player["held boots"])
             elif item_input in player["inventory"] and item[item_input]["type"] == "Armor Piece: Sheild":
                 player["held shield"] = item_input
-                print("You are now wearing a/an ", player["held shield"])
+                print("You are now holding a/an ", player["held shield"])
+            text = '='
+            print_separator(text)
     else:
         print("'" + startup_action + "' is not a valid option")
 
 
     print(" ")
 
-def get_enemy_stats(player, item, enemy, map, map_location, lists):
-    global enemy_singular, enemy_plural, enemy_max, enemy_health, enemy_max_damage, enemy_min_damage, enemy_agility, enemy_damage, choosen_item
+def get_enemy_stats(player, item, enemy, map, map_location, lists, choose_rand_enemy, choosen_enemy, choosen_item, enemy_items_number, enemy_total_inventory):
+    global enemy_singular, enemy_plural, enemy_max, enemy_health, enemy_max_damage, enemy_min_damage, enemy_agility, enemy_damage
     # load enemy stat
 
     list_enemies = lists[ map["point" + str(map_location)]["enemy type"]]
-
-    choose_rand_enemy = random.randint(0, len(list_enemies) - 1)
-    choose_rand_enemy = list_enemies[choose_rand_enemy]
-
-    choosen_enemy = enemy[choose_rand_enemy]
 
     # enemy stats
     enemy_singular = choose_rand_enemy
@@ -96,12 +133,6 @@ def get_enemy_stats(player, item, enemy, map, map_location, lists):
     enemy_min_damage = choosen_enemy["damage"]["min damage"]
     enemy_damage = 0
     enemy_agility = choosen_enemy["agility"]
-
-    # calculate enemy inventory stuff
-
-    enemy_total_inventory = choosen_enemy["inventory"]
-    enemy_items_number = len(enemy_total_inventory)
-    choosen_item = enemy_total_inventory[random.randint(0, enemy_items_number - 1)]
 
     if choose_rand_enemy not in player["enemies list"]:
         player["enemies list"].append(choose_rand_enemy)
@@ -116,18 +147,61 @@ def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
 
     enemies_number = map["point" + str(map_location)]["enemy"]
 
+    enemy_max_health = enemy_health
+
     # while the player is still fighting (for run away)
 
     while fighting:
         # while player still alive
+        # colors
+        color_green = "\033[92m"
+        color_yellow = "\33[33m"
+        color_red = "\033[91m"
+        color_blue = "\33[34m"
+        color_default = "\033[0m"
+        health_color = color_green
+        health_color_enemy = color_blue
+
         while player["health"] > 0:
             while turn:
-                wait = input("Press ENTER to continue > ")
-                os.system('clear')
+                # player stats updates
+                player_health = player["health"]
+                player_max_health = player["max health"]
+
+                # display
+                bars = 20
+                remaining_health_symbol = "█"
+                lost_health_symbol = "_"
+
+                remaining_health_bars = round(player_health / player_max_health * bars)
+                lost_health_bars = bars - remaining_health_bars
+
+                remaining_health_bars_enemy = round(enemy_health / enemy_max_health * bars)
+                lost_health_bars_enemy = bars - remaining_health_bars_enemy
+
                 # print HP stats and possible actions for the player
 
-                print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL) + "; " + str(COLOR_BLUE) + "You: " + str(player["health"]) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(player["max health"]) + str(COLOR_RESET_ALL))
-                action = input("[A]ttack, [D]efend, [U]se Item? ")
+                if player_health > 0.66 * player_max_health:
+                    health_color = color_green
+                elif player_health > 0.33 * player_max_health:
+                    health_color = color_yellow
+                else:
+                    health_color = color_red
+
+                if enemy_health > 0.66 * enemy_max_health:
+                    health_color_enemy = color_blue
+                elif enemy_health > 0.33 * enemy_max_health:
+                    health_color_enemy = COLOR_CYAN
+                else:
+                    health_color_enemy = COLOR_MAGENTA
+
+                sys.stdout.write(f"PLAYER: {player_health} / {player_max_health}\n")
+                sys.stdout.write(f"|{health_color}{remaining_health_bars * remaining_health_symbol}{lost_health_bars * lost_health_symbol}{color_default}|\n")
+                sys.stdout.write(f"ENEMY: {enemy_health} / {enemy_max_health}\n")
+                sys.stdout.write(f"|{health_color_enemy}{remaining_health_bars_enemy * remaining_health_symbol}{lost_health_bars_enemy * lost_health_symbol}{color_default}|")
+                sys.stdout.flush()
+
+                action = input("\n[A]ttack, [D]efend, [U]se Item? ")
 
                 # if player attack
                 if action.lower().startswith('a'):
@@ -141,7 +215,6 @@ def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
                     if not enemy_dodged:
                         player_damage = random.randint(0, int(item[player["held item"]]["damage"]))
                         enemy_health -= player_damage
-                        print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL))
                         print("You dealt " + str(player_damage) + " damage to your enemy.")
                     turn = False
 
@@ -203,10 +276,26 @@ def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
                     if damage > 0 and not player_dodged:
                         player["health"] -= damage
                         print("The enemy dealt ", str(damage), " points of damage.")
-                    print("You have", str(player["health"]), "health points.")
                     print(" ")
                     turn = True
                 else:
+                    print(" ")
+                    # check if any health is negative
+                    if player["health"] < 0:
+                        player["health"] = 0
+                    if enemy_health < 0:
+                        enemy_health = 0
+                    remaining_health_bars = round(player_health / player_max_health * bars)
+                    lost_health_bars = bars - remaining_health_bars
+
+                    remaining_health_bars_enemy = round(enemy_health / enemy_max_health * bars)
+                    lost_health_bars_enemy = bars - remaining_health_bars_enemy
+                    sys.stdout.write(f"PLAYER: {player_health} / {player_max_health}\n")
+                    sys.stdout.write(f"|{health_color}{remaining_health_bars * remaining_health_symbol}{lost_health_bars * lost_health_symbol}{color_default}|\n")
+                    sys.stdout.write(f"ENEMY: {enemy_health} / {enemy_max_health}\n")
+                    sys.stdout.write(f"|{health_color_enemy}{remaining_health_bars_enemy * remaining_health_symbol}{lost_health_bars_enemy * lost_health_symbol}{color_default}|")
+                    sys.stdout.flush()
+                    print("\n")
                     player["xp"] += enemy_max * enemy_max_damage / 3
                     player["health"] += random.randint(0, 3)
                     enemies_remaining -= 1

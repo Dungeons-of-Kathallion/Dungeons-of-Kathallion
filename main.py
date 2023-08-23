@@ -441,6 +441,8 @@ def print_zone_map(zone_name):
     to_print = to_print.replace('$CYAN', '\033[0;36m')
     to_print = to_print.replace('$WHITE', '\033[0;37m')
     to_print = to_print.replace('$BLACK', '\033[0;30m')
+    to_print = to_print.replace('$BROWN', '\033[0;33m')
+    to_print = to_print.replace('$GRAY', '\033[1;30m')
 
     player_equipment = []
 
@@ -482,6 +484,8 @@ def print_zone_map_alone(zone_name):
     to_print = to_print.replace('$CYAN', '\033[0;36m')
     to_print = to_print.replace('$WHITE', '\033[0;37m')
     to_print = to_print.replace('$BLACK', '\033[0;30m')
+    to_print = to_print.replace('$BROWN', '\033[0;33m')
+    to_print = to_print.replace('$GRAY', '\033[1;30m')
 
     count = 0
     for line in to_print.splitlines():
@@ -503,6 +507,31 @@ def print_npc_thumbnail(npc):
     to_print = to_print.replace('$CYAN', '\033[0;36m')
     to_print = to_print.replace('$WHITE', '\033[0;37m')
     to_print = to_print.replace('$BLACK', '\033[0;30m')
+    to_print = to_print.replace('$BROWN', '\033[0;33m')
+    to_print = to_print.replace('$GRAY', '\033[1;30m')
+
+    count = 0
+    for line in to_print.splitlines():
+        print(line)
+        count += 1
+
+def print_enemy_thumbnail(enemy):
+    if preferences["latest preset"]["type"] == "vanilla":
+        with open('imgs/' + enemy + ".txt") as f:
+            to_print = str(f.read())
+    else:
+        with open('plugins/' +  str(preferences["latest preset"]["plugin"]) + '/imgs/' + enemy + ".txt") as f:
+            to_print = str(f.read())
+    to_print = to_print.replace('$RED', '\033[0;31m')
+    to_print = to_print.replace('$GREEN', '\033[0;32m')
+    to_print = to_print.replace('$YELLOW', '\033[0;33m')
+    to_print = to_print.replace('$BLUE', '\033[0;34m')
+    to_print = to_print.replace('$PURPLE', '\033[0;34m')
+    to_print = to_print.replace('$CYAN', '\033[0;36m')
+    to_print = to_print.replace('$WHITE', '\033[0;37m')
+    to_print = to_print.replace('$BLACK', '\033[0;30m')
+    to_print = to_print.replace('$BROWN', '\033[0;33m')
+    to_print = to_print.replace('$GRAY', '\033[1;30m')
 
     count = 0
     for line in to_print.splitlines():
@@ -745,9 +774,9 @@ def run(play):
         else:
             print( "                  " + "    " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "D: " + COLOR_RESET_ALL + "Check your diary")
         if "East" not in map["point" + str(map_location)]["blocked"]:
-            print("You can go East ►" + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "PLACEHOLDER")
+            print("You can go East ►" + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "H: " + COLOR_RESET_ALL + "Enter hostel if you're near one")
         else:
-            print("                 " + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "T: " + COLOR_RESET_ALL + "PLACEHOLDER")
+            print("                 " + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "H: " + COLOR_RESET_ALL + "Enter hostel if you're near one")
         if "West" not in map["point" + str(map_location)]["blocked"]:
             print("You can go West ◄" + "     " + COLOR_BLUE + COLOR_STYLE_BRIGHT + "Q: " + COLOR_RESET_ALL + "Quit & save")
         else:
@@ -756,6 +785,47 @@ def run(play):
         text = '='
         print_separator(text)
 
+        is_in_village = False
+        is_in_hostel = False
+        if zone[map_zone]["type"] == "village":
+            is_in_village = True
+        if zone[map_zone]["type"] == "hostel":
+            is_in_hostel = True
+            current_hostel = zone[map_zone]
+            print(str(current_hostel["name"]) + ":")
+            text = current_hostel["description"]
+            print_long_string(text)
+            print(" ")
+            print("SLEEP COST: " + COLOR_YELLOW + COLOR_STYLE_BRIGHT + str(current_hostel["sleep gold"]) + COLOR_RESET_ALL)
+            if "None" not in current_hostel["sells"]["drinks"]:
+                print("DRINKS SELLS:")
+                count = 0
+                hostel_drinks = current_hostel["sells"]["drinks"]
+                hostel_drinks_len = len(hostel_drinks)
+                while count < hostel_drinks_len:
+                    current_drink = str(current_hostel["sells"]["drinks"][int(count)])
+                    print(" -" + current_hostel["sells"]["drinks"][int(count)] + " " + COLOR_YELLOW + COLOR_STYLE_BRIGHT + str(round(drinks[current_drink]["gold"] * current_hostel["cost value"], 2)) + COLOR_RESET_ALL)
+                    count += 1
+            if "None" not in current_hostel["sells"]["items"]:
+                print("ITEMS SELLS")
+                count = 0
+                hostel_items = current_hostel["sells"]["items"]
+                hostel_items_len = len(hostel_items)
+                while count < hostel_items_len:
+                    current_item = str(current_hostel["sells"]["items"][int(count)])
+                    print(" -" + current_hostel["sells"]["items"][int(count)] + " " + COLOR_YELLOW + COLOR_STYLE_BRIGHT + str(round(item[current_item]["gold"] * current_hostel["cost value"], 2)) + COLOR_RESET_ALL)
+                    count += 1
+            if "None" not in current_hostel["buys"]["items"]:
+                print("ITEMS BUYS:")
+                count = 0
+                hostel_items = current_hostel["buys"]["items"]
+                hostel_items_len = len(hostel_items)
+                while count < hostel_items_len:
+                    current_item = str(current_hostel["buys"]["items"][int(count)])
+                    print(" -" + current_hostel["buys"]["items"][int(count)] + " " + COLOR_YELLOW + COLOR_STYLE_BRIGHT + str(round(item[current_item]["gold"] * current_hostel["cost value"], 2)) + COLOR_RESET_ALL)
+                    count += 1
+            text = '='
+            print_separator(text)
         print("")
         if "None" not in map["point" + str(map_location)]["item"] and map_location not in player["taken items"]:
             map_items = str(map["point" + str(map_location)]["item"])
@@ -987,7 +1057,7 @@ def run(play):
             options = ['Visited Places', 'Encountered Monsters', 'Encountered People']
             choice = enquiries.choose('', options)
             if choice == 'Visited Places':
-                print("VISITED AREAS: ")
+                print("VISITED PLACES: ")
                 zones_list = str(player["visited zones"])
                 zones_list = zones_list.replace("'", '')
                 zones_list = zones_list.replace("[", ' -')
@@ -1002,10 +1072,47 @@ def run(play):
                     print_separator(text)
                     print_zone_map_alone(which_zone)
                     print("NAME: " + zone[which_zone]["name"])
-                    text = "DESCRIPTION: " + zone[which_zone]["description"]
-                    print_long_string(text)
-                    text = '='
-                    print_separator(text)
+                    if zone[which_zone]["type"] == "village":
+                        content_hostels = str(zone[which_zone]["content"]["hostels"])
+                        content_hostels = content_hostels.replace('[', '')
+                        content_hostels = content_hostels.replace(']', '')
+                        content_hostels = content_hostels.replace("'", '')
+                        text = "HOSTELS: " + content_hostels
+                        print_long_string(text)
+                    elif zone[which_zone]["type"] == "hostel":
+                        current_hostel = zone[which_zone]
+                        print("SLEEP COST: " + COLOR_YELLOW + COLOR_STYLE_BRIGHT + str(current_hostel["sleep gold"]) + COLOR_RESET_ALL)
+                        if "None" not in current_hostel["sells"]["drinks"]:
+                            print("DRINKS SELLS:")
+                            count = 0
+                            hostel_drinks = current_hostel["sells"]["drinks"]
+                            hostel_drinks_len = len(hostel_drinks)
+                            while count < hostel_drinks_len:
+                                current_drink = str(current_hostel["sells"]["drinks"][int(count)])
+                                print(" -" + current_hostel["sells"]["drinks"][int(count)] + " " + COLOR_YELLOW + COLOR_STYLE_BRIGHT + str(round(drinks[current_drink]["gold"] * current_hostel["cost value"], 2)) + COLOR_RESET_ALL)
+                                count += 1
+                        if "None" not in current_hostel["sells"]["items"]:
+                            print("ITEMS SELLS")
+                            count = 0
+                            hostel_items = current_hostel["sells"]["items"]
+                            hostel_items_len = len(hostel_items)
+                            while count < hostel_items_len:
+                                current_item = str(current_hostel["sells"]["items"][int(count)])
+                                print(" -" + current_hostel["sells"]["items"][int(count)] + " " + COLOR_YELLOW + COLOR_STYLE_BRIGHT + str(round(item[current_item]["gold"] * current_hostel["cost value"], 2)) + COLOR_RESET_ALL)
+                                count += 1
+                        if "None" not in current_hostel["buys"]["items"]:
+                            print("ITEMS BUYS:")
+                            count = 0
+                            hostel_items = current_hostel["buys"]["items"]
+                            hostel_items_len = len(hostel_items)
+                            while count < hostel_items_len:
+                                current_item = str(current_hostel["buys"]["items"][int(count)])
+                                print(" -" + current_hostel["buys"]["items"][int(count)] + " " + COLOR_YELLOW + COLOR_STYLE_BRIGHT + str(round(item[current_item]["gold"] * current_hostel["cost value"], 2)) + COLOR_RESET_ALL)
+                                count += 1
+                                text = "DESCRIPTION: " + zone[which_zone]["description"]
+                                print_long_string(text)
+                                text = '='
+                                print_separator(text)
                 finished = input("")
             elif choice == 'Encountered Monsters':
                 print("ENCOUNTERED MONSTERS: ")
@@ -1028,12 +1135,7 @@ def run(play):
                     text = '='
                     print_separator(text)
 
-                    if preferences["latest preset"]["type"] == "vanilla":
-                        enemy_thumbnail = "imgs/" + which_enemy + ".txt"
-                    else:
-                        enemy_thumbnail = 'plugins/' + str(preferences["latest preset"]["plugin"]) + "/imgs/" + which_enemy + ".txt"
-                    with open(enemy_thumbnail, 'r') as f:
-                        print(f.read())
+                    print_enemy_thumbnail(which_enemy)
 
                     print("NAME: " + which_enemy)
 
@@ -1129,6 +1231,7 @@ def run(play):
             print_separator(text)
             print("ARMOR PROTECTION: " + COLOR_GREEN + COLOR_STYLE_BRIGHT + str(player["armor protection"]) + COLOR_RESET_ALL + COLOR_RED + COLOR_STYLE_BRIGHT + " (" + COLOR_RESET_ALL + "More it's higher, the less you'll take damages in fights" + COLOR_RED + COLOR_STYLE_BRIGHT + ")" + COLOR_RESET_ALL)
             print("AGILITY: " + COLOR_MAGENTA + COLOR_STYLE_BRIGHT + str(player["agility"]) + COLOR_RESET_ALL + COLOR_RED + COLOR_STYLE_BRIGHT + " (" + COLOR_RESET_ALL + "More it's higher, the more you'll have a chance to dodge attacks" + COLOR_RED + COLOR_STYLE_BRIGHT + ")" + COLOR_RESET_ALL)
+            print("CRITICAL HIT CHANCE: " + COLOR_CYAN + COLOR_STYLE_BRIGHT + str(item[player["held item"]]["critical hit chance"]) + COLOR_RESET_ALL + COLOR_RED + COLOR_STYLE_BRIGHT + " (" + COLOR_RESET_ALL + "More it's higher, the more you'll have a chance to deal critical attacks" + COLOR_RED + COLOR_STYLE_BRIGHT + ")" + COLOR_RESET_ALL)
             print(" ")
             # equipment
             if player["held item"] != " ":
@@ -1213,6 +1316,98 @@ def run(play):
                                 player["held shield"] = " "
             else:
                 print(COLOR_YELLOW + "You do not have that item." + COLOR_RESET_ALL)
+                time.sleep(1.5)
+        elif command.lower().startswith('h'):
+            if zone[map_zone]["type"] == "hostel":
+                text = '='
+                print_separator(text)
+                options = ['Sleep']
+                if "None" not in zone[map_zone]["sells"]["drinks"]:
+                    options += ['Buy Drink']
+                if "None" not in zone[map_zone]["sells"]["items"]:
+                    options += ['Buy Item']
+                if "None" not in zone[map_zone]["buys"]["items"]:
+                    options += ['Sell Item']
+                continue_hostel_actions = True
+                while continue_hostel_actions:
+                    choice = enquiries.choose('', options)
+                    if choice == 'Sleep':
+                        print("Are you sure you want to spend the night here? It will ")
+                        ask = input("cost you " + str(zone[map_zone]["sleep gold"]) + " gold (y/n) ")
+                        if ask.lower().startswith('y'):
+                            if int(player["gold"]) > int(zone[map_zone]["sleep gold"]):
+                                remove_gold(int(zone[map_zone]["sleep gold"]))
+                                loading = 7
+                                print(" ")
+                                while loading > 0:
+                                    print("Sleeping... Zzz", end='\r')
+                                    time.sleep(.25)
+                                    print("Sleeping... zZz", end='\r')
+                                    time.sleep(.25)
+                                    print("Sleeping... zzZ", end='\r')
+                                    time.sleep(.25)
+                                    print("Sleeping... zzz", end='\r')
+                                    time.sleep(.25)
+                                    print("Sleeping... Zzz", end='\r')
+                                    time.sleep(.25)
+                                    print("Sleeping... zZz", end='\r')
+                                    time.sleep(.25)
+                                    print("Sleeping... zzZ", end='\r')
+                                    time.sleep(.25)
+                                    print("Sleeping... zzz", end='\r')
+                                    time.sleep(.25)
+                                    loading -= 1
+                                day_time = float( float(round(player["elapsed time game days"] + 1, 0)) + .25 )
+                                player["elapsed time game days"] = float( float(round(player["elapsed time game days"] + 1, 0)) + .25 )
+                                continue_hostel_actions = False
+                            else:
+                                print(COLOR_YELLOW + "You don't own enough gold to sleep here." + COLOR_RESET_ALL)
+                    elif choice == 'Buy Drink':
+                        which_drink = input("Which drink do you want to buy? ")
+                        if which_drink in zone[map_zone]["sells"]["drinks"] and ( drinks[which_drink]["gold"] * zone[map_zone]["cost value"] ) < player["gold"]:
+                            remove_gold(str( drinks[which_drink]["gold"] * zone[map_zone]["cost value"] ))
+                        else:
+                            text = COLOR_YELLOW + "You cannot buy that items because it would cause your gold to be negative." + COLOR_RESET_ALL
+                            print_long_string(text)
+                        if drinks[which_drink]["healing level"] == "max health":
+                            player["health"] = player["max health"]
+                        else:
+                            player["health"] += drinks[which_drink]["healing level"]
+                    elif choice == 'Buy Item':
+                        which_item = input("Which item do you want to buy? ")
+                        if which_item in zone[map_zone]["sells"]["items"] and ( item[which_item]["gold"] * zone[map_zone]["cost value"] ) < player["gold"]:
+                            if player["inventory slots remaining"] > 0:
+                                player["inventory slots remaining"] -= 1
+                                player["inventory"].append(which_item)
+                                remove_gold(str( item[which_item]["gold"] * zone[map_zone]["cost value"] ))
+                            else:
+                                text = COLOR_YELLOW + "You cannot buy that items because it would cause your inventory slots to be negative." + COLOR_RESET_ALL
+                                print_long_string(text)
+                        else:
+                            text = COLOR_YELLOW + "You cannot buy that items because it would cause your gold to be negative." + COLOR_RESET_ALL
+                            print_long_string(text)
+                    elif choice == 'Sell Item':
+                        which_item = input("Which item do you want to sell? ")
+                        if which_item in zone[map_zone]["buys"]["items"] and ( item[which_item]["gold"] * zone[map_zone]["cost value"] ) < player["gold"] and which_item in player["inventory"]:
+                            player["inventory slots remaining"] -= 1
+                            remove_gold(str( item[which_item]["gold"] * zone[map_zone]["cost value"] ))
+                            player["inventory"].remove(which_item)
+                            if which_item == player["held item"]:
+                                player["held item"] = " "
+                            if which_item == player["held chestplate"]:
+                                player["held chestplate"] = " "
+                            if which_item == player["held boots"]:
+                                player["held boots"] = " "
+                            if which_item == player["held leggings"]:
+                                player["held leggings"] = " "
+                            if which_item == player["held shield"]:
+                                player["held shield"] = " "
+                        else:
+                            text = COLOR_YELLOW + "You cannot buy that items because it would cause your gold to be negative or because you don't own that item." + COLOR_RESET_ALL
+                            print_long_string(text)
+
+            else:
+                print(COLOR_YELLOW + "You cannot find any near hostel." + COLOR_RESET_ALL)
                 time.sleep(1.5)
         elif command.lower().startswith('m'):
             if "Map" in player["inventory"]:

@@ -1118,10 +1118,13 @@ def run(play):
                                 current_item = str(current_hostel["buys"]["items"][int(count)])
                                 print(" -" + current_hostel["buys"]["items"][int(count)] + " " + COLOR_YELLOW + COLOR_STYLE_BRIGHT + str(round(item[current_item]["gold"] * current_hostel["cost value"], 2)) + COLOR_RESET_ALL)
                                 count += 1
-                                text = "DESCRIPTION: " + zone[which_zone]["description"]
-                                print_long_string(text)
-                                text = '='
-                                print_separator(text)
+                    text = "DESCRIPTION: " + zone[which_zone]["description"]
+                    print_long_string(text)
+                    text = '='
+                    print_separator(text)
+                else:
+                    print(" ")
+                    print(COLOR_YELLOW + "You don't know about that place" + COLOR_RESET_ALL)
                 finished = input("")
             elif choice == 'Encountered Monsters':
                 print("ENCOUNTERED MONSTERS: ")

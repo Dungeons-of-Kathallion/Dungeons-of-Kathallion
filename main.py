@@ -35,8 +35,12 @@ if plugin_vanila.lower().startswith('p'):
 
     with open(what_plugin + "/start.yaml") as f:
         start_player = yaml.safe_load(f)
+
     with open(what_plugin + "/lists.yaml") as f:
         lists = yaml.safe_load(f)
+
+    with open(what_plugin + "/plot.yaml") as f:
+        plot = yaml.safe_load(f)
 else:
     with open("data/map.yaml") as f:
         map = yaml.safe_load(f)
@@ -52,6 +56,9 @@ else:
 
     with open("data/lists.yaml") as f:
         lists = yaml.safe_load(f)
+
+    with open("data/plot.yaml") as f:
+        plot = yaml.safe_load(f)
 
 # first text you see
 
@@ -301,6 +308,17 @@ def run(play):
             print("You can go East")
         if "West" not in map["point" + str(map_location)]["blocked"]:
             print("You can go West")
+        if "dialog" in map["point" + str(map_location)]:
+            dialog_name = map["point" + str(map_location)]["dialog"]
+            if "requirement" in plot[map["point" + str(map_location)]["dialog"]]:
+                if plot[map["point" + str(map_location)]["dialog"]]["requirement"] in player["heard dialog"]:
+                    print(plot[map["point" + str(map_location)]["dialog"]]["text"])
+                    player["heard dialog"].append(dialog_name)
+                else:
+                    print(plot[map["point" + str(map_location)]["dialog"]]["incomplete text"])
+            else:
+                print(plot[map["point" + str(map_location)]["dialog"]]["text"])
+                player["heard dialog"].append(dialog_name)
         if "None" not in map["point" + str(map_location)]["item"] and map_location not in player["taken items"]:
             take_item = input(COLOR_GREEN + "There are these items on the ground: " + COLOR_RESET_ALL + str(map["point" + str(map_location)]["item"]) + " ")
             if take_item in map["point" + str(map_location)]["item"]:

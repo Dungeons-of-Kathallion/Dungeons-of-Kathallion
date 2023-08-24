@@ -1,0 +1,7 @@
+colorama
+pyyaml
+
+# random
+# pickle
+# os
+# time

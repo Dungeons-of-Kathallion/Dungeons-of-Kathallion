@@ -123,8 +123,6 @@ def get_enemy_stats(player, item, enemy, map, map_location, lists, choose_rand_e
     global enemy_singular, enemy_plural, enemy_max, enemy_health, enemy_max_damage, enemy_min_damage, enemy_agility, enemy_damage
     # load enemy stat
 
-    list_enemies = lists[ map["point" + str(map_location)]["enemy type"]]
-
     # enemy stats
     enemy_singular = choose_rand_enemy
     enemy_plural = choosen_enemy["plural"]

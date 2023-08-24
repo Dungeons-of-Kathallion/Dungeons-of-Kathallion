@@ -987,9 +987,70 @@ def run(play):
                             print("You cannot take that item, you don't have enough slots in your inventory")
                         else:
                             player["inventory"].append(choosen_item)
-                            player["taken items"].append(map_location)
                 print(" ")
                 player["defeated enemies"].append(map_location)
+            else:
+                if player["cheat"] < 3:
+                    cheatcode = input("What is the not-die code? ")
+                    if cheatcode == "43590":
+                        player["cheat"] += 1
+                        player["health"] = player["max health"]
+                    else:
+                        player = start_player
+                        play = 0
+                        return play
+                else:
+                    print("You've cheated too much! No more lives!")
+                    time.sleep(1)
+                    player = start_player
+                    play = 0
+                    return play
+        elif day_time == COLOR_RED + COLOR_STYLE_BRIGHT + "NIGHT" + COLOR_RESET_ALL and round(random.uniform(.20, .80), 3) > 0.7 and zone[map_zone]["type"] != "hostel" and zone[map_zone]["type"] != "village":
+            enemies_remaining = random.randint(1, 4)
+            already_encountered = False
+            while enemies_remaining > 0:
+                list_enemies = lists["generic"]
+                choose_rand_enemy = random.randint(0, len(list_enemies) - 1)
+                choose_rand_enemy = list_enemies[choose_rand_enemy]
+                choosen_enemy = enemy[choose_rand_enemy]
+
+                enemy_total_inventory = choosen_enemy["inventory"]
+
+                enemy_items_number = len(enemy_total_inventory)
+                choosen_item = enemy_total_inventory[random.randint(0, enemy_items_number - 1)]
+                battle.get_enemy_stats(player, item, enemy, map, map_location, lists, choose_rand_enemy, choosen_enemy, choosen_item, enemy_items_number, enemy_total_inventory)
+                if not already_encountered:
+                    battle.encounter_text_show(player, item, enemy, map, map_location, enemies_remaining, lists)
+                    already_encountered = True
+                battle.fight(player, item, enemy, map, map_location, enemies_remaining, lists)
+                enemies_remaining -= 1
+            # if round(random.uniform(.20, .50), 2) > .35:
+            list_enemies = lists["generic"]
+
+            if player["health"] > 0:
+
+                if random.randint(0, 3) >= 2.5:
+                    choosen_item = "Gold"
+
+                if choosen_item == "Gold":
+                    print("Your enemy dropped some " + choosen_item)
+                else:
+                    print("Your enemy dropped a/an " + choosen_item)
+                options = ['Grab Item', 'Continue']
+                drop = enquiries.choose('', options)
+                text = '='
+                print_separator(text)
+                if drop == 'Grab Item':
+                    if choosen_item == "Gold":
+                        add_gold(round(random.uniform(1.00, 6.30), 2))
+                    else:
+                        if choosen_item in player["inventory"] and item[choosen_item]["type"] == "Utility":
+                            print("You cannot take that item")
+                        elif player["inventory slots remaining"] == 0:
+                            print("You cannot take that item, you don't have enough slots in your inventory")
+                        else:
+                            player["inventory"].append(choosen_item)
+                print(" ")
             else:
                 if player["cheat"] < 3:
                     cheatcode = input("What is the not-die code? ")

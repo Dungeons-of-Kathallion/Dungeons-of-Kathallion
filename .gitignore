@@ -1,7 +1,7 @@
 *.DS_Store
 **/.DS_Store
 EXAMPLE*
-#__pycache__
+__pycache__
 __pycache__/**
 **/save_*
 **/~0*

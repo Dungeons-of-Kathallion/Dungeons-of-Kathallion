@@ -787,6 +787,15 @@ def run(play):
 
         is_in_village = False
         is_in_hostel = False
+        if zone[map_zone]["type"] == "village" or zone[map_zone]["type"] == "hostel":
+            print("NEWS:")
+            village_news = zone[map_zone]["news"]
+            village_news_len = len(village_news)
+            choose_rand_news = random.randint(0, ( village_news_len - 1 ))
+            choose_rand_news = village_news[int(choose_rand_news)]
+            print(choose_rand_news)
+            text = '='
+            print_separator(text)
         if zone[map_zone]["type"] == "village":
             is_in_village = True
         if zone[map_zone]["type"] == "hostel":
@@ -1328,6 +1337,7 @@ def run(play):
                     options += ['Buy Item']
                 if "None" not in zone[map_zone]["buys"]["items"]:
                     options += ['Sell Item']
+                options += ['Exit']
                 continue_hostel_actions = True
                 while continue_hostel_actions:
                     choice = enquiries.choose('', options)
@@ -1405,6 +1415,8 @@ def run(play):
                         else:
                             text = COLOR_YELLOW + "You cannot buy that items because it would cause your gold to be negative or because you don't own that item." + COLOR_RESET_ALL
                             print_long_string(text)
+                    else:
+                        continue_hostel_actions = False
 
             else:
                 print(COLOR_YELLOW + "You cannot find any near hostel." + COLOR_RESET_ALL)

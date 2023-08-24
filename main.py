@@ -910,7 +910,7 @@ def run(play):
                     which_item = input("Which item do you want to sell him? ")
                     if which_item in npcs[current_npc]["buys"]["items"] and ( item[which_item]["gold"] * npcs[current_npc]["cost value"] ) < player["gold"] and which_item in player["inventory"]:
                         player["inventory slots remaining"] -= 1
-                        remove_gold(str( item[which_item]["gold"] * npcs[current_npc]["cost value"] ))
+                        add_gold(str( item[which_item]["gold"] * npcs[current_npc]["cost value"] ))
                         player["inventory"].remove(which_item)
                         if which_item == player["held item"]:
                             player["held item"] = " "
@@ -1497,7 +1497,7 @@ def run(play):
                         which_item = input("Which item do you want to sell? ")
                         if which_item in zone[map_zone]["buys"]["items"] and ( item[which_item]["gold"] * zone[map_zone]["cost value"] ) < player["gold"] and which_item in player["inventory"]:
                             player["inventory slots remaining"] -= 1
-                            remove_gold(str( item[which_item]["gold"] * zone[map_zone]["cost value"] ))
+                            add_gold(str( item[which_item]["gold"] * zone[map_zone]["cost value"] ))
                             player["inventory"].remove(which_item)
                             if which_item == player["held item"]:
                                 player["held item"] = " "

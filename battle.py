@@ -43,7 +43,7 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
     print(" ") # do not merge with possible actions text
     # load and create enemies list type
 
-    enemies_number = map["point" + str(map_location)]["enemy"]
+    enemies_number = enemies_remaining
 
     text = '='
     print_separator(text)
@@ -71,10 +71,11 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
             print("You succeeded in running away from your enemy!")
             fighting = False
         else:
-            text = "You failed in running away from your enemy! You now have to fight him!"
+            text = "You failed in running away from your enemy! You now have to fight him/them!"
             print_long_string(text)
             text = '='
             print_separator(text)
+            fighting = True
     elif startup_action.lower().startswith('f'):
             pass
     elif startup_action.lower().startswith('u'):

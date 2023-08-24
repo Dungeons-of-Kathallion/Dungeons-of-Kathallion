@@ -1,6 +1,5 @@
 import random
 import yaml
-import pickle
 import battle
 import os
 import sys
@@ -403,24 +402,6 @@ def search(x, y):
             map_location = i
             return map_location
 
-def search_specific_x():
-    global map_location_x
-    for i in range(0, map["coordinate count"]):
-        point_i = map["point" + str(i)]
-        point_x = point_i["x"]
-        if point_x == player["x"]:
-            map_location_x = i
-            return map_location_x
-
-def search_specific_y():
-    global map_location_y
-    for i in range(0, map["coordinate count"]):
-        point_i = map["point" + str(i)]
-        point_y = point_i["y"]
-        if point_y == player["y"]:
-            map_location_y = i
-            return map_location_y
-
 def add_gold(amount):
     player_gold = player["gold"]
     player_gold += float(amount)
@@ -734,8 +715,6 @@ def run(play):
 
 
         map_location = search(player["x"], player["y"])
-        map_location_x = search_specific_x()
-        map_location_y = search_specific_y()
         map_zone = map["point" + str(map_location)]["map zone"]
 
         # add current player location and map
@@ -1033,9 +1012,63 @@ def run(play):
             print(COLOR_YELLOW + "Rather than saying Go <direction>, simply say <direction>." + COLOR_RESET_ALL)
             time.sleep(1.5)
         elif command.lower().startswith('n'):
+            for i in range(0, map["coordinate count"]):
+                point_i = map["point" + str(i)]
+                point_x, point_y = point_i["x"], point_i["y"] - 1
+                # print(i, point_x, point_y, player)
+                if point_x == player["x"] and point_y == player["y"]:
+                    future_map_location = i
             if "North" in map["point" + str(map_location)]["blocked"]:
                 print(COLOR_YELLOW + "You cannot go that way." + COLOR_RESET_ALL)
                 time.sleep(1)
+            elif "None" not in map["point" + str(future_map_location)]["key"]["required keys"]:
+                text = '='
+                print_separator(text)
+
+                text = "You need the following key(s) to enter this location, if you decide to use it, you may loose it:"
+                print_long_string(text)
+
+                keys_list = str(map["point" + str(future_map_location)]["key"]["required keys"])
+                keys_list = keys_list.replace("'", '')
+                keys_list = keys_list.replace("[", ' -')
+                keys_list = keys_list.replace("]", '')
+                keys_list = keys_list.replace(", ", '\n -')
+
+                keys_len = len(map["point" + str(future_map_location)]["key"]["required keys"])
+
+                text = '='
+                print_separator(text)
+
+                options = ['Continue', 'Leave']
+                choice = enquiries.choose('', options)
+
+                count = 0
+
+                have_necessary_keys = True
+
+                if choice == 'Continue':
+                    while count < ( keys_len ) and have_necessary_keys == True:
+
+                        choosen_key = map["point" + str(future_map_location)]["key"]["required keys"][int(count)]
+
+                        if choosen_key not in player["inventory"]:
+                            have_necessary_keys = False
+                        else:
+                            if map["point" + str(future_map_location)]["key"]["remove key"] == True:
+                                player["inventory"].remove(choosen_key)
+
+                        count += 1
+
+                    if not have_necessary_keys:
+                        print(" ")
+                        text = COLOR_YELLOW + "You don't have the necessary key(s) to enter this locations"
+                        print_long_string(text)
+                        time.sleep(1.5)
+                    if have_necessary_keys:
+                        player["y"] += 1
+
+                text = '='
+                print_separator(text)
             else:
                 player["y"] += 1
         elif command.lower().startswith('s'):

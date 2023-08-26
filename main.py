@@ -506,23 +506,23 @@ def run(play):
         elif command.lower().startswith('t'):
             # equipment
             if player["held item"] == " ":
-                print("You are currently holding no weapon")
+                print("You are not holding a weapon.")
             else:
                 print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
             if player["held chestplate"] == " ":
-                print("You are currently wearing no chestplate")
+                print("You are not wearing a chestplate.")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
             if player["held boots"] == " ":
-                print("You are currently wearing no boots")
+                print("You are not wearing boots.")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
             if player["held shield"] == " ":
-                print("You are currently wearing no shields.")
+                print("You are not holding a shield.")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held shield"] + COLOR_RESET_ALL)
             if player["held leggings"] == " ":
-                print("You are currently wearing no leggings")
+                print("You are not wearing leggings.")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")

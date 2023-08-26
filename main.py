@@ -297,13 +297,6 @@ def run(play):
         player["inventory slots remaining"] = int(player["inventory slots"]) - int(player_items_number)
 
         map_location = search(player["x"], player["y"])
-        map_location_x = search_specific_x()
-        map_location_y = search_specific_y()
-        map_zone = map["point" + str(map_location)]["map zone"]
-        print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Coordinates:" + COLOR_RESET_ALL)
-        print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "X: " + COLOR_RESET_ALL + str(map_location_x))
-        print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Y: " + COLOR_RESET_ALL + str(map_location_y))
-        print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Region: " + COLOR_RESET_ALL + str(map_zone))
         print(" ")
         print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Possible actions:" + COLOR_RESET_ALL)
         if "North" not in map["point" + str(map_location)]["blocked"]:
@@ -551,19 +544,19 @@ def run(play):
         elif command.lower().startswith('p'):
             # equipment
             if player["held item"] == " ":
-                print("You are currently holding no weapon")
+                print("You are not holding a weapon.")
             else:
                 print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
             if player["held chestplate"] == " ":
-                print("You are currently holding no chestplate")
+                print("You are not wearing a chestplate.")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
             if player["held boots"] == " ":
-                print("You are currently holding no boots")
+                print("You are not wearing boots.")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
             if player["held leggings"] == " ":
-                print("You are currently holding no leggings")
+                print("You are not wearing leggings.")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
@@ -591,9 +584,13 @@ def run(play):
                 print(" ")
         elif command.lower().startswith('m'):
             if "Map" in player["inventory"]:
-                print("**|**")
-                print("*[+]*")
-                print("**⊥**")
+                map_location_x = search_specific_x()
+                map_location_y = search_specific_y()
+                map_zone = map["point" + str(map_location)]["map zone"]
+                print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Coordinates:" + COLOR_RESET_ALL)
+                print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "X: " + COLOR_RESET_ALL + str(map_location_x))
+                print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Y: " + COLOR_RESET_ALL + str(map_location_y))
+                print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "Region: " + COLOR_RESET_ALL + str(map_zone))
                 print(" ")
             else:
                 print("You do not have a map.")

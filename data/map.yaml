@@ -6,6 +6,8 @@ point0:
   dialog: start dialog
   item:
   - None
+  ammo: "Arrow"
+  ammo count: 3
   enemy: 0
   blocked:
   - None
@@ -45,6 +47,8 @@ point4:
   map zone: "Dungeon Entrance"
   item:
   - Axe
+  ammo: "Orc Arrow"
+  ammo count: 4
   enemy: 0
   blocked:
   - North

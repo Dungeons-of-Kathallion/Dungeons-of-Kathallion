@@ -188,6 +188,7 @@ def run(play):
     print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Hints:" + COLOR_RESET_ALL)
     print("If you find an item on the ground, type the name of the item to take it.")
     print("Some items have special triggers, which will often be stated in the description. Others can only be activated in certain situations, like in combat.")
+    print("As you explore, you will find arrows on the ground. They will be automatically picked up, if you have room.")
     print(" ")
     # Mapping stuff
 
@@ -329,6 +330,18 @@ def run(play):
                 else:
                     player["inventory"].append(take_item)
                     player["taken items"].append(map_location)
+        if "ammo" in map["point" + str(map_location)] and map_location not in player["taken ammo"]:
+            ammo_type = map["point" + str(map_location)]["ammo"]
+            ammo_count = map["point" + str(map_location)]["ammo count"]
+            max_ammo = ammo[ammo_type]["stack"]
+            if ammo_type in player["ammo"]:
+                player["ammo"][ammo_type] += ammo_count
+                if player["ammo"][ammo_type] > max_ammo:
+                    player["ammo"][ammo_type] = max_ammo
+                    player["taken ammo"].append(map_location)
+            else:
+                player["ammo"][ammo_type] = ammo_count
+                player["taken ammo"].append(map_location)
         if map["point" + str(map_location)]["enemy"] > 0 and map_location not in player["defeated enemies"]:
             enemies_remaining = map["point" + str(map_location)]["enemy"]
             already_encountered = False
@@ -339,7 +352,6 @@ def run(play):
                     already_encountered = True
                 battle.fight(player, item, enemy, map, map_location, enemies_remaining, lists)
                 enemies_remaining -= 1
-            # if round(random.uniform(.20, .50), 2) > .35:
             list_enemies = lists[ map["point" + str(map_location)]["enemy type"]]
 
             if player["health"] > 0:

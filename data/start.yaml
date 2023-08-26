@@ -29,6 +29,8 @@ y: 0
 map zone: "Dungeon Entrance"
 taken items:
 - None
+taken ammo:
+- None
 defeated enemies:
 - None
 heard dialog:

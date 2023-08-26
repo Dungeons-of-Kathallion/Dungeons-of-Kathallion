@@ -1,10 +1,22 @@
 # Weapons
+TEST WEAPON:
+  type: "Weapon"
+  damage: 99999999999999999999999999999
+  defend: 99999999999999999999999999999
+  agility: 99999999999999999999999999999
+  description: "Nice! You figured out how to cheat!"
 Sword:
   type: "Weapon"
   damage: 5
   defend: 6
   agility: .1
   description: "Your generic sword."
+Enchanted Sword:
+  type: "Weapon"
+  damage: 14
+  defend: 17
+  agility: .3
+  description: "A great and powerful blade, radiating its might."
 Bow:
   type: "Weapon"
   damage: 5
@@ -56,6 +68,12 @@ Spear:
   defend: 4
   agility: .2
   description: "The spear is a fast and agile weapon that lets you attack your enemy without letting them the time to attack you."
+Dragon Pike:
+  type: "Weapon"
+  damage: 21
+  defend: 8
+  agility: .1
+  description: "A legendary weapon with the strength to destroy all foes. Whether it works on dragons or not is for you to decide..."
 # Consumables
 Healing Potion:
   type: "Consumable"

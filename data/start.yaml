@@ -20,6 +20,8 @@ inventory:
 - Leather Boots
 - Old Pants
 - Stretched Bag
+ammo:
+  Rocks: 6
 max health: 15
 x: 0
 xp: 0

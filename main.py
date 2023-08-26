@@ -41,6 +41,9 @@ if plugin_vanila.lower().startswith('p'):
 
     with open(what_plugin + "/plot.yaml") as f:
         plot = yaml.safe_load(f)
+
+    with open(what_plugin + "/ammo.yaml") as f:
+        ammo = yaml.safe_load(f)
 else:
     with open("data/map.yaml") as f:
         map = yaml.safe_load(f)
@@ -59,6 +62,9 @@ else:
 
     with open("data/plot.yaml") as f:
         plot = yaml.safe_load(f)
+
+    with open("data/ammo.yaml") as f:
+        ammo = yaml.safe_load(f)
 
 # first text you see
 
@@ -322,7 +328,7 @@ def run(play):
         if "None" not in map["point" + str(map_location)]["item"] and map_location not in player["taken items"]:
             take_item = input(COLOR_GREEN + "There are these items on the ground: " + COLOR_RESET_ALL + str(map["point" + str(map_location)]["item"]) + " ")
             if take_item in map["point" + str(map_location)]["item"]:
-                if take_item in player["inventory"] and item[take_item]["type"] == "Utility":
+                if take_item in player["inventory"]:
                     print("You cannot take that item")
                 elif player["inventory slots remaining"] == 0:
                     print("You cannot take that item, you don't have enough slots in your inventory")
@@ -371,8 +377,6 @@ def run(play):
                     print("You can go East")
                 if "West" not in map["point" + str(map_location)]["blocked"]:
                     print("You can go West")
-                # if "None" not in map["point" + str(map_location)]["item"]:
-                #     print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "There are these items on the ground: ", map["point" + str(map_location)]["item"] + COLOR_RESET_ALL)
             else:
                 if player["cheat"] < 3:
                     cheatcode = input("What is the not-die code? ")
@@ -461,19 +465,19 @@ def run(play):
             print(" ")
             # equipment
             if player["held item"] == " ":
-                print("You are currently holding no weapon")
+                print("You are currently holding no weapon.")
             else:
                 print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
             if player["held chestplate"] == " ":
-                print("You are currently wearing no chestplate")
+                print("You are currently wearing no chestplate.")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
             if player["held boots"] == " ":
-                print("You are currently holding no boots")
+                print("You are currently holding no boots.")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
             if player["held leggings"] == " ":
-                print("You are currently holding no leggings")
+                print("You are currently holding no leggings.")
             else:
                 print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
             print(" ")
@@ -489,6 +493,9 @@ def run(play):
                 if item[which_item]["type"] == "Weapon":
                     print("Damage: " + COLOR_RED + str(item[which_item]["damage"]) + COLOR_RESET_ALL)
                     print("Defense: " + COLOR_RED + str(item[which_item]["defend"]) + COLOR_RESET_ALL)
+                    if "ammo" in item[which_item]:
+                        print("Ammo Type: " + COLOR_RED + str(item[which_item]["ammo"]) + COLOR_RESET_ALL)
+                        print("Ammo Count: " + COLOR_RED + str(player["ammo"][item[which_item]["ammo"]]) + " / " + str(ammo[item[which_item]["ammo"]]["stack"]) + COLOR_RESET_ALL)
                 if item[which_item]["type"] == "Consumable":
                     print("Max Bonus: " + COLOR_RED + str(item[which_item]["max bonus"]) + COLOR_RESET_ALL)
                     print("Healing Level: " + COLOR_RED + str(item[which_item]["healing level"]) + COLOR_RESET_ALL)

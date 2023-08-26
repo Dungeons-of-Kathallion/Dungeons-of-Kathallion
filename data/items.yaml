@@ -7,16 +7,25 @@ Sword:
   description: "Your generic sword."
 Bow:
   type: "Weapon"
-  damage: 4
+  damage: 5
   defend: 9
   agility: .15
+  ammo: "Arrow"
   description: "A bow. Perfectly normal. You use it to shoot arrows."
 Orc Bow:
   type: "Weapon"
-  damage: 3
+  damage: 4
   defend: 7
   agility: .25
+  ammo: "Orc Arrow"
   description: "Orc bows are less powerful than generic bows but are way more easy to use and transport."
+Black Orc Bow:
+  type: "Weapon"
+  damage: 6
+  defend: 10
+  agility: .1
+  ammo: "Black Orc Arrow"
+  description: "The Black Orc Bow is a powerful weapon, though it is rather heavy."
 Knife:
   type: "Weapon"
   damage: 3

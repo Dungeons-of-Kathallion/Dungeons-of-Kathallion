@@ -125,15 +125,21 @@ def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
 
                 # if player attack
                 if action.lower().startswith('a'):
+                    player_damage = random.randint(0, int(item[player["held item"]]["damage"]))
+                    if "ammo" in item[player["held item"]]:
+                        if player["ammo"][item[player["held item"]]["ammo"]] > 0:
+                            player["ammo"][item[player["held item"]]["ammo"]] -= 1
+                        else:
+                            print("Uh oh! You're out of ammo!")
+                            player_damage = 0
                     print(" ")
                     # attack formula
                     enemy_dodged = False
                     enemy_dodge_chance = round(random.uniform(0.10, enemy_agility), 2)
                     if enemy_dodge_chance > round(random.uniform(.50, .90), 2):
                         enemy_dodged = True
-                        print("Your enemy dodged your attack!")
+                        print("The enemy dodged your attack!")
                     if not enemy_dodged:
-                        player_damage = random.randint(0, int(item[player["held item"]]["damage"]))
                         enemy_health -= player_damage
                         print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL))
                         print("You dealt " + str(player_damage) + " damage to your enemy.")

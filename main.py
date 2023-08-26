@@ -316,22 +316,23 @@ def run(play):
             print("You can go West")
         if "dialog" in map["point" + str(map_location)]:
             dialog_name = map["point" + str(map_location)]["dialog"]
-            if "requirement" in plot[map["point" + str(map_location)]["dialog"]]:
-                if plot[map["point" + str(map_location)]["dialog"]]["requirement"] in player["heard dialog"]:
+            if dialog_name not in player["heard dialog"]:
+                if "requirement" in plot[map["point" + str(map_location)]["dialog"]]:
+                    if plot[map["point" + str(map_location)]["dialog"]]["requirement"] in player["heard dialog"]:
+                        print(plot[map["point" + str(map_location)]["dialog"]]["text"])
+                        player["heard dialog"].append(dialog_name)
+                    else:
+                        print(plot[map["point" + str(map_location)]["dialog"]]["incomplete text"])
+                else:
                     print(plot[map["point" + str(map_location)]["dialog"]]["text"])
                     player["heard dialog"].append(dialog_name)
-                else:
-                    print(plot[map["point" + str(map_location)]["dialog"]]["incomplete text"])
-            else:
-                print(plot[map["point" + str(map_location)]["dialog"]]["text"])
-                player["heard dialog"].append(dialog_name)
         if "None" not in map["point" + str(map_location)]["item"] and map_location not in player["taken items"]:
             take_item = input(COLOR_GREEN + "There are these items on the ground: " + COLOR_RESET_ALL + str(map["point" + str(map_location)]["item"]) + " ")
             if take_item in map["point" + str(map_location)]["item"]:
                 if take_item in player["inventory"]:
                     print("You cannot take that item")
                 elif player["inventory slots remaining"] == 0:
-                    print("You cannot take that item, you don't have enough slots in your inventory")
+                    print("You cannot take that item; you don't have enough slots in your inventory")
                 else:
                     player["inventory"].append(take_item)
                     player["taken items"].append(map_location)
@@ -360,10 +361,10 @@ def run(play):
 
                 drop = input("Your enemy dropped a/an " + choosen_item + ". Do you want to grab it (y/n)? ")
                 if drop.lower().startswith('y'):
-                    if choosen_item in player["inventory"] and item[choosen_item]["type"] == "Utility":
+                    if choosen_item in player["inventory"]:
                         print("You cannot take that item")
                     elif player["inventory slots remaining"] == 0:
-                        print("You cannot take that item, you don't have enough slots in your inventory")
+                        print("You cannot take that item; you don't have enough slots in your inventory")
                     else:
                         player["inventory"].append(choosen_item)
                         player["taken items"].append(map_location)

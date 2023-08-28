@@ -1,4 +1,4 @@
-coordinate count: 9
+coordinate count: 12
 point0:
   x: 0
   y: 0
@@ -97,3 +97,34 @@ point8:
   blocked:
   - East
   - South
+point9:
+  x: 3
+  y: 0
+  map zone: "First Zone"
+  item:
+  - None
+  ammo type: "Arrow"
+  ammo count: 8
+  enemy: 0
+  blocked:
+  - North
+  - West
+point10:
+  x: 4
+  y: 0
+  map zone: "First Zone"
+  item:
+  - None
+  enemy: 0
+  blocked:
+  - North
+  - South
+point11:
+  x: 5
+  y: 0
+  map zone: "First Zone"
+  item:
+  - None
+  enemy: 0
+  blocked:
+  - West

@@ -142,8 +142,9 @@ else:
 
 # funcion to search through the map file
 def search(x, y):
-    global map_location
-    for i in range(0, map["coordinate count"]):
+    global map_location, coordinate_count
+    coordinate_count = int(len(list(map))) - 1
+    for i in range(0, coordinate_count):
         point_i = map["point" + str(i)]
         point_x, point_y = point_i["x"], point_i["y"]
         # print(i, point_x, point_y, player)
@@ -155,7 +156,7 @@ def search(x, y):
 
 def search_specific_x():
     global map_location_x
-    for i in range(0, map["coordinate count"]):
+    for i in range(0, coordinate_count):
         point_i = map["point" + str(i)]
         point_x = point_i["x"]
         if point_x == player["x"]:
@@ -164,7 +165,7 @@ def search_specific_x():
 
 def search_specific_y():
     global map_location_y
-    for i in range(0, map["coordinate count"]):
+    for i in range(0, coordinate_count):
         point_i = map["point" + str(i)]
         point_y = point_i["y"]
         if point_y == player["y"]:

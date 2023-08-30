@@ -24,25 +24,25 @@ separator = COLOR_STYLE_BRIGHT + "###############################" + COLOR_RESET
 plugin_vanila = input("Do you want to use [p]lugin or [v]anila data files? ")
 if plugin_vanila.lower().startswith('p'):
     what_plugin = input("What plugin do you want to open? (use the name of the downloaded file) ")
-    with open("plugin" + what_plugin + "/map.yaml") as f:
+    with open("plugin/" + what_plugin + "/map.yaml") as f:
         map = yaml.safe_load(f)
 
-    with open("plugin" + what_plugin + "/items.yaml") as f:
+    with open("plugin/" + what_plugin + "/items.yaml") as f:
         item = yaml.safe_load(f)
 
-    with open("plugin" + what_plugin + "/enemies.yaml") as f:
+    with open("plugin/" + what_plugin + "/enemies.yaml") as f:
         enemy = yaml.safe_load(f)
 
-    with open("plugin" + what_plugin + "/start.yaml") as f:
+    with open("plugin/" + what_plugin + "/start.yaml") as f:
         start_player = yaml.safe_load(f)
 
-    with open("plugin" + what_plugin + "/lists.yaml") as f:
+    with open("plugin/" + what_plugin + "/lists.yaml") as f:
         lists = yaml.safe_load(f)
 
-    with open("plugin" + what_plugin + "/plot.yaml") as f:
+    with open("plugin/" + what_plugin + "/plot.yaml") as f:
         plot = yaml.safe_load(f)
 
-    with open("plugin" + what_plugin + "/ammo.yaml") as f:
+    with open("plugin/" + what_plugin + "/ammo.yaml") as f:
         ammo = yaml.safe_load(f)
 else:
     with open("data/map.yaml") as f:

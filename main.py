@@ -150,8 +150,6 @@ def search(x, y):
         # print(i, point_x, point_y, player)
         if point_x == player["x"] and point_y == player["y"]:
             map_location = i
-            if map_location == None:
-                print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: You are in an undefined location. This could have been the result of using or not using a plugin." + COLOR_RESET_ALL)
             return map_location
 
 def search_specific_x():
@@ -299,6 +297,17 @@ def run(play):
         player["inventory slots remaining"] = int(player["inventory slots"]) - int(player_items_number)
 
         map_location = search(player["x"], player["y"])
+        if map_location == None:
+            print(COLOR_RED + COLOR_STYLE_BRIGHT + "ERROR: You are in an undefined location. This could have been the result of using or not using a plugin." + COLOR_RESET_ALL)
+            quit = input("Do you want to [q]uit or [g]o to 0, 0? ")
+            if quit.lower().startswith('q'):
+                print(separator)
+                play = 0
+                return play
+            elif quit.lower().startswith('g'):
+                map_location = 1
+                player["x"] = 0
+                player["y"] = 0
         print(" ")
         print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Possible actions:" + COLOR_RESET_ALL)
         if "North" not in map["point" + str(map_location)]["blocked"]:

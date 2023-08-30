@@ -443,8 +443,10 @@ def run(play):
             if which_enemy == "None":
                 print("You don't know about that enemy.")
             elif which_enemy in player["enemies list"]:
-
-                enemy_thumbnail = "imgs/" + which_enemy + ".txt"
+                if plugin_vanila.lower().startswith('v'):
+                    enemy_thumbnail = "imgs/" + which_enemy + ".txt"
+                else:
+                    enemy_thumbnail = what_plugin + "/imgs/" + which_enemy + ".txt"
                 with open(enemy_thumbnail, 'r') as f:
                     print(f.read())
 

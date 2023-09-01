@@ -6,6 +6,7 @@ import os
 import time
 from colorama import Fore, Back, Style, deinit, init
 from colors import *
+from image import DrawImage
 
 # get start time
 start_time = time.time()
@@ -172,6 +173,8 @@ def search_specific_y():
 
 # gameplay here:
 def run(play):
+    title = DrawImage.from_file("title.png")
+    title.draw_image()
     print(separator)
     print(COLOR_GREEN + COLOR_STYLE_BRIGHT + "Reserved keys:" + COLOR_RESET_ALL)
     print(COLOR_BLUE + COLOR_STYLE_BRIGHT + "N: "+ COLOR_RESET_ALL + "Go north" + COLOR_RESET_ALL)

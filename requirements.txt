@@ -1,5 +1,6 @@
 colorama
 pyyaml
+terminal-img
 
 # random
 # pickle

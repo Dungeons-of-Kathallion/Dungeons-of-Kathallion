@@ -79,8 +79,9 @@ point7:
   x: 2
   y: -1
   map zone: "First Zone"
+  dialog: note1 dialog
   item:
-  - Note1
+  - None
   enemy: 0
   blocked:
   - North

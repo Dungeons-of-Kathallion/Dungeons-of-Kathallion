@@ -183,7 +183,3 @@ Wolf Skin:
 Wolf Skull:
   type: "Misc"
   description: "A huge skull of a head of a Warg."
-# Notes
-Note1:
-  type: "Note"
-  description: "The note reads: 'Help! Help!'. You wonder what it means..."

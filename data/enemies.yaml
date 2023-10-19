@@ -40,7 +40,7 @@ Orc:
   - Orc Bow
   description: "Yrch are the smaller and swifter version of the Goblins. Even if they have low health, they are fast and hard to hit because of their agility."
 Orc Archer:
-  plural: "Yrch Archer"
+  plural: "Orc Archers"
   damage:
     min damage: 1
     max damage: 5

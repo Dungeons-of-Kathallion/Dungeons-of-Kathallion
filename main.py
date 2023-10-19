@@ -125,7 +125,7 @@ elif save_selection.lower().startswith('d'):
         play = 0
         exit(1)
     with open(save_file) as f:
-        verify = input("Are you sure you want to delete the following save (y/n)? ")
+        verify = input("Are you sure you want to delete the following save? ")
         if verify == "y":
             save_file = "saves/save_" + delete_save + ".yaml"
             player = "placeholder, do not delete"
@@ -170,6 +170,16 @@ def search_specific_y():
         if point_y == player["y"]:
             map_location_y = i
             return map_location_y
+        
+# Choose between "a" or "an" depending on the word after it.
+def a_an(word):
+    word = word.lower()
+    print(word)
+    if word.startswith('a') or word.startswith('e') or word.startswith('i') or word.startswith('o') or word.startswith('u'):
+        a_an_var = "an"
+    else:
+        a_an_var = "a"
+    return a_an_var
 
 # gameplay here:
 def run(play):
@@ -377,7 +387,8 @@ def run(play):
                 enemy_items_number = len(enemy_total_inventory)
                 choosen_item = enemy_total_inventory[random.randint(0, enemy_items_number - 1)]
 
-                drop = input("Your enemy dropped a/an " + choosen_item + ". Do you want to grab it (y/n)? ")
+                a_an_var = a_an(choosen_item)
+                drop = input("Your enemy dropped " + a_an_var + " " + choosen_item + ". Do you want to grab it (y/n)? ")
                 if drop.lower().startswith('y'):
                     if choosen_item in player["inventory"]:
                         print("You cannot take that item")
@@ -488,19 +499,28 @@ def run(play):
             if player["held item"] == " ":
                 print("You are currently holding no weapon.")
             else:
-                print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
+                a_an_var = a_an(player["held item"])
+                print("You are holding " + a_an_var + " " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
             if player["held chestplate"] == " ":
                 print("You are currently wearing no chestplate.")
             else:
-                print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
+                a_an_var = a_an(player["held chestplate"])
+                print("You are wearing " + a_an_var + " " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
             if player["held boots"] == " ":
-                print("You are currently holding no boots.")
+                print("You are currently wearing no boots.")
             else:
-                print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
+                a_an_var = a_an(player["held boots"])
+                print("You are wearing " + a_an_var + " " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
             if player["held leggings"] == " ":
-                print("You are currently holding no leggings.")
+                print("You are currently wearing no leggings.")
             else:
-                print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
+                a_an_var = a_an(player["held leggings"])
+                print("You are wearing " + a_an_var + " " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
+            if player["held shield"] == " ":
+                print("You are currently holding no shield.")
+            else:
+                a_an_var = a_an(player["held shield"])
+                print("You are wearing " + a_an_var + " " + COLOR_RED + player["held shield"] + COLOR_RESET_ALL)
             print(" ")
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
             if which_item in player["inventory"]:
@@ -527,25 +547,30 @@ def run(play):
         elif command.lower().startswith('t'):
             # equipment
             if player["held item"] == " ":
-                print("You are not holding a weapon.")
+                print("You are currently holding no weapon.")
             else:
-                print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
+                a_an_var = a_an(player["held item"])
+                print("You are holding " + a_an_var + " " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
             if player["held chestplate"] == " ":
-                print("You are not wearing a chestplate.")
+                print("You are currently wearing no chestplate.")
             else:
-                print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
+                a_an_var = a_an(player["held chestplate"])
+                print("You are wearing " + a_an_var + " " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
             if player["held boots"] == " ":
-                print("You are not wearing boots.")
+                print("You are currently wearing no boots.")
             else:
-                print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
-            if player["held shield"] == " ":
-                print("You are not holding a shield.")
-            else:
-                print("You are wearing a/an " + COLOR_RED + player["held shield"] + COLOR_RESET_ALL)
+                a_an_var = a_an(player["held boots"])
+                print("You are wearing " + a_an_var + " " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
             if player["held leggings"] == " ":
-                print("You are not wearing leggings.")
+                print("You are currently wearing no leggings.")
             else:
-                print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
+                a_an_var = a_an(player["held leggings"])
+                print("You are wearing " + a_an_var + " " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
+            if player["held shield"] == " ":
+                print("You are currently holding no shield.")
+            else:
+                a_an_var = a_an(player["held shield"])
+                print("You are wearing " + a_an_var + " " + COLOR_RED + player["held shield"] + COLOR_RESET_ALL)
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
             if which_item in player["inventory"]:
                 ask = input("You won't be able to get this item back if your throw it away. Are you sure you want to throw away this item? (y/n) ")
@@ -573,38 +598,48 @@ def run(play):
             if player["held item"] == " ":
                 print("You are not holding a weapon.")
             else:
-                print("You are holding a/an " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
+                a_an_var = a_an(player["held item"])
+                print("You are holding " + a_an_var + " " + COLOR_RED + player["held item"] + COLOR_RESET_ALL)
             if player["held chestplate"] == " ":
                 print("You are not wearing a chestplate.")
             else:
-                print("You are wearing a/an " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
+                a_an_var = a_an(player["held chestplate"])
+                print("You are holding " + a_an_var + " " + COLOR_RED + player["held chestplate"] + COLOR_RESET_ALL)
             if player["held boots"] == " ":
                 print("You are not wearing boots.")
             else:
-                print("You are wearing a/an " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
+                a_an_var = a_an(player["held boots"])
+                print("You are holding " + a_an_var + " " + COLOR_RED + player["held boots"] + COLOR_RESET_ALL)
             if player["held leggings"] == " ":
                 print("You are not wearing leggings.")
             else:
-                print("You are wearing a/an " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
+                a_an_var = a_an(player["held leggings"])
+                print("You are holding " + a_an_var + " " + COLOR_RED + player["held leggings"] + COLOR_RESET_ALL)
+            if player["held shield"] == " ":
+                print("You are not wearing a shield.")
+            else:
+                a_an_var = a_an(player["held shield"])
+                print("You are holding " + a_an_var + " " + COLOR_RED + player["held shield"] + COLOR_RESET_ALL)
             which_item = input("You have these items in your inventory: " + str(player["inventory"]) + " ")
             if which_item in player["inventory"]:
+                a_an_var = a_an(which_item)
                 if item[which_item]["type"] == "Weapon":
                     player["held item"] = which_item
-                    print("Equipped a/an " + which_item)
+                    print("Equipped " + a_an_var + " " + which_item)
                 elif item[which_item]["type"] == "Armor Piece: Chestplate":
                     player["held chestplate"] = which_item
-                    print("Equipped a/an " + which_item)
+                    print("Equipped " + a_an_var + " " + which_item)
                 elif item[which_item]["type"] == "Armor Piece: Boots":
                     player["held boots"] = which_item
-                    print("Equipped a/an " + which_item)
+                    print("Equipped " + a_an_var + " " + which_item)
                 elif item[which_item]["type"] == "Armor Piece: Leggings":
                     player["held leggings"] = which_item
-                    print("Equipped a/an " + which_item)
+                    print("Equipped " + a_an_var + " " + which_item)
                 elif item[which_item]["type"] == "Armor Piece: Shield":
-                     player["held shield"] = which_item
-                     print("Equipped a/an " + which_item)
+                    player["held shield"] = which_item
+                    print("Equipped " + a_an_var + " " + which_item)
                 else:
-                    print("You cannot equip a/an " + which_item)
+                    print("You cannot equip " + a_an_var + " " + which_item)
                 print(" ")
             else:
                 print("You do not have that item.")

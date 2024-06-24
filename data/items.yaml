@@ -43,7 +43,7 @@ Knife:
   damage: 3
   defend: 5
   agility: .25
-  description: "A simple knife. Fast and easy to use. Most goblins uses this weapon."
+  description: "A simple knife. Quick and easy to use. Most goblins uses this weapon."
 Dagger:
   type: "Weapon"
   damage: 4
@@ -75,11 +75,16 @@ Dragon Pike:
   agility: .1
   description: "A legendary weapon with the strength to destroy all foes. Whether it works on dragons or not is for you to decide..."
 # Consumables
+Minor Healing Potion:
+  type: "Consumable"
+  max bonus: 0
+  healing level: 5
+  description: "A small bottle of healing potion."
 Healing Potion:
   type: "Consumable"
   max bonus: 5
   healing level: "max health"
-  description: "A generic healing potion that restores your health to it's max and gives it a bonus 5 to that maximum."
+  description: "A generic healing potion that restores your health to it's max and gives a bonus 5 to that maximum."
 # Utilities
 Map:
   type: "Utility"

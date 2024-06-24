@@ -38,6 +38,7 @@ Orc:
   - Orc Iron Leggings
   - Orc Shredded Chestplate
   - Orc Bow
+  - Minor Healing Potion
   description: "Yrch are the smaller and swifter version of the Goblins. Even if they have low health, they are fast and hard to hit because of their agility."
 Orc Archer:
   plural: "Orc Archers"
@@ -95,6 +96,7 @@ Cavern Troll:
   - Wolf Fur
   - Mace
   - Spear
+  - Minor Healing Potion
   description: "Cavern Trolls are powerful but slow enemies. They can deal huge amounts of damages but they are quit easy to dodge."
 # Black enemies
 Black Orc:
@@ -114,6 +116,7 @@ Black Orc:
   - Spear
   - Orc Shredded Chestplate
   - Orc Bag
+  - Minor Healing Potion
   description: "Black Yrch are an old species of the Yrch, which are way more powerful, but you won't see them often during your journey.'"
 Dark Marksman:
   plural: "Dark Marksmen"
@@ -132,6 +135,7 @@ Dark Marksman:
   - Orc Bags
   - Orc Iron Leggings
   - Black Orc Bow
+  - Minor Healing Potion
   description: "Dark Marksman are specialized Black Yrch in arching and are able to be swift and shoot you from long distances"
 Doomed Horror:
   plural: "Doomed Horrors"

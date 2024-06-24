@@ -174,7 +174,7 @@ def search_specific_y():
 # Choose between "a" or "an" depending on the word after it.
 def a_an(word):
     word = word.lower()
-    print(word)
+    # print(word)
     if word.startswith('a') or word.startswith('e') or word.startswith('i') or word.startswith('o') or word.startswith('u'):
         a_an_var = "an"
     else:

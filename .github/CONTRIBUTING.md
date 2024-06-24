@@ -22,7 +22,7 @@ Sometimes something happens and someone cannot continue working on their pull re
 
 # For Collaborators
 ### Dealing With Your Own Pull Requests
-It is requested that you do not merge your own pull request, unless it has: 1) No requested reviews, 2) At least three approvals, and 3) Have at least five total reviewers.
+It is requested that you do not merge your own pull request, unless it has: 1) No requested reviews, 2) At least three approvals, and 3) At least five total reviewers.
 
 ## Duties
 Once you have permissions on this repo or in the organization, you have a role that means you should have more involvement. There are several different roles, however, defined by teams.

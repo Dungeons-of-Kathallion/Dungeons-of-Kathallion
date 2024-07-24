@@ -318,7 +318,7 @@ def run(play):
                 play = 0
                 return play
             elif quit.lower().startswith('g'):
-                map_location = 1
+                map_location = search(0, 0)
                 player["x"] = 0
                 player["y"] = 0
         print(" ")

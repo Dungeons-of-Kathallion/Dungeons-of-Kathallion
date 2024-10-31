@@ -141,7 +141,7 @@ else:
     play = 0
     exit(1)
 
-# funcion to search through the map file
+# function to search through the map file
 def search(x, y):
     global map_location, coordinate_count
     coordinate_count = int(len(list(map))) - 1

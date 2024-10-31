@@ -61,13 +61,13 @@ Mace:
   damage: 9
   defend: 2
   agility: -.15
-  description: "A huge mace used by cavern trolls. It is an extremely damaging weapon but also a very slow weapon."
+  description: "A huge mace used by cavern trolls. It is an extremely damaging but also very slow weapon."
 Spear:
   type: "Weapon"
   damage: 4
   defend: 4
   agility: .2
-  description: "The spear is a fast and agile weapon that lets you attack your enemy without letting them the time to attack you."
+  description: "The spear is a fast and agile weapon that lets you attack your enemy without giving them the time to attack you."
 Dragon Pike:
   type: "Weapon"
   damage: 21
@@ -114,7 +114,7 @@ Broken Shield:
   type: "Armor Piece: Shield"
   armor protection: .05
   agility: .1
-  description: "A sheild from ancient times, cloven in two and left for travelers to find."
+  description: "A shield from ancient times, cloven in two and left for travelers to find."
 Knight Boots:
   type: "Armor Piece: Boots"
   armor protection: .24
@@ -161,7 +161,7 @@ Chicken:
   healing level: 4
   description: "A generic cooked chicken leg that can restore your energy."
 Apple:
-  tpye: "Food"
+  type: "Food"
   max bonus: 0
   healing level: 1
   description: "Apples are not great for energy but are easy to find."

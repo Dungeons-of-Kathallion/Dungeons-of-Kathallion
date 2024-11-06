@@ -15,10 +15,10 @@ If you know how to adress an issue with a pull request, please do. However, I as
 If you find a bug in the code and can quickly fix it, please create a pull request. It should be merged shortly, if you fix it correctly. If you have an addition to the code, there is a checklist for you to fill out. 1) TEST YOUR CODE! 2) Explain what your new code does and how it would be useful.
 
 ### Merging
-Once an admin sees your PR, they may review it. Other people who have no mergine permissions may also review your pull request. If you have requested changes, please adress them; either explain why the requested change should not be added to your PR or fix them. Once you adress the reviews, the reviewers should either explain why they do not thing the reviews are adressed, submit more requested changes, or approve the PR. Once and admin approves a PR, they may merge it.
+Once an admin sees your PR, they may review it. Other people who have no merge permissions may also review your pull request. If somebody has requested changes, please address them; either explain why the requested change should not be added to your PR or fix them. Once you address the reviews, the reviewers should either explain why they do not think the reviews are addressed, submit more requests, or approve the PR. Once an admin approves a PR, they may merge it.
 
 ### Abandoned Pull Requests
-Sometimes something happens and someone cannot continue working on their pull request. They are requested to say that, but if they cannot the pull request will be left for oen month and then closed.
+Sometimes something happens and someone cannot continue working on their pull request. They are requested to say that, but if they cannot the pull request will be left for one month and then closed.
 
 # For Collaborators
 ### Dealing With Your Own Pull Requests

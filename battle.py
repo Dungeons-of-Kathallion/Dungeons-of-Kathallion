@@ -62,7 +62,7 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
             elif item_input in player["inventory"] and item[item_input]["type"] == "Armor Piece: Boots":
                 player["held boots"] = item_input
                 print("You are now wearing a/an ", player["held boots"])
-            elif item_input in player["inventory"] and item[item_input]["type"] == "Armor Piece: Sheild":
+            elif item_input in player["inventory"] and item[item_input]["type"] == "Armor Piece: Shield":
                 player["held shield"] = item_input
                 print("You are now wearing a/an ", player["held shield"])
     else:

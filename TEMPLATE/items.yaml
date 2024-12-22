@@ -1,0 +1,7 @@
+Macintosh:
+  type: "Weapon"
+  damage: 30
+  defend: 30
+  agility: .01
+  ammo: "Floppy Disks"
+  description: "It's a Macintosh!"

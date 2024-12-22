@@ -1,0 +1,9 @@
+point0:
+  x: 0
+  y: 0
+  map zone: "The Lands of _____"
+  item:
+  - None
+  enemy: 0
+  blocked:
+  - None

@@ -2,6 +2,7 @@ import random
 import yaml
 import pickle
 import battle
+import plugin
 import os
 import time
 from colorama import Fore, Back, Style, deinit, init

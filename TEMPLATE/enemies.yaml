@@ -1,0 +1,13 @@
+Enemy:
+  plural: "Enemies"
+  damage:
+    min damage: 1
+    max damage: 3
+  health:
+    min spawning health: 1
+    max spawning health: 5
+    max health level: 5
+  agility: 0.5
+  inventory:
+  - Macintosh
+  description: "It's your enemy!"

@@ -22,7 +22,7 @@ def encounter_text_show(player, item, enemy, map, map_location, enemies_remainin
     enemies_number = map["point" + str(map_location)]["enemy"]
 
     if enemies_number > 1:
-        print("You encounter a group of " + str(enemy_plural) + " that won't let you pass.")
+        print("You encounter a group of foes that won't let you pass.")
     else:
         print("You find a/an " + str(enemy_singular) + " on your way.")
 
@@ -138,11 +138,11 @@ def fight(player, item, enemy, map, map_location, enemies_remaining, lists):
                     enemy_dodge_chance = round(random.uniform(0.10, enemy_agility), 2)
                     if enemy_dodge_chance > round(random.uniform(.50, .90), 2):
                         enemy_dodged = True
-                        print("The enemy dodged your attack!")
+                        print(f"The {enemy_singular} dodged your attack!")
                     if not enemy_dodged:
                         enemy_health -= player_damage
                         print(str(COLOR_RED) + "Enemy: " + str(enemy_health) + str(COLOR_RESET_ALL) + "/" + str(COLOR_GREEN) + str(enemy_max) + str(COLOR_RESET_ALL))
-                        print("You dealt " + str(player_damage) + " damage to your enemy.")
+                        print("You dealt " + str(player_damage) + f" damage to the {enemy_singular}.")
                     turn = False
 
                 # if player defend

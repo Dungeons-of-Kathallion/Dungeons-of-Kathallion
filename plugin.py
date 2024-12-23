@@ -73,6 +73,8 @@ def create_map_point(x,y,folder):
         enemies = yaml.safe_load(f)
     with open(f"plugin/{folder}/lists.yaml") as f:
         lists = yaml.safe_load(f)
+    with open(f"plugin/{folder}/items.yaml") as f:
+        items_list = yaml.safe_load(f)
     point = points["point0"]
     point["x"] = x
     point["y"] = y
@@ -87,8 +89,19 @@ def create_map_point(x,y,folder):
                 name = input("Please name your dialog: ")
                 text = input("What will your dialog say? ")
                 dialogs[name]["text"] = text
+                point["dialog"] = dialog
     items = input("What item should the point have? ('None' for no items.)")
-    point["item"] = [items]
+    if items in items_list:
+        point["item"] = [items]
+    else:
+        question = input("That item does not exist. Create a new one? ")
+        if question.lower().startswith("y"):
+            name = input("Please name your item: ")
+            item_types = ['Weapon','Consumable','Utility','Chestplate','Boots','Leggings','Shield','Bag','Food','Misc']
+            item_type = input("What type of item will this be? ['Weapon','Consumable','Utility','Chestplate','Boots','Leggings','Shield','Bag','Food','Misc']")
+            if item_type in item_types:
+                items_list[name]["type"] = item_type
+            # Finish this
     enemy_count = input("How many enemies? ")
     point["enemy"] = int(enemy_count)
     if int(enemy_count) > 0:
@@ -100,6 +113,7 @@ def create_map_point(x,y,folder):
             if question.lower().startswith("y"):
                 name = input("Please name the list: ")
                 lists[name] = []
+                point["enemy type"] = name
                 # Note: add list creation and then enemy creation
     north = input("Can you go North? ")
     if north.lower().startswith("n"):
@@ -113,3 +127,11 @@ def create_map_point(x,y,folder):
     west = input("Can you go West? ")
     if west.lower().startswith("n"):
         point["blocked"].append("West")
+
+    count = len(points)
+    points[f"point{count}"] = point
+
+    dumped = yaml.dump(points)
+
+    with open(f"plugin/{folder}/map.yaml", "w") as f:
+        f.write(dumped)

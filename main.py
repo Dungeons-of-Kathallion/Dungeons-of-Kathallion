@@ -150,7 +150,7 @@ def search(x, y):
         point_i = map["point" + str(i)]
         point_x, point_y = point_i["x"], point_i["y"]
         # print(i, point_x, point_y, player)
-        if point_x == player["x"] and point_y == player["y"]:
+        if point_x == x and point_y == x:
             map_location = i
             return map_location
 

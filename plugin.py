@@ -99,9 +99,42 @@ def create_map_point(x,y,folder):
             name = input("Please name your item: ")
             item_types = ['Weapon','Consumable','Utility','Chestplate','Boots','Leggings','Shield','Bag','Food','Misc']
             item_type = input("What type of item will this be? ['Weapon','Consumable','Utility','Chestplate','Boots','Leggings','Shield','Bag','Food','Misc']")
-            if item_type in item_types:
-                items_list[name]["type"] = item_type
-            # Finish this
+            if not item_type in item_types:
+                item_type = "Misc"
+            items_list[name]["type"] = item_type
+            if item_type == "Weapon":
+                damage = input("How much damage? ")
+                defend = input("How much defend? ")
+                agility = input("How much agility? ")
+                desc = input("What is the description? ")
+                # Add in ammo
+                items_list[name]["damage"] = damage
+                items_list[name]["defend"] = defend
+                items_list[name]["agility"] = agility
+                items_list[name]["desc"] = desc
+            elif item_type == "Consumable" or item_type == "Food":
+                bonus = input("What is the bonus to max HP? ")
+                healing = input("What is the healing level? ")
+                desc = input("What is the description? ")
+                items_list[name]["max bonus"] = bonus
+                items_list[name]["healing level"] = healing
+                items_list[name]["description"] = desc
+            elif item_type == "Chestplate" or item_type == "Boots" or item_type == "Leggings" or item_type == "Shield":
+                items_list[name]["type"] = f"Armor Piece: {item_type}"
+                potection = input("What is the protection? ")
+                agility = input("What is the agility? ")
+                desc = input("What is the description? ")
+                items_list[name]["desc"] = desc
+                items_list[name]["protection"] = potection
+                items_list[name]["agility"] = agility
+            elif item_type == "Bag":
+                slots = input("How much can it hold? ")
+                desc = input("What is the description? ")
+                items_list[name]["desc"] = desc
+                items_list[name]["inventory slots"] = slots
+            else:
+                desc = input("What is the description? ")
+                items_list[name]["desc"] = desc
     enemy_count = input("How many enemies? ")
     point["enemy"] = int(enemy_count)
     if int(enemy_count) > 0:
@@ -134,4 +167,19 @@ def create_map_point(x,y,folder):
     dumped = yaml.dump(points)
 
     with open(f"plugin/{folder}/map.yaml", "w") as f:
+        f.write(dumped)
+
+    dumped = yaml.dump(dialogs)
+
+    with open(f"plugin/{folder}/plot.yaml", "w") as f:
+        f.write(dumped)
+
+    dumped = yaml.dump(lists)
+
+    with open(f"plugin/{folder}/lists.yaml", "w") as f:
+        f.write(dumped)
+
+    dumped = yaml.dump(items_list)
+
+    with open(f"plugin/{folder}/items.yaml", "w") as f:
         f.write(dumped)
